@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px white;
+  }
+
+  .text-shadow-md {
+    text-shadow: 4px 4px 8px white;
+  }
+
+  .text-shadow-lg {
+    text-shadow: 15px 15px 30px black;
+  }
+
+  .text-shadow-none {
+    text-shadow: none;
+  }
+
+  .bg-mix {
+    background-image: linear-gradient(
+      to right,
+      #000,
+      #301319,
+      #5b1d24,
+      #872728,
+      #b13824,
+      #b13824,
+      #b13824,
+      #b13824,
+      #872728,
+      #5b1d24,
+      #301319,
+      #000
+    );
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #edf2f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+@font-face {
+  font-family: 'Origin Tech';
+  src: url('/fonts/origin-tech.eot');
+  src: url('/fonts/origin-tech.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/origin-tech.woff2') format('woff2'),
+    url('/fonts/origin-tech.woff') format('woff'),
+    url('/fonts/origin-tech.ttf')  format('truetype'),
+    url('/fonts/origin-tech.svg#Origin Tech') format('svg');
+}
