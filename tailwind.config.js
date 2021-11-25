@@ -1,30 +1,16 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: ['./src/**/*.{js,ts,jsx,tsx}'],
   darkMode: false,
   theme: {
     extend: {
-      screens: {
-        phone: '375px',
-        // => @media (min-width: 640px) { ... }
-        medium: '640px',
-        laptop: '1024px',
-        // => @media (min-width: 1024px) { ... }
-
-        desktop: '1280px'
-        // => @media (min-width: 1280px) { ... }
-      },
-      height: {
-        91: '357px'
-      },
-      zIndex: {
-        '-10': '-10'
-      },
       fontFamily: {
         sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
       },
       colors: {
+        cyan: colors.cyan,
         'blue-zodiac': {
           DEFAULT: '#10124B',
           50: '#3D42D6',
@@ -105,13 +91,6 @@ module.exports = {
       }
     }
   },
-  variants: {
-    extend: {
-      scale: ['hover'],
-      borderColor: ['hover'],
-      borderOpacity: ['hover'],
-      zIndex: ['hover']
-    }
-  },
-  plugins: []
+  variants: {},
+  plugins: [require('@tailwindcss/forms')]
 }
