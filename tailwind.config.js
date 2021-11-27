@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
+        // sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
       },
       colors: {
         cyan: colors.cyan,

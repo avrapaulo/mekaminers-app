@@ -3,6 +3,6 @@ import { atom } from 'recoil'
 export const defaultWallet = '0x00000000000000000000000'
 
 export const walletAtom = atom({
-  key: 'wallet',
+  key: 'walletAtom',
   default: defaultWallet
 })

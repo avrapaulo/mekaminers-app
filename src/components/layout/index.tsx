@@ -5,9 +5,9 @@ import { useRouter } from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
 import { NextSeo } from 'next-seo'
 import { useMoralis } from 'react-moralis'
-import { useSetRecoilState } from 'recoil'
-import { walletAtom } from 'recoil/atoms'
-import { defaultWallet } from 'recoil/atoms/wallet'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { walletCoins } from 'recoil/selector'
+import { defaultWallet, walletAtom, disconnectAtom } from 'recoil/atoms'
 import {
   ShoppingCartIcon,
   MenuAlt1Icon,
@@ -16,6 +16,9 @@ import {
   LibraryIcon,
   BriefcaseIcon
 } from '@heroicons/react/outline'
+import { getEllipsisTxt } from 'helpers/formatters'
+import { Wallet } from 'icons/wallet/index'
+import { DisconnectModel } from 'components/modal'
 
 const navigation = [
   { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
@@ -37,10 +40,12 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { web3, user } = useMoralis()
+  const { web3, user, isAuthenticated, authenticate } = useMoralis()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
-  const setWalletAddress = useSetRecoilState(walletAtom)
+  const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
+  const setDisconnect = useSetRecoilState(disconnectAtom)
+  const { meka, ore } = useRecoilValue(walletCoins)
 
   useEffect(() => {
     setWalletAddress(
@@ -67,6 +72,7 @@ export const Layout = ({ children }: LayoutProps) => {
           cardType: 'summary_large_image'
         }}
       />
+      <DisconnectModel />
       <div className="min-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setSidebarOpen}>
@@ -216,7 +222,34 @@ export const Layout = ({ children }: LayoutProps) => {
             </button>
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
               <div className="flex-1 flex"></div>
-              <div className="ml-4 flex items-center md:ml-6">Wallet</div>
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
+                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <Wallet />
+                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
+                </button>
+                <button
+                  type="button"
+                  className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <div className="h-6 w-6 relative">
+                    <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
+                  </div>
+                  <span>{meka}</span>
+                </button>
+                <button
+                  type="button"
+                  className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <div className="h-6 w-6 relative">
+                    <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
+                  </div>
+                  <span>{ore}</span>
+                </button>
+              </div>
             </div>
           </div>
           <main className="flex-1 pb-8">{children}</main>
