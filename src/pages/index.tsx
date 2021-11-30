@@ -1,19 +1,6 @@
-import { useRecoilValue } from 'recoil'
-import { useMoralis } from 'react-moralis'
-import { walletAtom } from 'recoil/atoms'
-
 const Homepage = () => {
-  const wallet = useRecoilValue(walletAtom)
-
-  const { isAuthenticated, authenticate, logout } = useMoralis()
   return (
     <>
-      {isAuthenticated ? (
-        <button onClick={() => logout()}>logout</button>
-      ) : (
-        <button onClick={() => authenticate()}>login</button>
-      )}
-      <div>{wallet}</div>
       <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5">

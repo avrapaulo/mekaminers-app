@@ -19,17 +19,14 @@ import {
 import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet/index'
 import { DisconnectModel } from 'components/modal'
+import { classNames } from 'helpers/classNames'
 
 const navigation = [
   { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
-  { name: 'Junkyard', href: '/junkyard', icon: ShoppingCartIcon, disable: false },
+  { name: 'Junkyard', href: '/junkyard/pre-sale', icon: ShoppingCartIcon, disable: false },
   { name: 'Marketplace', href: '#', icon: LibraryIcon, disable: true },
   { name: 'Inventory', href: '#', icon: BriefcaseIcon, disable: true }
 ]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 const description =
   'MekaMiners starts as a play-to-earn strategic PVP/PVE blockchain passive farm game with NFT Robot characters, body parts, and item ownership. Merging the inspiration of games such PvU and Farmville with Tribal Wars and Lords Mobile we expect to build an amazing gameplay with very short time investment needs and good profitability.'
@@ -42,10 +39,10 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const { web3, user, isAuthenticated, authenticate } = useMoralis()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const router = useRouter()
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
+  const router = useRouter()
 
   useEffect(() => {
     setWalletAddress(
@@ -182,11 +179,17 @@ export const Layout = ({ children }: LayoutProps) => {
                   >
                     <Link
                       href={item.href}
-                      aria-current={router.pathname === item.href ? 'page' : undefined}
+                      aria-current={
+                        router.pathname === item.href ||
+                        (item.href.length > 1 && router.pathname.startsWith(item.href))
+                          ? 'page'
+                          : undefined
+                      }
                     >
                       <a
                         className={classNames(
-                          router.pathname === item.href
+                          router.pathname === item.href ||
+                            (item.href.length > 1 && router.pathname.startsWith(item.href))
                             ? 'bg-cyan-800 text-white'
                             : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
                           item.disable ? 'pointer-events-none' : '',

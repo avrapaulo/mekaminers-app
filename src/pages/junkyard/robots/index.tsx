@@ -1,10 +1,10 @@
 import { Header } from 'components/junkyard'
 
-const Junkyard = () => (
+const Robots = () => (
   <>
     <Header />
-    <div>Junkyard</div>
+    <div>Robots</div>
   </>
 )
 
-export default Junkyard
+export default Robots
