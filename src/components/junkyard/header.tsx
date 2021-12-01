@@ -13,7 +13,7 @@ export const Header = () => {
   const router = useRouter()
 
   return (
-    <div>
+    <div className="mb-5">
       <div className="sm:hidden">
         <label htmlFor="tabs" className="sr-only">
           Select a tab

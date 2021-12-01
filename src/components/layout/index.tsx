@@ -228,14 +228,6 @@ export const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <Wallet />
-                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
-                </button>
-                <button
-                  type="button"
                   className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-6 w-6 relative">
@@ -251,6 +243,14 @@ export const Layout = ({ children }: LayoutProps) => {
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
                   </div>
                   <span>{ore}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
+                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <Wallet />
+                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
                 </button>
               </div>
             </div>

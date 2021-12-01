@@ -9,6 +9,9 @@ module.exports = {
       fontFamily: {
         // sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
       },
+      zIndex: {
+        '-10': '-10'
+      },
       colors: {
         cyan: colors.cyan,
         'blue-zodiac': {
