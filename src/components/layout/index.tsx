@@ -128,12 +128,18 @@ export const Layout = ({ children }: LayoutProps) => {
                       <Link key={item.name} href={item.href}>
                         <a
                           className={classNames(
-                            router.pathname === item.href
+                            router.pathname === item.href ||
+                              (item.href.length > 1 && router.pathname.startsWith(item.href))
                               ? 'bg-cyan-800 text-white'
                               : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
                             'group flex items-center px-2 py-2 text-base font-medium rounded-md'
                           )}
-                          aria-current={router.pathname === item.href ? 'page' : undefined}
+                          aria-current={
+                            router.pathname === item.href ||
+                            (item.href.length > 1 && router.pathname.startsWith(item.href))
+                              ? 'page'
+                              : undefined
+                          }
                         >
                           <item.icon
                             className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"

@@ -23,7 +23,7 @@ export const Header = () => {
           id="tabs"
           name="tabs"
           className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-          defaultValue={tabs.find(tab => router.pathname === tab.href).name}
+          defaultValue={tabs.find(tab => router.pathname.includes(tab.href)).name}
         >
           {tabs.map(tab => (
             <option key={tab.name}>{tab.name}</option>
@@ -37,12 +37,18 @@ export const Header = () => {
               <Link key={tab.name} href={tab.href}>
                 <a
                   className={classNames(
-                    router.pathname === tab.href
+                    router.pathname === tab.href ||
+                      (tab.href !== tabs[1].href && router.pathname.startsWith(tab.href))
                       ? 'border-indigo-500 text-indigo-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                     'w-1/4 py-4 px-1 text-center border-t-2 font-medium text-sm'
                   )}
-                  aria-current={router.pathname === tab.href ? 'page' : undefined}
+                  aria-current={
+                    router.pathname === tab.href ||
+                    (tab.href !== tabs[1].href && router.pathname.startsWith(tab.href))
+                      ? 'page'
+                      : undefined
+                  }
                 >
                   {tab.name}
                 </a>

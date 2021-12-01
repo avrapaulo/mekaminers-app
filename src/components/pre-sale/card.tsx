@@ -1,13 +1,15 @@
 import Image from 'next/image'
 import { classNames } from 'helpers/classNames'
+import Link from 'next/link'
 
 interface CardProps {
   total: number
   price: number
   title: string
+  href: string
 }
 
-export const Card = ({ total, price, title }: CardProps) => (
+export const Card = ({ total, price, title, href }: CardProps) => (
   <div
     style={{
       background: 'rgba(7, 45, 151, 0.12)',
@@ -49,19 +51,21 @@ export const Card = ({ total, price, title }: CardProps) => (
       ></div>
     </div>
     <div className="mt-2 flex items-center justify-center">
-      <button
-        style={{
-          clipPath: 'polygon(8% 0, 86% 0, 100% 14%, 99% 57%, 90% 100%, 20% 100%, 0 88%, 1% 50%)'
-        }}
-        type="button"
-        className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        <div className="relative w-5 h-5">
-          <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
-        </div>
-        <div>{price}</div>
-        <div> BNB</div>
-      </button>
+      <Link href={href}>
+        <a
+          style={{
+            clipPath: 'polygon(8% 0, 86% 0, 100% 14%, 99% 57%, 90% 100%, 20% 100%, 0 88%, 1% 50%)'
+          }}
+          type="button"
+          className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <div className="relative w-5 h-5">
+            <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
+          </div>
+          <div>{price}</div>
+          <div> BNB</div>
+        </a>
+      </Link>
     </div>
   </div>
 )
