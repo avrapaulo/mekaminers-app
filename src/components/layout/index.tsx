@@ -19,17 +19,14 @@ import {
 import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet/index'
 import { DisconnectModel } from 'components/modal'
+import { classNames } from 'helpers/classNames'
 
 const navigation = [
   { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
-  { name: 'Junkyard', href: '/junkyard', icon: ShoppingCartIcon, disable: false },
+  { name: 'Junkyard', href: '/junkyard/pre-sale', icon: ShoppingCartIcon, disable: false },
   { name: 'Marketplace', href: '#', icon: LibraryIcon, disable: true },
   { name: 'Inventory', href: '#', icon: BriefcaseIcon, disable: true }
 ]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 const description =
   'MekaMiners starts as a play-to-earn strategic PVP/PVE blockchain passive farm game with NFT Robot characters, body parts, and item ownership. Merging the inspiration of games such PvU and Farmville with Tribal Wars and Lords Mobile we expect to build an amazing gameplay with very short time investment needs and good profitability.'
@@ -42,10 +39,10 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const { web3, user, isAuthenticated, authenticate } = useMoralis()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const router = useRouter()
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
+  const router = useRouter()
 
   useEffect(() => {
     setWalletAddress(
@@ -131,12 +128,18 @@ export const Layout = ({ children }: LayoutProps) => {
                       <Link key={item.name} href={item.href}>
                         <a
                           className={classNames(
-                            router.pathname === item.href
+                            router.pathname === item.href ||
+                              (item.href.length > 1 && router.pathname.startsWith(item.href))
                               ? 'bg-cyan-800 text-white'
                               : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
                             'group flex items-center px-2 py-2 text-base font-medium rounded-md'
                           )}
-                          aria-current={router.pathname === item.href ? 'page' : undefined}
+                          aria-current={
+                            router.pathname === item.href ||
+                            (item.href.length > 1 && router.pathname.startsWith(item.href))
+                              ? 'page'
+                              : undefined
+                          }
                         >
                           <item.icon
                             className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
@@ -182,11 +185,17 @@ export const Layout = ({ children }: LayoutProps) => {
                   >
                     <Link
                       href={item.href}
-                      aria-current={router.pathname === item.href ? 'page' : undefined}
+                      aria-current={
+                        router.pathname === item.href ||
+                        (item.href.length > 1 && router.pathname.startsWith(item.href))
+                          ? 'page'
+                          : undefined
+                      }
                     >
                       <a
                         className={classNames(
-                          router.pathname === item.href
+                          router.pathname === item.href ||
+                            (item.href.length > 1 && router.pathname.startsWith(item.href))
                             ? 'bg-cyan-800 text-white'
                             : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
                           item.disable ? 'pointer-events-none' : '',
@@ -225,14 +234,6 @@ export const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <Wallet />
-                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
-                </button>
-                <button
-                  type="button"
                   className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-6 w-6 relative">
@@ -248,6 +249,14 @@ export const Layout = ({ children }: LayoutProps) => {
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
                   </div>
                   <span>{ore}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
+                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <Wallet />
+                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
                 </button>
               </div>
             </div>
