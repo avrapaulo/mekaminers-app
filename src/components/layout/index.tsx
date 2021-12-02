@@ -243,9 +243,9 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
-                  className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="space-x-2 relative inline-flex items-center px-2 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  <div className="h-6 w-6 relative">
+                  <div className="h-8 w-8 relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
                   </div>
                   <span>{ore}</span>
@@ -261,7 +261,7 @@ export const Layout = ({ children }: LayoutProps) => {
               </div>
             </div>
           </div>
-          <main className="flex-1 pb-8">{children}</main>
+          {children}
         </div>
       </div>
     </>
