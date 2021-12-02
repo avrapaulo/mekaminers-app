@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
-import { walletAtom } from 'recoil/atoms'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
-import robotPackageAbi from 'contracts/RobotPackage.json'
+import { AbiItem } from 'web3-utils'
+import { walletAtom } from 'recoil/atoms'
+import { abi } from 'contracts/RobotPackage.json'
 
 const Homepage = () => {
   const wallet = useRecoilValue(walletAtom)
@@ -14,7 +15,7 @@ const Homepage = () => {
 
   const getPackagesOwner = async () => {
     const robotPackage = new web3.eth.Contract(
-      robotPackageAbi.abi,
+      abi as AbiItem[],
       process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
     )
     const tokens = await robotPackage.methods.tokenOfOwner(wallet).call()
@@ -26,7 +27,7 @@ const Homepage = () => {
 
   const BuyRobotPackage = async (packageType, amount) => {
     const options = {
-      abi: robotPackageAbi.abi,
+      abi,
       contractAddress: process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS,
       functionName: 'createPackage',
       msgValue: Moralis.Units.ETH(amount.toString()),
