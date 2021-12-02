@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
-import { Header } from 'components/junkyard'
+import { Header } from 'components/header'
 
 interface RobotsProps {
   id: number
@@ -11,7 +11,7 @@ interface RobotsProps {
 const Robots = ({ id, name }: RobotsProps) => {
   return (
     <>
-      <Header />
+      <Header type="junkyard" />
       <Link href="/junkyard/pre-sale">
         <a className="flex flex-row">
           <div className="w-6 h-6">

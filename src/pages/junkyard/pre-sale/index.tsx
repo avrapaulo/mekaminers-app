@@ -1,5 +1,3 @@
-import { Header, TopCard, Timer } from 'components/junkyard'
-import { Card } from 'components/pre-sale'
 import {
   AcademicCapIcon,
   BadgeCheckIcon,
@@ -9,6 +7,9 @@ import {
   UsersIcon,
   BriefcaseIcon
 } from '@heroicons/react/outline'
+import { TopCard, Timer } from 'components/junkyard'
+import { Header } from 'components/header'
+import { Card } from 'components/pre-sale'
 
 const robots = [
   {
@@ -60,7 +61,7 @@ const pieces = [
 
 const PreSale = () => (
   <>
-    <Header />
+    <Header type="junkyard" />
     <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
       <TopCard title="Available Pieces" description="0/1000">
         <BriefcaseIcon />

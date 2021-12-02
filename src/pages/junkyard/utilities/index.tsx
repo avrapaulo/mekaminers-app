@@ -1,8 +1,8 @@
-import { Header } from 'components/junkyard'
+import { Header } from 'components/header'
 
 const Utilities = () => (
   <>
-    <Header />
+    <Header type="junkyard" />
     <div>Utilities</div>
   </>
 )

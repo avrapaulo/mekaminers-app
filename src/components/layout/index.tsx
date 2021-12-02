@@ -25,7 +25,7 @@ const navigation = [
   { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
   { name: 'Junkyard', href: '/junkyard/pre-sale', icon: ShoppingCartIcon, disable: false },
   { name: 'Marketplace', href: '#', icon: LibraryIcon, disable: true },
-  { name: 'Inventory', href: '#', icon: BriefcaseIcon, disable: true }
+  { name: 'Inventory', href: '/inventory', icon: BriefcaseIcon, disable: false }
 ]
 
 const description =

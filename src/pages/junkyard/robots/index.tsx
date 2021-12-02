@@ -1,8 +1,8 @@
-import { Header } from 'components/junkyard'
+import { Header } from 'components/header'
 
 const Robots = () => (
   <>
-    <Header />
+    <Header type="junkyard" />
     <div>Robots</div>
   </>
 )
