@@ -62,8 +62,7 @@ export const Card = ({ total, price, title, href }: CardProps) => (
           <div className="relative w-5 h-5">
             <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
           </div>
-          <div>{price}</div>
-          <div> BNB</div>
+          <div>{price} BNB</div>
         </a>
       </Link>
     </div>

@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
 import { MoralisProvider } from 'react-moralis'
-import { Layout } from 'components/layout/index'
+import { Layout } from 'components/layout'
 import 'styles/index.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
