@@ -1,24 +1,23 @@
-import { classNames } from 'helpers/classNames'
+import Image from 'next/image'
 
 interface TopCardProps {
   title: string
   description: string
-  children: JSX.Element
+  img: 'warning' | 'wheel' | 'piece'
 }
 
-export const TopCard = ({ children, title, description }: TopCardProps) => (
-  <div className="flex filter drop-shadow rounded-md w-80 sm:w-56">
-    <div
-      className={classNames(
-        'flex-shrink-0 flex items-center justify-center w-16 p-4 text-sm font-medium rounded-l-md border-t border-l border-b hover:text-gray-600'
-      )}
-    >
-      {children}
+export const TopCard = ({ img, title, description }: TopCardProps) => (
+  <div className="relative flex justify-center items-center flex-col w-56">
+    <div className="absolute w-full h-full">
+      <Image src={`/card/bg/${img}.png`} layout="responsive" width="367" height="172" alt="Logo" />
     </div>
-    <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+    <div className="relative items-center justify-center w-6 h-6  mt-4">
+      <Image src={`/card/icon/${img}.png`} layout="fill" objectFit="contain" alt="Logo" />
+    </div>
+    <div className="flex-1 flex items-center justify-between">
       <div className="flex-1 px-4 py-2 text-sm truncate">
         <div className="text-gray-900 font-medium hover:text-gray-600">{title}</div>
-        <p className="text-gray-500">{description}</p>
+        <p className="text-gray-800 text-center font-bold">{description}</p>
       </div>
     </div>
   </div>

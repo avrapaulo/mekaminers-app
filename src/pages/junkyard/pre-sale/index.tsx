@@ -4,8 +4,7 @@ import {
   CashIcon,
   ClockIcon,
   ReceiptRefundIcon,
-  UsersIcon,
-  BriefcaseIcon
+  UsersIcon
 } from '@heroicons/react/outline'
 import { TopCard, Timer } from 'components/junkyard'
 import { Header } from 'components/header'
@@ -62,16 +61,10 @@ const pieces = [
 const PreSale = () => (
   <>
     <Header type="junkyard" />
-    <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
-      <TopCard title="Available Pieces" description="0/1000">
-        <BriefcaseIcon />
-      </TopCard>
-      <Timer title="Time Remaining">
-        <ClockIcon />
-      </Timer>
-      <TopCard title="Available Robots" description="0/1000">
-        <BriefcaseIcon />
-      </TopCard>
+    <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 space-x-1 md:space-x-4 px-1">
+      <TopCard title="Available Pieces" description="0/1000" img="piece" />
+      <Timer title="Time Remaining" />
+      <TopCard title="Available Robots" description="0/1000" img="wheel" />
     </div>
     <div className="text-5xl flex justify-center font-semibold py-6">Robots</div>
     <div className="mx-2 mt-2">

@@ -4,10 +4,9 @@ import { TopCard } from '.'
 
 interface TimerProps {
   title: string
-  children: JSX.Element
 }
 
-export const Timer = ({ title, children }: TimerProps) => {
+export const Timer = ({ title }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
 
   useEffect(() => {
@@ -16,9 +15,5 @@ export const Timer = ({ title, children }: TimerProps) => {
     }, 1000)
     return () => clearTimeout(timer)
   })
-  return (
-    <TopCard title={title} description={timeLeft}>
-      {children}
-    </TopCard>
-  )
+  return <TopCard img="warning" title={title} description={timeLeft} />
 }
