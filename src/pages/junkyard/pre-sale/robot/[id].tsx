@@ -16,7 +16,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   return (
     <>
       <Header type="junkyard" />
-      <Item id={id} units={units} items={items} price={price}>
+      <Item type="Robot" id={id} units={units} items={items} price={price}>
         <RobotItem classes={classes} bonus={classBonusRobots} />
       </Item>
     </>

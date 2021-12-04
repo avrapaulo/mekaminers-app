@@ -16,7 +16,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   return (
     <>
       <Header type="junkyard" />
-      <Item id={id} units={units} items={items} price={price}>
+      <Item type="Pieces" id={id} units={units} items={items} price={price}>
         <PiecesItem classes={classes} bonus={classBonusPieces} />
       </Item>
     </>

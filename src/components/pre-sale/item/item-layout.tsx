@@ -9,10 +9,11 @@ interface ItemProps {
   units: number
   price: number
   items: string[]
+  type: 'Robot' | 'Pieces'
   children: JSX.Element
 }
 
-export const Item = ({ id, units, items, price, children }: ItemProps) => {
+export const Item = ({ id, units, items, price, type, children }: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export const Item = ({ id, units, items, price, children }: ItemProps) => {
     }, 1000)
     return () => clearTimeout(timer)
   })
+
   return (
     <>
       <section className="relative" aria-labelledby="join-heading">
@@ -37,7 +39,7 @@ export const Item = ({ id, units, items, price, children }: ItemProps) => {
             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 10% 100%)' }}
             className="text-center font-semibold text-3xl bg-gray-600 pl-10 py-2 pr-10 rounded-tr-3xl rounded-tl-3xl"
           >
-            Package {id}
+            {type} Package {id}
           </div>
         </div>
       </section>
