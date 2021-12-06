@@ -45,7 +45,7 @@ export const PiecesItem = ({ classes, bonus }: RobotsProps) => (
             <div className="inset-0 flex items-center pt-1" aria-hidden="true">
               <div className="w-full border-t border-gray-400" />
             </div>
-            <div className="grid grid-cols-3 text-center ">
+            <div className="grid grid-cols-3 text-center">
               <div className="uppercase">{classType}</div>
               <div>{chance}%</div>
               <div>

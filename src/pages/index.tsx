@@ -8,11 +8,11 @@ import { abi } from 'contracts/RobotPackage.json'
 const Homepage = () => {
   const wallet = useRecoilValue(walletAtom)
   const { isAuthenticated, authenticate, logout, Moralis, enableWeb3, web3 } = useMoralis()
+
   const { fetch } = useWeb3ExecuteFunction()
   useEffect(() => {
     enableWeb3()
-  })
-
+  }, [enableWeb3])
   const getPackagesOwner = async () => {
     const robotPackage = new web3.eth.Contract(
       abi as AbiItem[],
