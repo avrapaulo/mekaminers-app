@@ -10,10 +10,11 @@ interface ItemProps {
   price: number
   items: string[]
   type: 'Robot' | 'Pieces'
+  onBuy: () => void
   children: JSX.Element
 }
 
-export const Item = ({ id, units, items, price, type, children }: ItemProps) => {
+export const Item = ({ id, units, items, price, type, onBuy, children }: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
 
   useEffect(() => {
@@ -74,6 +75,7 @@ export const Item = ({ id, units, items, price, type, children }: ItemProps) => 
                 }}
                 type="button"
                 className="uppercase space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => onBuy()}
               >
                 purchase
               </button>

@@ -1,8 +1,14 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { useMoralis } from 'react-moralis'
+import { AbiItem } from 'web3-utils'
+import { useRecoilValue } from 'recoil'
+import { walletAtom } from 'recoil/atoms'
 import { Header } from 'components/header'
 import { Item, PiecesItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/classBonus'
+import { abi } from 'contracts/PiecePackage.json'
+import { useEffect } from 'react'
 
 interface PiecesProps {
   id: number
@@ -13,10 +19,35 @@ interface PiecesProps {
 }
 
 const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
+  const wallet = useRecoilValue(walletAtom)
+  const { web3, Moralis, enableWeb3 } = useMoralis()
+
+  useEffect(() => {
+    enableWeb3()
+  }, [enableWeb3])
+
+  const buyPackage = async (id: number, amount: number) => {
+    const piecePackage = new web3.eth.Contract(
+      abi as AbiItem[],
+      process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
+    )
+
+    await piecePackage.methods
+      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+  }
+
   return (
     <>
       <Header type="junkyard" />
-      <Item type="Pieces" id={id} units={units} items={items} price={price}>
+      <Item
+        type="Pieces"
+        id={id}
+        units={units}
+        items={items}
+        price={price}
+        onBuy={() => buyPackage(id, price)}
+      >
         <PiecesItem classes={classes} bonus={classBonusPieces} />
       </Item>
     </>

@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { walletAtom } from 'recoil/atoms'
-import { abi } from 'contracts/RobotPackage.json'
+import { abi } from 'contracts/PiecePackage.json'
 
 const Homepage = () => {
   const wallet = useRecoilValue(walletAtom)
@@ -16,7 +16,7 @@ const Homepage = () => {
   const getPackagesOwner = async () => {
     const robotPackage = new web3.eth.Contract(
       abi as AbiItem[],
-      process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
+      process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
     )
     const tokens = await robotPackage.methods.tokenOfOwner(wallet).call()
 
