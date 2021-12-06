@@ -49,9 +49,8 @@ export const Item = ({ id, units, items, price, type, children }: ItemProps) => 
             <div className="relative w-72 h-56 mx-auto">
               <Image
                 alt="Logo Meka Miners"
-                height="1920"
-                width="1920"
-                layout="responsive"
+                layout="fill"
+                objectFit="contain"
                 src="/gif/boxLvl1.gif"
               />
             </div>
