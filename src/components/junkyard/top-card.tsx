@@ -9,10 +9,16 @@ interface TopCardProps {
 export const TopCard = ({ img, title, description }: TopCardProps) => (
   <div className="relative flex justify-center items-center flex-col w-56">
     <div className="absolute w-full h-full">
-      <Image src={`/card/bg/${img}.png`} layout="responsive" width="367" height="172" alt="Logo" />
+      <Image
+        src={`/card/bg/${img}.png`}
+        layout="responsive"
+        width="367"
+        height="172"
+        alt="Card Top"
+      />
     </div>
     <div className="relative items-center justify-center w-6 h-6  mt-4">
-      <Image src={`/card/icon/${img}.png`} layout="fill" objectFit="contain" alt="Logo" />
+      <Image src={`/card/icon/${img}.png`} layout="fill" objectFit="contain" alt="Icon" />
     </div>
     <div className="flex-1 flex items-center justify-between">
       <div className="flex-1 px-4 py-2 text-sm truncate">

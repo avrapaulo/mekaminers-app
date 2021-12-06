@@ -68,21 +68,21 @@ const PreSale = () => (
     </div>
     <div className="text-5xl flex justify-center font-semibold py-6">Robots</div>
     <div className="mx-2 mt-2">
-      <div className="sm:grid sm:grid-cols-3 sm:gap-x-5">
+      <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
         {robots.map(({ title, total, price, type }) => (
           <Card
             title={title}
             total={total}
             price={price}
-            key={type}
+            key={price}
             href={`pre-sale/robot/${type}`}
           />
         ))}
       </div>
     </div>
     <div className="text-5xl flex justify-center font-semibold py-6">Pieces</div>
-    <div className="mx-2 mt-2">
-      <div className="sm:grid sm:grid-cols-3 sm:gap-x-5">
+    <div className="mx-2 mt-2 mb-10">
+      <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
         {pieces.map(({ title, total, price, type }) => (
           <Card
             title={title}
