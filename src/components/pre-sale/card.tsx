@@ -3,12 +3,13 @@ import Link from 'next/link'
 
 interface CardProps {
   total: number
+  bought: number
   price: number
   title: string
   href: string
 }
 
-export const Card = ({ total, price, title, href }: CardProps) => (
+export const Card = ({ total, bought, price, title, href }: CardProps) => (
   <div className="relative w-80 md:w-60 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
     <div className="absolute w-full h-full -z-10">
       <Image src="/card-bg.png" layout="fill" objectFit="contain" alt="card pre sale" />
@@ -43,11 +44,11 @@ export const Card = ({ total, price, title, href }: CardProps) => (
       <div className="flex ml-2 md:ml-0 2xl:ml-4 items-center justify-between mr-2 xl:mr-2 2xl:mr-4">
         <div className="text-right">
           <span className="text-sm md:text-xs xl:text-lg font-extrabold inline-block">
-            {(total / total) * 100}% Sold
+            {Math.floor((bought / total) * 100)}% Sold
           </span>
         </div>
         <span className="text-sm md:text-xs xl:text-lg  font-extrabold inline-block">
-          {total}/{total}
+          {bought}/{total}
         </span>
       </div>
     </div>

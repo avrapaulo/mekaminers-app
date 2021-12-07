@@ -7,7 +7,7 @@ import { abi } from 'contracts/PiecePackage.json'
 
 const Homepage = () => {
   const wallet = useRecoilValue(walletAtom)
-  const { isAuthenticated, authenticate, logout, Moralis, enableWeb3, web3 } = useMoralis()
+  const { Moralis, enableWeb3, web3 } = useMoralis()
 
   const { fetch } = useWeb3ExecuteFunction()
   useEffect(() => {
@@ -23,32 +23,6 @@ const Homepage = () => {
     tokens.forEach(async element => {
       console.log(await robotPackage.methods.getPackage(element).call())
     })
-  }
-
-  const BuyRobotPackage = async (packageType, amount) => {
-    const options = {
-      abi,
-      contractAddress: process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS,
-      functionName: 'createPackage',
-      msgValue: Moralis.Units.ETH(amount.toString()),
-      params: {
-        _owner: wallet,
-        _amount: Moralis.Units.ETH(amount.toString()),
-        _packageType: packageType
-      }
-    }
-
-    await fetch({ params: options })
-    // await fetch('/api/packages/robot', {
-    //   body: JSON.stringify({
-    //     wallet,
-    //     signature
-    //   }),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   method: 'POST'
-    // })
   }
 
   return (
