@@ -227,7 +227,7 @@ export const Layout = ({ children }: LayoutProps) => {
         </div>
 
         <div className="lg:pl-64 flex flex-col flex-1">
-          <div className="relative z-10 flex-shrink-0 flex h-16 lg:border-none">
+          <div className="relative flex-shrink-0 flex h-16 lg:border-none">
             <button
               type="button"
               className="px-4 border-r border-b border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"

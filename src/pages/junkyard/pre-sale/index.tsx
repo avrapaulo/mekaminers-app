@@ -114,7 +114,7 @@ const PreSale = () => {
   return (
     <>
       <Header type="junkyard" />
-      <div className="bg-white -z-20 mx-10 rounded-2xl rounded-tl-none mb-10">
+      <div className="bg-white mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
           <TopCard title="Available Pieces" description={`${pieceCount}/625`} img="piece" />
           <Timer title="Time Remaining" />
