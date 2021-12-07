@@ -8,7 +8,6 @@ import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
-import { useEffect } from 'react'
 
 interface RobotsProps {
   id: number
@@ -20,11 +19,7 @@ interface RobotsProps {
 
 const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, enableWeb3 } = useMoralis()
-
-  useEffect(() => {
-    enableWeb3()
-  }, [enableWeb3])
+  const { web3, Moralis } = useMoralis()
 
   const buyPackage = async (id: number, amount: number) => {
     const robotPackage = new web3.eth.Contract(

@@ -18,7 +18,7 @@ import { piecePackageCount, robotPackageCount } from 'recoil/atoms'
 import { pieceCountSelector, robotCountSelector } from 'recoil/selector'
 
 const PreSale = () => {
-  const { enableWeb3, isWeb3Enabled } = useMoralis()
+  const { isWeb3Enabled } = useMoralis()
   const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
   const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
 
@@ -27,45 +27,35 @@ const PreSale = () => {
 
   const pieceCount = useRecoilValue(pieceCountSelector)
   const robotCount = useRecoilValue(robotCountSelector)
-  const getPiecePackages = () => {
-    pieceFetch({
-      onSuccess: (result: any) => {
-        setPiecePackageBought({
-          pack1: +result._firstPackageCount,
-          pack2: +result._secondPackageCount,
-          pack3: +result._thirdPackageCount
-        })
-      },
-      onError: errorResult => {
-        // console.log(data)
-      }
-    })
-  }
-  const getRobotPackages = () => {
-    robotFetch({
-      onSuccess: (result: any) => {
-        setRobotPackageBought({
-          pack1: +result._firstPackageCount,
-          pack2: +result._secondPackageCount,
-          pack3: +result._thirdPackageCount
-        })
-      },
-      onError: errorResult => {
-        // console.log(data)
-      }
-    })
-  }
+
   useEffect(() => {
-    enableWeb3({
-      onSuccess: () => {
-        getPiecePackages()
-        getRobotPackages()
-      },
-      onError: () => {
-        console.log('deu merda')
-      }
-    })
-  }, [enableWeb3])
+    if (isWeb3Enabled) {
+      pieceFetch({
+        onSuccess: (result: any) => {
+          setPiecePackageBought({
+            pack1: +result._firstPackageCount,
+            pack2: +result._secondPackageCount,
+            pack3: +result._thirdPackageCount
+          })
+        },
+        onError: errorResult => {
+          // console.log(data)
+        }
+      })
+      robotFetch({
+        onSuccess: (result: any) => {
+          setRobotPackageBought({
+            pack1: +result._firstPackageCount,
+            pack2: +result._secondPackageCount,
+            pack3: +result._thirdPackageCount
+          })
+        },
+        onError: errorResult => {
+          // console.log(data)
+        }
+      })
+    }
+  }, [isWeb3Enabled, pieceFetch, robotFetch, setRobotPackageBought, setPiecePackageBought])
 
   const robots = [
     {

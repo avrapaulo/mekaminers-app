@@ -37,12 +37,16 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { web3, user, isAuthenticated, authenticate } = useMoralis()
+  const { web3, user, isAuthenticated, authenticate, enableWeb3 } = useMoralis()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
+
+  useEffect(() => {
+    enableWeb3()
+  }, [enableWeb3])
 
   useEffect(() => {
     setWalletAddress(

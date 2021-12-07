@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
@@ -7,12 +6,9 @@ import { abi } from 'contracts/PiecePackage.json'
 
 const Homepage = () => {
   const wallet = useRecoilValue(walletAtom)
-  const { Moralis, enableWeb3, web3 } = useMoralis()
+  const { web3 } = useMoralis()
 
   const { fetch } = useWeb3ExecuteFunction()
-  useEffect(() => {
-    enableWeb3()
-  }, [enableWeb3])
 
   const getPackagesOwner = async () => {
     const robotPackage = new web3.eth.Contract(
