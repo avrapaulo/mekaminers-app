@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { classNames } from 'helpers/classNames'
+import { classNames } from 'helpers/class-names'
 
 const junkyardType = 'junkyard'
 const inventoryType = 'inventory'
@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const tabs = {
   [junkyardType]: [
-    { name: 'Pre Sale', href: '/junkyard/pre-sale' },
+    { name: 'PreSale', href: '/junkyard/pre-sale' },
     { name: 'Utilities', href: '/junkyard' },
     { name: 'Robots', href: '/junkyard/robots' },
     { name: 'Box', href: '/junkyard/box' }

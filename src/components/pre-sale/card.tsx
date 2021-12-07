@@ -10,12 +10,12 @@ interface CardProps {
 }
 
 export const Card = ({ total, bought, price, title, href }: CardProps) => (
-  <div className="relative w-80 md:w-60 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+  <div className="relative w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
     <div className="absolute w-full h-full -z-10">
-      <Image src="/card-bg.png" layout="fill" objectFit="contain" alt="card pre sale" />
+      <Image src="/card-bg.png" layout="fill" objectFit="contain" alt="card presale" />
     </div>
     <div className="p-5 flex flex-col place-content-between h-full">
-      <div className="pl-10 md:pl-5 xl:pl-10 flex justify-left font-extrabold text-3xl 2xl:text-4xl text-mariner-500">
+      <div className="pl-10 md:pl-5 xl:pl-10 flex justify-left font-extrabold text-3xl md:text-2xl 2xl:text-4xl text-mariner-500">
         {title}
       </div>
       <div className="relative mx-auto h-28 md:h-10 xl:h-28 2xl:h-32 w-28 md:w-10 xl:w-28 2xl:w-32 mt-2 2xl:mt-5">

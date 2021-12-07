@@ -6,7 +6,7 @@ import { walletAtom } from 'recoil/atoms'
 import { Header } from 'components/tab-header'
 import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
-import { classBonusRobots } from 'constants/classBonus'
+import { classBonusRobots } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
 import { useEffect } from 'react'
 

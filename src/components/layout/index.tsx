@@ -19,7 +19,7 @@ import {
 import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet/index'
 import { DisconnectModel } from 'components/modal'
-import { classNames } from 'helpers/classNames'
+import { classNames } from 'helpers/class-names'
 
 const navigation = [
   { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
