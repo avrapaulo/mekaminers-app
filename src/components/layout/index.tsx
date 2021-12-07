@@ -69,6 +69,9 @@ export const Layout = ({ children }: LayoutProps) => {
           cardType: 'summary_large_image'
         }}
       />
+      <div className="fixed h-screen w-screen -z-20">
+        <Image src="/bg-junkyard.png" layout="fill" objectFit="cover" alt="Banner" />
+      </div>
       <DisconnectModel />
       <div className="min-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -220,10 +223,10 @@ export const Layout = ({ children }: LayoutProps) => {
         </div>
 
         <div className="lg:pl-64 flex flex-col flex-1">
-          <div className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none">
+          <div className="relative z-10 flex-shrink-0 flex h-16 lg:border-none">
             <button
               type="button"
-              className="px-4 border-r border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"
+              className="px-4 border-r border-b border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -234,7 +237,8 @@ export const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  className="space-x-2 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
+                  className="space-x-1 relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-6 w-6 relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
@@ -243,7 +247,8 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
-                  className="space-x-2 relative inline-flex items-center px-2 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
+                  className="space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-8 w-8 relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
@@ -252,8 +257,9 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
+                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
                   onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="space-x-1 relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <Wallet />
                   <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>

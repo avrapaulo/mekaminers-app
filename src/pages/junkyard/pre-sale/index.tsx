@@ -7,8 +7,9 @@ import {
   ReceiptRefundIcon,
   UsersIcon
 } from '@heroicons/react/outline'
+import Image from 'next/image'
 import { TopCard, Timer } from 'components/junkyard'
-import { Header } from 'components/header'
+import { Header } from 'components/tab-header'
 import { Card } from 'components/pre-sale'
 import { useMoralis, useWeb3ExecuteFunction, useWeb3Contract } from 'react-moralis'
 import { abi as pieceAbi } from 'contracts/PiecePackage.json'
@@ -148,39 +149,55 @@ const PreSale = () => {
   return (
     <>
       <Header type="junkyard" />
-      <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 space-x-1 md:space-x-4 px-1">
-        <TopCard title="Available Pieces" description={`${pieceCount}/625`} img="piece" />
-        <Timer title="Time Remaining" />
-        <TopCard title="Available Robots" description={`${robotCount}/510`} img="wheel" />
-      </div>
-      <div className="text-5xl flex justify-center font-semibold py-6">Robots</div>
-      <div className="mx-2 mt-2">
-        <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
-          {robots.map(({ title, bought, total, price, type }) => (
-            <Card
-              title={title}
-              bought={bought}
-              total={total}
-              price={price}
-              key={price}
-              href={`pre-sale/robot/${type}`}
-            />
-          ))}
+      <div className="bg-white -z-20 mx-10 rounded-2xl rounded-tl-none mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
+          <TopCard title="Available Pieces" description="0/1000" img="piece" />
+          <Timer title="Time Remaining" />
+          <TopCard title="Available Robots" description="0/1000" img="wheel" />
         </div>
-      </div>
-      <div className="text-5xl flex justify-center font-semibold py-6">Pieces</div>
-      <div className="mx-2 mt-2 mb-10">
-        <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
-          {pieces.map(({ title, bought, total, price, type }) => (
-            <Card
-              title={title}
-              bought={bought}
-              total={total}
-              price={price}
-              key={type}
-              href={`pre-sale/piece/${type}`}
-            />
-          ))}
+        <div className="py-6 font-tech">
+          <div className="text-lg sm:text-3xl xl:text-5xl flex justify-center font-semibold relative mx-10">
+            <div className="absolute h-full w-full">
+              <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
+            </div>
+            <div className="py-2">Robots</div>
+          </div>
+        </div>
+        <div className="mx-2 mt-2">
+          <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
+            {robots.map(({ title, total, bought, price, type }) => (
+              <Card
+                title={title}
+                bought={bought}
+                total={total}
+                price={price}
+                key={price}
+                href={`pre-sale/robot/${type}`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="py-6 font-tech">
+          <div className="text-lg sm:text-3xl xl:text-5xl flex justify-center font-semibold relative mx-10">
+            <div className="absolute h-full w-full">
+              <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
+            </div>
+            <div className="py-2">Pieces</div>
+          </div>
+        </div>
+        <div className="mx-2 mt-2 mb-10">
+          <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
+            {pieces.map(({ title, total, bought, price, type }) => (
+              <Card
+                title={title}
+                bought={bought}
+                total={total}
+                price={price}
+                key={type}
+                href={`pre-sale/piece/${type}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>

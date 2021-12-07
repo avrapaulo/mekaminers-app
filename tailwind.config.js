@@ -8,9 +8,11 @@ module.exports = {
     extend: {
       fontFamily: {
         // sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
+        tech: ['Origin Tech']
       },
       zIndex: {
-        '-10': '-10'
+        '-10': '-10',
+        '-20': '-20'
       },
       colors: {
         cyan: colors.cyan,
