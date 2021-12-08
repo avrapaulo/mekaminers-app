@@ -22,10 +22,22 @@ import { DisconnectModel } from 'components/modal'
 import { classNames } from 'helpers/class-names'
 
 const navigation = [
-  { name: 'Activity', href: '/', icon: TrendingUpIcon, disable: false },
-  { name: 'Junkyard', href: '/junkyard/pre-sale', icon: ShoppingCartIcon, disable: false },
-  { name: 'Marketplace', href: '#', icon: LibraryIcon, disable: true },
-  { name: 'Inventory', href: '/inventory', icon: BriefcaseIcon, disable: false }
+  { name: 'Activity', defaultHref: '/', href: '/', icon: TrendingUpIcon, disable: false },
+  {
+    name: 'Junkyard',
+    defaultHref: '/junkyard',
+    href: '/junkyard/pre-sale',
+    icon: ShoppingCartIcon,
+    disable: false
+  },
+  { name: 'Marketplace', defaultHref: '#', href: '#', icon: LibraryIcon, disable: true },
+  {
+    name: 'Inventory',
+    defaultHref: '/inventory',
+    href: '/inventory',
+    icon: BriefcaseIcon,
+    disable: false
+  }
 ]
 
 const description =
@@ -54,6 +66,8 @@ export const Layout = ({ children }: LayoutProps) => {
     )
   }, [web3, setWalletAddress, user])
 
+  console.log(router.pathname)
+
   return (
     <>
       <NextSeo
@@ -79,7 +93,11 @@ export const Layout = ({ children }: LayoutProps) => {
       <DisconnectModel />
       <div className="min-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setSidebarOpen}>
+          <Dialog
+            as="div"
+            className="fixed inset-0 flex z-40 lg:hidden w-48"
+            onClose={setSidebarOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -89,7 +107,7 @@ export const Layout = ({ children }: LayoutProps) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+              <Dialog.Overlay className="fixed inset-0 bg-gray-200 bg-opacity-75" />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -100,7 +118,7 @@ export const Layout = ({ children }: LayoutProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-cyan-700">
+              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-400 bg-opacity-75">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -121,45 +139,50 @@ export const Layout = ({ children }: LayoutProps) => {
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="flex-shrink-0 flex items-center px-4">
-                  <div className="h-20 w-full relative">
+                <div className="flex items-center flex-shrink-0 px-4">
+                  <div className="h-28 w-full relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/logo.png" />
                   </div>
                 </div>
-                <nav
-                  className="mt-5 flex-shrink-0 h-full divide-y divide-cyan-800 overflow-y-auto"
-                  aria-label="Sidebar"
-                >
-                  <div className="px-2 space-y-1">
-                    {navigation.map(item => (
-                      <Link key={item.name} href={item.href}>
+                <nav className="mt-5 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
+                  {navigation.map(item => (
+                    <div
+                      key={item.name}
+                      className={classNames(item.disable ? 'cursor-not-allowed' : '', '')}
+                    >
+                      <Link
+                        href={item.href}
+                        aria-current={
+                          router.pathname === item.href ||
+                          (item.href.length > 1 && router.pathname.startsWith(item.href))
+                            ? 'page'
+                            : undefined
+                        }
+                      >
                         <a
                           className={classNames(
-                            router.pathname === item.href ||
-                              (item.href.length > 1 && router.pathname.startsWith(item.href))
-                              ? 'bg-cyan-800 text-white'
-                              : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
-                            'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                            item.disable ? 'pointer-events-none' : '',
+                            'group flex items-center px-2 py-2 text-sm leading-6 font-medium relative'
                           )}
-                          aria-current={
-                            router.pathname === item.href ||
-                            (item.href.length > 1 && router.pathname.startsWith(item.href))
-                              ? 'page'
-                              : undefined
-                          }
                         >
-                          <item.icon
-                            className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
-                            aria-hidden="true"
-                          />
-                          {item.name}
+                          <div className="h-12 w-48 relative flex items-center">
+                            {(router.pathname === item.defaultHref ||
+                              (item.defaultHref.length > 1 &&
+                                router.pathname.startsWith(item.defaultHref))) && (
+                              <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                            )}
+                            <div className="bg-white rounded-full p-1 absolute right-0.5 transform -translate-x-6 bottom-1">
+                              <item.icon
+                                className="flex-shrink-0 h-8 w-8 text-black"
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className="relative pl-6">{item.name}</div>
+                          </div>
                         </a>
                       </Link>
-                    ))}
-                  </div>
-                  <div className="mt-6 pt-6">
-                    <div className="px-2 space-y-1"></div>
-                  </div>
+                    </div>
+                  ))}
                 </nav>
               </div>
             </Transition.Child>
@@ -169,26 +192,20 @@ export const Layout = ({ children }: LayoutProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
+        <div className="hidden lg:flex lg:w-48 lg:flex-col lg:fixed lg:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex flex-col flex-grow bg-cyan-700 pt-5 pb-4 overflow-y-auto">
+          <div className="flex flex-col flex-grow bg-gray-400 bg-opacity-75 pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
-              <div className="h-20 w-full relative">
+              <div className="h-28 w-full relative">
                 <Image alt="Logo" layout="fill" objectFit="contain" src="/logo.png" />
               </div>
             </div>
-            <nav
-              className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto"
-              aria-label="Sidebar"
-            >
-              <div className="px-2 space-y-1">
+            <nav className="mt-5 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
+              <div className="">
                 {navigation.map(item => (
                   <div
                     key={item.name}
-                    className={classNames(
-                      item.disable ? 'cursor-not-allowed' : '',
-                      'px-2 space-y-1'
-                    )}
+                    className={classNames(item.disable ? 'cursor-not-allowed' : '', '')}
                   >
                     <Link
                       href={item.href}
@@ -203,34 +220,40 @@ export const Layout = ({ children }: LayoutProps) => {
                         className={classNames(
                           router.pathname === item.href ||
                             (item.href.length > 1 && router.pathname.startsWith(item.href))
-                            ? 'bg-cyan-800 text-white'
-                            : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
+                            ? 'text-white'
+                            : '',
                           item.disable ? 'pointer-events-none' : '',
-                          'group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md'
+                          'group flex items-center px-2 py-2 text-sm leading-6 font-medium relative'
                         )}
                       >
-                        <item.icon
-                          className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
-                          aria-hidden="true"
-                        />
-                        {item.name}
+                        <div className="h-12 w-48 relative flex items-center">
+                          {(router.pathname === item.defaultHref ||
+                            (item.defaultHref.length > 1 &&
+                              router.pathname.startsWith(item.defaultHref))) && (
+                            <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                          )}
+                          <div className="bg-white rounded-full p-1 absolute right-0.5 transform -translate-x-6 bottom-1">
+                            <item.icon
+                              className="flex-shrink-0 h-8 w-8 text-black"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          <div className="relative pl-6">{item.name}</div>
+                        </div>
                       </a>
                     </Link>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 pt-6">
-                <div className="px-2 space-y-1"></div>
-              </div>
             </nav>
           </div>
         </div>
 
-        <div className="lg:pl-64 flex flex-col flex-1">
+        <div className="lg:pl-48 flex flex-col flex-1">
           <div className="relative flex-shrink-0 flex h-16 lg:border-none">
             <button
               type="button"
-              className="px-4 border-r border-b border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
+              className="px-4 bg-mariner-500 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>

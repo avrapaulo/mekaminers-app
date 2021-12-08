@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const tabs = {
   [junkyardType]: [
-    { name: 'PreSale', href: '/junkyard/pre-sale' },
+    { name: 'Presale', href: '/junkyard/pre-sale' },
     { name: 'Utilities', href: '/junkyard' },
     { name: 'Robots', href: '/junkyard/robots' },
     { name: 'Box', href: '/junkyard/box' }
