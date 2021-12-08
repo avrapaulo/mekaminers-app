@@ -59,7 +59,7 @@ const PreSale = () => {
 
   const robots = [
     {
-      type: 1,
+      id: 1,
       title: 'Package 1',
       bought: robotPackageBought.pack1,
       total: 300,
@@ -67,7 +67,7 @@ const PreSale = () => {
       price: 0.2
     },
     {
-      type: 2,
+      id: 2,
       title: 'Package 2',
       bought: robotPackageBought.pack2,
       total: 120,
@@ -75,7 +75,7 @@ const PreSale = () => {
       price: 0.5
     },
     {
-      type: 3,
+      id: 3,
       title: 'Package 3',
       bought: robotPackageBought.pack3,
       total: 50,
@@ -86,7 +86,7 @@ const PreSale = () => {
 
   const pieces = [
     {
-      type: 1,
+      id: 1,
       title: 'Package 1',
       bought: piecePackageBought.pack1,
       total: 340,
@@ -94,7 +94,7 @@ const PreSale = () => {
       price: 0.2
     },
     {
-      type: 2,
+      id: 2,
       title: 'Package 2',
       bought: piecePackageBought.pack2,
       total: 175,
@@ -102,7 +102,7 @@ const PreSale = () => {
       price: 0.5
     },
     {
-      type: 3,
+      id: 3,
       title: 'Package 3',
       bought: piecePackageBought.pack3,
       total: 75,
@@ -130,14 +130,16 @@ const PreSale = () => {
         </div>
         <div className="mx-2 mt-2">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
-            {robots.map(({ title, total, bought, price, type }) => (
+            {robots.map(({ title, total, bought, price, id }) => (
               <Card
+                type="robot"
+                id={id}
                 title={title}
                 bought={bought}
                 total={total}
                 price={price}
-                key={price}
-                href={`pre-sale/robot/${type}`}
+                key={id}
+                href={`pre-sale/robot/${id}`}
               />
             ))}
           </div>
@@ -152,14 +154,16 @@ const PreSale = () => {
         </div>
         <div className="mx-2 mt-2 mb-10">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
-            {pieces.map(({ title, total, bought, price, type }) => (
+            {pieces.map(({ title, total, bought, price, id }) => (
               <Card
+                type="piece"
+                id={id}
                 title={title}
                 bought={bought}
                 total={total}
                 price={price}
-                key={type}
-                href={`pre-sale/piece/${type}`}
+                key={id}
+                href={`pre-sale/piece/${id}`}
               />
             ))}
           </div>
