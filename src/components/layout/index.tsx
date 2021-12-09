@@ -22,21 +22,37 @@ import { DisconnectModel } from 'components/modal'
 import { classNames } from 'helpers/class-names'
 
 const navigation = [
-  { name: 'Activity', defaultHref: '/', href: '/', icon: TrendingUpIcon, disable: false },
+  {
+    name: 'Activity',
+    defaultHref: '/',
+    href: '/',
+    icon: TrendingUpIcon,
+    disable: false,
+    layoutBig: false
+  },
   {
     name: 'Junkyard',
     defaultHref: '/junkyard',
     href: '/junkyard/pre-sale',
     icon: ShoppingCartIcon,
-    disable: false
+    disable: false,
+    layoutBig: false
   },
-  { name: 'Marketplace', defaultHref: '#', href: '#', icon: LibraryIcon, disable: true },
+  {
+    name: 'Marketplace',
+    defaultHref: '/junkyard',
+    href: '/junkyard',
+    icon: LibraryIcon,
+    disable: true,
+    layoutBig: true
+  },
   {
     name: 'Inventory',
     defaultHref: '/inventory',
     href: '/inventory',
     icon: BriefcaseIcon,
-    disable: false
+    disable: false,
+    layoutBig: false
   }
 ]
 
@@ -171,7 +187,7 @@ export const Layout = ({ children }: LayoutProps) => {
                                 router.pathname.startsWith(item.defaultHref))) && (
                               <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
                             )}
-                            <div className="bg-white rounded-full p-1 absolute right-0.5 transform -translate-x-6 bottom-1">
+                            <div className="bg-white rounded-full p-1 absolute right-px transform -translate-x-6 bottom-1">
                               <item.icon
                                 className="flex-shrink-0 h-8 w-8 text-black"
                                 aria-hidden="true"
@@ -192,20 +208,27 @@ export const Layout = ({ children }: LayoutProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className="hidden lg:flex lg:w-48 lg:flex-col lg:fixed lg:inset-y-0">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex flex-col flex-grow bg-gray-400 bg-opacity-75 pt-5 pb-4 overflow-y-auto">
-            <div className="flex items-center flex-shrink-0 px-4">
-              <div className="h-28 w-full relative">
+        <div className="flex flex-col flex-1">
+          <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none">
+            <button
+              type="button"
+              className="px-4 bg-mariner-500 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <span className="sr-only">Open sidebar</span>
+              <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
+
+            <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-8 items-center text-white">
+              <div className="hidden h-28 w-28 lg:block relative">
                 <Image alt="Logo" layout="fill" objectFit="contain" src="/logo.png" />
               </div>
-            </div>
-            <nav className="mt-5 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
-              <div className="">
+              <div className="flex-1 flex lg:hidden"></div>
+              <nav className="hidden lg:flex flex-row space-x-3" aria-label="Sidebar">
                 {navigation.map(item => (
                   <div
                     key={item.name}
-                    className={classNames(item.disable ? 'cursor-not-allowed' : '', '')}
+                    className={classNames(item.disable ? 'cursor-not-allowed' : '', 'xl:p-2.5')}
                   >
                     <Link
                       href={item.href}
@@ -218,49 +241,38 @@ export const Layout = ({ children }: LayoutProps) => {
                     >
                       <a
                         className={classNames(
-                          router.pathname === item.href ||
-                            (item.href.length > 1 && router.pathname.startsWith(item.href))
-                            ? 'text-white'
-                            : '',
                           item.disable ? 'pointer-events-none' : '',
-                          'group flex items-center px-2 py-2 text-sm leading-6 font-medium relative'
+                          item.layoutBig
+                            ? 'h-11 xl:h-16 w-36 xl:w-48'
+                            : 'h-11 xl:h-16 w-28 xl:w-40',
+                          'group flex items-center px-2 py-2 text-sm leading-6 font-medium relative',
+                          'relative flex items-center'
                         )}
                       >
-                        <div className="h-12 w-48 relative flex items-center">
-                          {(router.pathname === item.defaultHref ||
-                            (item.defaultHref.length > 1 &&
-                              router.pathname.startsWith(item.defaultHref))) && (
-                            <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                        {(router.pathname === item.defaultHref ||
+                          (item.defaultHref.length > 1 &&
+                            router.pathname.startsWith(item.defaultHref))) && (
+                          <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                        )}
+                        <div className="relative xl:text-xl pl-0.5 xl:pl-1">{item.name}</div>
+                        <div
+                          className={classNames(
+                            item.layoutBig
+                              ? '-translate-x-3.5'
+                              : '-translate-x-1 xl:-translate-x-2',
+                            'bg-white rounded-full p-1 absolute right-1.5 transform'
                           )}
-                          <div className="bg-white rounded-full p-1 absolute right-0.5 transform -translate-x-6 bottom-1">
-                            <item.icon
-                              className="flex-shrink-0 h-8 w-8 text-black"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          <div className="relative pl-6">{item.name}</div>
+                        >
+                          <item.icon
+                            className="flex-shrink-0 h-5 xl:h-8 w-5 xl:w-8 text-black"
+                            aria-hidden="true"
+                          />
                         </div>
                       </a>
                     </Link>
                   </div>
                 ))}
-              </div>
-            </nav>
-          </div>
-        </div>
-
-        <div className="lg:pl-48 flex flex-col flex-1">
-          <div className="relative flex-shrink-0 flex h-16 lg:border-none">
-            <button
-              type="button"
-              className="px-4 bg-mariner-500 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
-            <div className="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-              <div className="flex-1 flex"></div>
+              </nav>
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
@@ -286,7 +298,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   type="button"
                   style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
                   onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="space-x-1 relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <Wallet />
                   <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
