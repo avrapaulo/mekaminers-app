@@ -40,8 +40,8 @@ const navigation = [
   },
   {
     name: 'Marketplace',
-    defaultHref: '/junkyard',
-    href: '/junkyard',
+    defaultHref: '/marketplace',
+    href: '/marketplace',
     icon: LibraryIcon,
     disable: true,
     layoutBig: true
@@ -276,7 +276,9 @@ export const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
+                  style={{
+                    background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                  }}
                   className="space-x-1 relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-6 w-6 relative">
@@ -286,7 +288,9 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
-                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
+                  style={{
+                    background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                  }}
                   className="space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <div className="h-8 w-8 relative">
@@ -296,7 +300,9 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
-                  style={{ background: 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)' }}
+                  style={{
+                    background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                  }}
                   onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
                   className="space-x-1 relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >

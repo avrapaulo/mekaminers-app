@@ -125,7 +125,7 @@ const PreSale = () => {
             <div className="absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2">Robots</div>
+            <div className="py-2 text-blue-zodiac-500">Robots</div>
           </div>
         </div>
         <div className="mx-2 mt-2">
@@ -149,7 +149,7 @@ const PreSale = () => {
             <div className="absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2">Pieces</div>
+            <div className="py-2 text-blue-zodiac-500">Pieces</div>
           </div>
         </div>
         <div className="mx-2 mt-2 mb-10">

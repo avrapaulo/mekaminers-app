@@ -40,8 +40,8 @@ export const Header = ({ type }: HeaderProps) => {
                   background:
                     router.pathname === tab.href ||
                     (tab.href !== tabs[type][1].href && router.pathname.startsWith(tab.href))
-                      ? 'linear-gradient(135deg, #86D3FF 0.01%, #1F1BFF 100.01%)'
-                      : 'linear-gradient(135deg, #fdd318 0.01%, #fac92a 100.01%)'
+                      ? 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                      : 'linear-gradient(142.02deg, #fdd318 -0.22%, #fac92a 100.22%)'
                 }}
                 onClick={() => router.push(tab.href)}
                 type="button"
