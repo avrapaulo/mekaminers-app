@@ -8,6 +8,7 @@ import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
 import { useEffect } from 'react'
+import { usePackagePiece } from 'hooks'
 
 interface PiecesProps {
   id: number
@@ -16,43 +17,6 @@ interface PiecesProps {
   items: string[]
   classes: ClassProps[]
 }
-
-const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
-  const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, enableWeb3 } = useMoralis()
-
-  useEffect(() => {
-    enableWeb3()
-  }, [enableWeb3])
-
-  const buyPackage = async (id: number, amount: number) => {
-    const piecePackage = new web3.eth.Contract(
-      abi as AbiItem[],
-      process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
-    )
-
-    await piecePackage.methods
-      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
-      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
-  }
-
-  return (
-    <>
-      <Item
-        type="Pieces"
-        id={id}
-        units={units}
-        items={items}
-        price={price}
-        onBuy={() => buyPackage(id, price)}
-      >
-        <PiecesItem classes={classes} bonus={classBonusPieces} />
-      </Item>
-    </>
-  )
-}
-
-export default Pieces
 
 const pieces = [
   {
@@ -98,6 +62,55 @@ const pieces = [
     items: ['6 Random NFT Piece from B to S']
   }
 ]
+
+const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
+  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
+  const wallet = useRecoilValue(walletAtom)
+  const { web3, Moralis, enableWeb3 } = useMoralis()
+
+  useEffect(() => {
+    enableWeb3()
+  }, [enableWeb3])
+
+  const buyPackage = async (id: number, amount: number) => {
+    pieceFetch({
+      onSuccess: (result: any) => {
+        if (
+          (id === 1 && result._firstPackageCount === 3) ||
+          (id === 2 && result._secondPackageCount === 0) ||
+          (id === 3 && result._thirdPackageCount === 2)
+        ) {
+          alert('sold out')
+        }
+      }
+    })
+    const piecePackage = new web3.eth.Contract(
+      abi as AbiItem[],
+      process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
+    )
+
+    await piecePackage.methods
+      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+  }
+
+  return (
+    <>
+      <Item
+        type="Pieces"
+        id={id}
+        units={units}
+        items={items}
+        price={price}
+        onBuy={() => buyPackage(id, price)}
+      >
+        <PiecesItem classes={classes} bonus={classBonusPieces} />
+      </Item>
+    </>
+  )
+}
+
+export default Pieces
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = pieces.map(({ id }) => ({ params: { id: id.toString() } }))
