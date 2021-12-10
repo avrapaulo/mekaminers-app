@@ -70,7 +70,7 @@ export const Item = ({ id, units, items, price, packageBought, onBuy, children }
             </div>
             <button
               type="button"
-              className="uppercase mt-2 absolute inline-flex items-center text-3xl font-bold text-white"
+              className="uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
               onClick={() => onBuy()}
             >
               Buy Now

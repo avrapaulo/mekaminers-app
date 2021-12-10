@@ -82,8 +82,6 @@ export const Layout = ({ children }: LayoutProps) => {
     )
   }, [web3, setWalletAddress, user])
 
-  console.log(router.pathname)
-
   return (
     <>
       <NextSeo

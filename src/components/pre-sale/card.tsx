@@ -45,7 +45,7 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
       <Link href={href}>
         <a
           type="button"
-          className="flex justify-center items-center uppercase mt-2 absolute text-3xl font-bold text-white space-x-1"
+          className="flex justify-center items-center uppercase mt-2 absolute text-3xl font-bold text-white space-x-1 w-64 h-20"
         >
           <div className="relative w-7 h-7 mr-1">
             <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
