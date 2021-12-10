@@ -13,7 +13,7 @@ interface CardProps {
 
 export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
   <div>
-    <div className="relative w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+    <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
       <div className="absolute w-full h-full ">
         <Image src={`/card-bg-${type}.png`} layout="fill" objectFit="contain" alt="card presale" />
       </div>

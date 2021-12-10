@@ -124,11 +124,11 @@ const PreSale = () => {
           <TopCard title="Available Robots" description={`${robotCount}/510`} img="wheel" />
         </div>
         <div className="py-6 font-tech">
-          <div className="text-lg sm:text-3xl xl:text-5xl flex justify-center font-semibold relative mx-10">
-            <div className="absolute h-full w-full">
+          <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">
+            <div className="hidden sm:block absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2 text-mariner-50">Robots</div>
+            <div className="sm:py-2 text-mariner-50">Robots</div>
           </div>
         </div>
         <div className="mx-2 mt-2">
@@ -148,11 +148,11 @@ const PreSale = () => {
           </div>
         </div>
         <div className="py-6 font-tech">
-          <div className="text-lg sm:text-3xl xl:text-5xl flex justify-center font-semibold relative mx-10">
-            <div className="absolute h-full w-full">
+          <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">
+            <div className="hidden sm:block absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2 text-mariner-50">Pieces</div>
+            <div className="sm:py-2 text-mariner-50">Pieces</div>
           </div>
         </div>
         <div className="mx-2 mt-2 mb-10">

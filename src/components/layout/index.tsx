@@ -120,7 +120,7 @@ export const Layout = ({ children }: LayoutProps) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-200 bg-opacity-75" />
+              <Dialog.Overlay className="fixed inset-0 bg-opacity-75" />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -196,6 +196,30 @@ export const Layout = ({ children }: LayoutProps) => {
                       </Link>
                     </div>
                   ))}
+                  <button
+                    type="button"
+                    style={{
+                      background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                    }}
+                    className="mt-16 mx-6 my-1 inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                  >
+                    <div className="h-6 w-6 relative">
+                      <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
+                    </div>
+                    <span>{meka}</span>
+                  </button>
+                  <button
+                    type="button"
+                    style={{
+                      background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
+                    }}
+                    className="mx-6 my-1 space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                  >
+                    <div className="h-8 w-8 relative">
+                      <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
+                    </div>
+                    <span>{ore}</span>
+                  </button>
                 </nav>
               </div>
             </Transition.Child>
@@ -216,16 +240,16 @@ export const Layout = ({ children }: LayoutProps) => {
               <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
             </button>
 
-            <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-8 items-center text-white">
+            <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-2 xl:px-8 items-center text-white">
               <div className="hidden h-28 w-28 lg:block relative">
                 <Image alt="Logo" layout="fill" objectFit="contain" src="/logo-top.png" />
               </div>
               <div className="flex-1 flex lg:hidden"></div>
-              <nav className="hidden lg:flex flex-row space-x-3" aria-label="Sidebar">
+              <nav className="hidden lg:flex flex-row space-x-1" aria-label="Sidebar">
                 {navigation.map(item => (
                   <div
                     key={item.name}
-                    className={classNames(item.disable ? 'cursor-not-allowed' : '', 'xl:p-2.5')}
+                    className={classNames(item.disable ? 'cursor-not-allowed' : '', '2xl:p-2.5')}
                   >
                     <Link
                       href={item.href}
@@ -239,11 +263,9 @@ export const Layout = ({ children }: LayoutProps) => {
                       <a
                         className={classNames(
                           item.disable ? 'pointer-events-none' : '',
-                          item.layoutBig
-                            ? 'h-11 xl:h-16 w-36 xl:w-48'
-                            : 'h-11 xl:h-16 w-28 xl:w-40',
+                          item.layoutBig ? 'w-36 xl:w-48' : 'w-28 xl:w-40',
                           'group flex items-center px-2 py-2 text-sm leading-6 font-medium relative',
-                          'relative flex items-center'
+                          'relative flex items-center h-11 xl:h-16'
                         )}
                       >
                         {(router.pathname === item.defaultHref ||
@@ -276,7 +298,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   style={{
                     background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
                   }}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-24 hidden sm:inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
                   <div className="h-6 w-6 relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
@@ -288,7 +310,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   style={{
                     background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
                   }}
-                  className="space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-24 space-x-2 relative hidden sm:inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
                   <div className="h-8 w-8 relative">
                     <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
@@ -301,10 +323,14 @@ export const Layout = ({ children }: LayoutProps) => {
                     background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
                   }}
                   onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
-                  className="space-x-1 relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="flex-nowrap space-x-1 relative inline-flex items-center px-4 py-2 lg:py-2.5 xl:py-2 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
-                  <Wallet />
-                  <span>{isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}</span>
+                  <div className="lg:hidden xl:block">
+                    <Wallet />
+                  </div>
+                  <span className="truncate overflow-hidden">
+                    {isAuthenticated ? getEllipsisTxt(walletAddress) : 'Connect Wallet'}
+                  </span>
                 </button>
               </div>
             </div>
