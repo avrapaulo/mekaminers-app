@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
@@ -7,7 +8,7 @@ import { Item, PiecesItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
-import { useEffect } from 'react'
+import { usePackagePiece } from 'hooks'
 
 interface PiecesProps {
   id: number
@@ -19,11 +20,26 @@ interface PiecesProps {
 
 const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, enableWeb3 } = useMoralis()
+  const { web3, Moralis, isWeb3Enabled } = useMoralis()
+  const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
+  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
   useEffect(() => {
-    enableWeb3()
-  }, [enableWeb3])
+    if (isWeb3Enabled) {
+      pieceFetch({
+        onSuccess: (result: any) => {
+          setPiecePackageBought({
+            pack1: +result._firstPackageCount,
+            pack2: +result._secondPackageCount,
+            pack3: +result._thirdPackageCount
+          })
+        },
+        onError: errorResult => {
+          // console.log(data)
+        }
+      })
+    }
+  }, [isWeb3Enabled, pieceFetch, setPiecePackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
     const piecePackage = new web3.eth.Contract(
@@ -44,6 +60,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
         units={units}
         items={items}
         price={price}
+        packageBought={piecePackageBought[`pack${id}`]}
         onBuy={() => buyPackage(id, price)}
       >
         <PiecesItem classes={classes} bonus={classBonusPieces} />

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useMoralis } from 'react-moralis'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePackagePiece } from 'hooks'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { getTimeRemaining } from 'helpers/timer'
 
@@ -10,17 +8,15 @@ interface ItemProps {
   id: number
   units: number
   price: number
+  packageBought: number
   items: string[]
   type: 'Robot' | 'Pieces'
   onBuy: () => void
   children: JSX.Element
 }
 
-export const Item = ({ id, units, items, price, type, onBuy, children }: ItemProps) => {
-  const { isWeb3Enabled } = useMoralis()
+export const Item = ({ id, units, items, price, packageBought, onBuy, children }: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
-  const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
-  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,23 +24,6 @@ export const Item = ({ id, units, items, price, type, onBuy, children }: ItemPro
     }, 1000)
     return () => clearTimeout(timer)
   }, [])
-
-  useEffect(() => {
-    if (isWeb3Enabled) {
-      pieceFetch({
-        onSuccess: (result: any) => {
-          setPiecePackageBought({
-            pack1: +result._firstPackageCount,
-            pack2: +result._secondPackageCount,
-            pack3: +result._thirdPackageCount
-          })
-        },
-        onError: errorResult => {
-          // console.log(data)
-        }
-      })
-    }
-  }, [isWeb3Enabled, pieceFetch, setPiecePackageBought])
 
   return (
     <section className="relative h-full" aria-labelledby="join-heading">
@@ -77,7 +56,7 @@ export const Item = ({ id, units, items, price, type, onBuy, children }: ItemPro
           <div className="text-white font-medium text-xs flex justify-center space-x-10 mx-5 my-5">
             <div>Remaining time: {timeLeft}</div>
             <div>
-              {piecePackageBought[`pack${id}`]}/{units}
+              {packageBought}/{units}
             </div>
           </div>
           <div className="flex items-center justify-center">

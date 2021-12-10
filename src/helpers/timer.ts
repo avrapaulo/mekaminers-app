@@ -10,5 +10,5 @@ export const getTimeRemaining = () => {
     return `${days}D ${hours}:${minutes}:${seconds}`
   }
 
-  return '-'
+  return 'End'
 }

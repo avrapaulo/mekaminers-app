@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
 import { walletAtom } from 'recoil/atoms'
+import { usePackageRobot } from 'hooks'
 import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
@@ -18,7 +20,26 @@ interface RobotsProps {
 
 const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis } = useMoralis()
+  const { web3, Moralis, isWeb3Enabled } = useMoralis()
+  const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
+  const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+
+  useEffect(() => {
+    if (isWeb3Enabled) {
+      robotFetch({
+        onSuccess: (result: any) => {
+          setRobotPackageBought({
+            pack1: +result._firstPackageCount,
+            pack2: +result._secondPackageCount,
+            pack3: +result._thirdPackageCount
+          })
+        },
+        onError: errorResult => {
+          // console.log(data)
+        }
+      })
+    }
+  }, [isWeb3Enabled, robotFetch, setRobotPackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
     const robotPackage = new web3.eth.Contract(
@@ -39,6 +60,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
         units={units}
         items={items}
         price={price}
+        packageBought={robotPackageBought[`pack${id}`]}
         onBuy={() => buyPackage(id, price)}
       >
         <RobotItem classes={classes} bonus={classBonusRobots} />
