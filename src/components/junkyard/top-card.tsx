@@ -22,8 +22,8 @@ export const TopCard = ({ img, title, description }: TopCardProps) => (
     </div>
     <div className="flex-1 flex items-center justify-between">
       <div className="flex-1 px-4 py-0.5 md:py-1 lg:py-2 text-sm md:text-base truncate">
-        <div className="text-gray-900 font-medium hover:text-gray-600">{title}</div>
-        <p className="text-gray-800 text-center font-bold">{description}</p>
+        <div className="text-white font-medium hover:text-gray-600">{title}</div>
+        <p className="text-white text-center font-bold">{description}</p>
       </div>
     </div>
   </div>

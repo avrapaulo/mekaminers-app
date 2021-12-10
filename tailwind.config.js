@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   darkMode: false,
   theme: {
     extend: {
@@ -118,6 +118,32 @@ module.exports = {
           700: '#193771',
           800: '#0F2043',
           900: '#050A15'
+        },
+        'tree-poppy': {
+          DEFAULT: '#F7931E',
+          50: '#FDE8CF',
+          100: '#FDDFBC',
+          200: '#FBCC94',
+          300: '#FAB96D',
+          400: '#F8A645',
+          500: '#F7931E',
+          600: '#D57708',
+          700: '#9F5806',
+          800: '#693A04',
+          900: '#331C02'
+        },
+        'athens-gray': {
+          DEFAULT: '#EEEEEF',
+          50: '#FFFFFF',
+          100: '#FFFFFF',
+          200: '#FFFFFF',
+          300: '#FFFFFF',
+          400: '#FFFFFF',
+          500: '#EEEEEF',
+          600: '#D1D1D4',
+          700: '#B4B4B9',
+          800: '#97979D',
+          900: '#7A7A82'
         }
       }
     }

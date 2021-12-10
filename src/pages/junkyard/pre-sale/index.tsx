@@ -11,7 +11,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { useMoralis } from 'react-moralis'
 import Image from 'next/image'
 import { TopCard, Timer } from 'components/junkyard'
-import { Header } from 'components/tab-header'
 import { Card } from 'components/pre-sale'
 import { usePackagePiece, usePackageRobot } from 'hooks'
 import { piecePackageCount, robotPackageCount } from 'recoil/atoms'
@@ -113,8 +112,12 @@ const PreSale = () => {
 
   return (
     <>
-      <Header type="junkyard" />
-      <div className="bg-gray-400 bg-opacity-75 mx-10 rounded-2xl rounded-tl-none mb-10">
+      <div className="mx-10 my-5 md:my-0">
+        <div className="relative h-52 md:h-96 w-full">
+          <Image src="/logo.png" layout="fill" objectFit="contain" alt="Banner" />
+        </div>
+      </div>
+      <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
           <TopCard title="Available Pieces" description={`${pieceCount}/625`} img="piece" />
           <Timer title="Time Remaining" />
@@ -125,7 +128,7 @@ const PreSale = () => {
             <div className="absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2 text-blue-zodiac-500">Robots</div>
+            <div className="py-2 text-mariner-50">Robots</div>
           </div>
         </div>
         <div className="mx-2 mt-2">
@@ -149,7 +152,7 @@ const PreSale = () => {
             <div className="absolute h-full w-full">
               <Image src="/title-pre-sale.png" layout="fill" objectFit="contain" alt="Logo" />
             </div>
-            <div className="py-2 text-blue-zodiac-500">Pieces</div>
+            <div className="py-2 text-mariner-50">Pieces</div>
           </div>
         </div>
         <div className="mx-2 mt-2 mb-10">

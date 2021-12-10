@@ -6,23 +6,24 @@ interface RobotsProps {
 }
 
 export const RobotItem = ({ classes, bonus }: RobotsProps) => (
-  <div className="w-full mt-5 md:mt-0 ">
-    <div className="text-center pb-3 font-semibold text-xl">Drop Detail</div>
-    <div className="bg-gray-200 rounded-md p-3">
+  <div className="w-full">
+    <div className="text-center font-bold text-2xl relative text-white pb-2">Drop Detail</div>
+    <div className="rounded-md">
       <div className="grid grid-cols-3 text-center text-sm font-medium">
-        <div>Rarity</div>
-        <div>Chance</div>
-        <div>Bonus</div>
+        <div className="bg-tree-poppy mr-px rounded-sm">Rarity</div>
+        <div className="bg-tree-poppy mr-px ml-px rounded-sm">Chance</div>
+        <div className="bg-tree-poppy ml-px rounded-sm">Bonus</div>
       </div>
       {classes.map(({ chance, classType }) => (
         <div className="relative text-xs space-y-1" key={classType}>
-          <div className="inset-0 flex items-center pt-1" aria-hidden="true">
-            <div className="w-full border-t border-gray-400" />
-          </div>
           <div className="grid grid-cols-3 text-center ">
-            <div className="uppercase">{classType}</div>
-            <div>{chance}%</div>
-            <div>
+            <div className="uppercase bg-athens-gray-500 my-0.5 p-1.5 font-semibold mr-0.5 rounded-md">
+              {classType}
+            </div>
+            <div className="uppercase bg-athens-gray-500 my-0.5 p-1.5 font-semibold ml-0.5 mr-0.5 rounded-md">
+              {chance}%
+            </div>
+            <div className="uppercase bg-athens-gray-500 my-0.5 p-1.5 font-semibold ml-0.5 rounded-md">
               {bonus[classType].min}% -{bonus[classType].max}%
             </div>
           </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useMoralis } from 'react-moralis'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePackagePiece } from 'hooks'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { getTimeRemaining } from 'helpers/timer'
 
@@ -15,89 +17,108 @@ interface ItemProps {
 }
 
 export const Item = ({ id, units, items, price, type, onBuy, children }: ItemProps) => {
+  const { isWeb3Enabled } = useMoralis()
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
+  const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
+  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(getTimeRemaining())
     }, 1000)
     return () => clearTimeout(timer)
-  })
+  }, [])
+
+  useEffect(() => {
+    if (isWeb3Enabled) {
+      pieceFetch({
+        onSuccess: (result: any) => {
+          setPiecePackageBought({
+            pack1: +result._firstPackageCount,
+            pack2: +result._secondPackageCount,
+            pack3: +result._thirdPackageCount
+          })
+        },
+        onError: errorResult => {
+          // console.log(data)
+        }
+      })
+    }
+  }, [isWeb3Enabled, pieceFetch, setPiecePackageBought])
 
   return (
-    <>
-      <section className="relative" aria-labelledby="join-heading">
-        <div className="relative max-w-4xl mx-10 xl:mx-auto flex items-center justify-between">
-          <Link href="/junkyard/pre-sale">
-            <a className="flex flex-row">
-              <div className="w-6 h-6">
-                <ChevronLeftIcon />
-              </div>
-              Go back
-            </a>
-          </Link>
-          <div
-            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 10% 100%)' }}
-            className="text-center font-semibold text-3xl bg-gray-600 pl-10 py-2 pr-10 rounded-tr-3xl rounded-tl-3xl"
-          >
-            {type} Package {id}
+    <section className="relative h-full" aria-labelledby="join-heading">
+      <div className="hidden sm:flex pl-5 mt-5">
+        <Link href="/junkyard/pre-sale">
+          <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
+            <div className="w-8 h-8">
+              <ChevronLeftIcon className="text-tree-poppy" />
+            </div>
+            Go back
+          </a>
+        </Link>
+      </div>
+      <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 lg:px-38 2xl:mx-96 2xl:px-28">
+        <div className="flex justify-center items-center flex-col">
+          <div className="relative w-72 h-56 mx-auto">
+            <Image
+              alt="Logo Meka Miners"
+              layout="fill"
+              objectFit="contain"
+              src={`/gif/boxLvl${id}-piece.gif`}
+            />
           </div>
-        </div>
-      </section>
-      <section className="relative" aria-labelledby="join-heading">
-        <div className="relative bg-blue-600 flex flex-col md:flex-row rounded-3xl p-10 max-w-4xl mx-10 xl:mx-auto space-x-0 md:space-x-4 rounded-tr-none">
-          <div className="space-y-3">
-            <div className="relative w-72 h-56 mx-auto">
+          <div className="text-3xl justify-center items-center space-x-2 font-extrabold flex text-white">
+            <div className="relative w-5 h-5">
+              <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
+            </div>
+            <div>{price} BNB</div>
+          </div>
+          <div className="text-white font-medium text-xs flex justify-center space-x-10 mx-5 my-5">
+            <div>Remaining time: {timeLeft}</div>
+            <div>
+              {piecePackageBought[`pack${id}`]}/{units}
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="relative w-64 h-20">
               <Image
                 alt="Logo Meka Miners"
                 layout="fill"
                 objectFit="contain"
-                src="/gif/boxLvl1.gif"
+                src="/button-item.png"
               />
             </div>
-            <div className="text-white text-xs flex justify-between">
-              <div>Remaining time: {timeLeft}</div>
-              <div>
-                {units}/{units}
-              </div>
-            </div>
-            <div className="text-xl justify-center items-center space-x-2 font-semibold flex py-1 px-2 uppercase text-purple-600 bg-purple-300 rounded-full bg-opacity-40">
-              <div className="relative w-5 h-5">
-                <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
-              </div>
-              <div>{price} BNB</div>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                style={{
-                  clipPath:
-                    'polygon(8% 0, 86% 0, 100% 14%, 99% 57%, 90% 100%, 20% 100%, 0 88%, 1% 50%)'
-                }}
-                type="button"
-                className="uppercase space-x-1 relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                onClick={() => onBuy()}
-              >
-                purchase
-              </button>
-            </div>
+            <button
+              type="button"
+              className="uppercase mt-2 absolute inline-flex items-center text-3xl font-bold text-white"
+              onClick={() => onBuy()}
+            >
+              Buy Now
+            </button>
           </div>
-          <div className="flex flex-col w-full">
+        </div>
+        <div className="flex flex-col w-full">
+          <div className="mb-6">
             {children}
-            <div className="w-full mt-5">
-              <div className="text-center pb-3 font-semibold text-xl">Contains</div>
-              <div className="bg-gray-200 rounded-md p-3">
-                <div className="relative space-y-1">
-                  <div className="">
-                    {items.map((item, index) => (
-                      <div key={index}>-{item}</div>
-                    ))}
-                  </div>
+            <div className="py-2 text-center font-bold text-2xl text-white relative">Contains</div>
+            <div className="rounded-md sm:py-2">
+              <div className="relative space-y-1 text-lg font-semibold">
+                <div className="">
+                  {items.map(item => (
+                    <div
+                      key={item}
+                      className="uppercase bg-athens-gray-500 my-0.5 p-1.5 font-semibold ml-0.5 mr-0.5 rounded-md text-center"
+                    >
+                      {item}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }

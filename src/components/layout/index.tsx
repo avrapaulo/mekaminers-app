@@ -103,9 +103,6 @@ export const Layout = ({ children }: LayoutProps) => {
           cardType: 'summary_large_image'
         }}
       />
-      <div className="fixed h-screen w-screen -z-20">
-        <Image src="/bg-junkyard.png" layout="fill" objectFit="cover" alt="Banner" />
-      </div>
       <DisconnectModel />
       <div className="min-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -209,7 +206,7 @@ export const Layout = ({ children }: LayoutProps) => {
         </Transition.Root>
 
         <div className="flex flex-col flex-1">
-          <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none">
+          <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none bg-gradient-to-t from-blue-zodiac-500 to-blue-zodiac-700">
             <button
               type="button"
               className="px-4 bg-mariner-500 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:mariner-500 lg:hidden"
@@ -221,7 +218,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-8 items-center text-white">
               <div className="hidden h-28 w-28 lg:block relative">
-                <Image alt="Logo" layout="fill" objectFit="contain" src="/logo.png" />
+                <Image alt="Logo" layout="fill" objectFit="contain" src="/logo-top.png" />
               </div>
               <div className="flex-1 flex lg:hidden"></div>
               <nav className="hidden lg:flex flex-row space-x-3" aria-label="Sidebar">

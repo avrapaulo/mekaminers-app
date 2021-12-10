@@ -3,7 +3,6 @@ import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
 import { walletAtom } from 'recoil/atoms'
-import { Header } from 'components/tab-header'
 import { Item, PiecesItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/class-bonus'
@@ -39,7 +38,6 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
 
   return (
     <>
-      <Header type="junkyard" />
       <Item
         type="Pieces"
         id={id}
@@ -69,7 +67,7 @@ const pieces = [
       { classType: 's', chance: 1 }
     ],
     price: 0.2,
-    items: ['2 Random NFT Piece from']
+    items: ['2 Random NFT Piece from E to S']
   },
   {
     id: 2,
@@ -83,7 +81,7 @@ const pieces = [
       { classType: 's', chance: 3 }
     ],
     price: 0.5,
-    items: ['4 Random NFT Piece from']
+    items: ['4 Random NFT Piece from C to S']
   },
   {
     id: 3,
@@ -97,7 +95,7 @@ const pieces = [
       { classType: 's', chance: 6 }
     ],
     price: 0.9,
-    items: ['6 Random NFT Piece from']
+    items: ['6 Random NFT Piece from B to S']
   }
 ]
 

@@ -3,7 +3,6 @@ import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
 import { walletAtom } from 'recoil/atoms'
-import { Header } from 'components/tab-header'
 import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
@@ -34,7 +33,6 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
 
   return (
     <>
-      <Header type="junkyard" />
       <Item
         type="Robot"
         id={id}

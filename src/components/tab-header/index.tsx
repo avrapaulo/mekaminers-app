@@ -27,7 +27,7 @@ export const Header = ({ type }: HeaderProps) => {
       {type === junkyardType && (
         <div className="mx-10 my-5 md:my-0">
           <div className="relative h-52 md:h-96 w-full">
-            <Image src="/banner.png" layout="fill" objectFit="contain" alt="Banner" />
+            <Image src="/logo.png" layout="fill" objectFit="contain" alt="Banner" />
           </div>
         </div>
       )}

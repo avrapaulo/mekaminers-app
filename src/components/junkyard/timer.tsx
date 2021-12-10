@@ -9,11 +9,12 @@ interface TimerProps {
 export const Timer = ({ title }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setTimeLeft(getTimeRemaining())
-  //   }, 1000)
-  //   return () => clearTimeout(timer)
-  // })
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(getTimeRemaining())
+    }, 1000)
+    return () => clearTimeout(timer)
+  })
+
   return <TopCard img="warning" title={title} description={timeLeft} />
 }
