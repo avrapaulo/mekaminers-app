@@ -26,36 +26,32 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
             src={`/gif/boxLvl${id}-${type}.gif`}
           />
         </div>
-        <div className="flex space-x-1 justify-center items-center font-extrabold mt-2 text-2xl md:text-lg xl:text-3xl z-10">
-          <div className="relative w-5 h-5">
-            <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
-          </div>
-          <div>{price}</div>
-          <div>BNB</div>
-        </div>
-
         <div className="flex mx-5 items-center justify-between xl:mr-2 2xl:mx-7 z-10">
           <div className="text-right">
             <span className="text-sm md:text-xs xl:text-lg font-extrabold inline-block">
               {Math.floor((bought / total) * 100)}% Sold
             </span>
           </div>
-          <span className="text-sm md:text-xs xl:text-lg  font-extrabold inline-block">
+          <span className="text-sm md:text-xs xl:text-lg font-extrabold inline-block mr-0 xl:mr-4 2xl:mr-0">
             {bought}/{total}
           </span>
         </div>
       </div>
     </div>
     <div className="mt-1 2xl:mt-4 flex items-center justify-center">
+      <div className="relative w-64 h-20">
+        <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/button-item.png" />
+      </div>
       <Link href={href}>
         <a
-          style={{
-            clipPath: 'polygon(8% 0, 86% 0, 100% 14%, 99% 57%, 90% 100%, 20% 100%, 0 88%, 1% 50%)'
-          }}
           type="button"
-          className="inline-flex items-center px-4 2xl:px-10 py-1 2xl:py-3 border border-transparent text-base 2xl:text-xl font-bold rounded-md text-white bg-tory-blue-500 shadow-sm hover:bg-tory-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tory-blue-400"
+          className="flex justify-center items-center uppercase mt-2 absolute text-3xl font-bold text-white space-x-1"
         >
-          Buy now
+          <div className="relative w-7 h-7 mr-1">
+            <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/bnb.png" />
+          </div>
+          <div className="mb-1">{price}</div>
+          <div className="mb-1">BNB</div>
         </a>
       </Link>
     </div>

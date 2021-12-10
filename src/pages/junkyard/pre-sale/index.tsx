@@ -131,7 +131,7 @@ const PreSale = () => {
             <div className="sm:py-2 text-mariner-50">Robots</div>
           </div>
         </div>
-        <div className="mx-2 mt-2">
+        <div className="mx-2 mt-8">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
             {robots.map(({ title, total, bought, price, id }) => (
               <Card
@@ -155,7 +155,7 @@ const PreSale = () => {
             <div className="sm:py-2 text-mariner-50">Pieces</div>
           </div>
         </div>
-        <div className="mx-2 mt-2 mb-10">
+        <div className="mx-2 mt-8 mb-10">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
             {pieces.map(({ title, total, bought, price, id }) => (
               <Card

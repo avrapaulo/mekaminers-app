@@ -3,9 +3,11 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false,
   theme: {
     extend: {
+      screens: {
+        desktop: '1850px'
+      },
       fontFamily: {
         // sans: ['Origin Tech', ...defaultTheme.fontFamily.sans]
         tech: ['Origin Tech']

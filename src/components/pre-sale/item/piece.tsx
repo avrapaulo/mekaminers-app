@@ -22,7 +22,7 @@ export const PiecesItem = ({ classes, bonus }: RobotsProps) => (
         </div>
         {classes.map(({ chance, classType }) => (
           <div className="relative text-xs space-y-1" key={classType}>
-            <div className="grid grid-cols-3 text-center ">
+            <div className="grid grid-cols-3 text-center">
               <div className="uppercase bg-athens-gray-500 my-0.5 p-1.5 font-semibold mr-0.5 rounded-md">
                 {classType}
               </div>

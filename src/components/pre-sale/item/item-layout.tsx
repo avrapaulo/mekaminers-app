@@ -37,7 +37,7 @@ export const Item = ({ id, units, items, price, packageBought, onBuy, children }
           </a>
         </Link>
       </div>
-      <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 lg:px-38 2xl:mx-96 2xl:px-28">
+      <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 xl:mx-[200px] 2xl:mx-[350px] desktop:mx-[500px]">
         <div className="flex justify-center items-center flex-col">
           <div className="relative w-72 h-56 mx-auto">
             <Image
