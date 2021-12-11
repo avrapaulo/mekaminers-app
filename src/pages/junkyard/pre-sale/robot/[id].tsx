@@ -20,7 +20,7 @@ interface RobotsProps {
 
 const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, isWeb3Enabled } = useMoralis()
+  const { web3, Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
 
@@ -42,20 +42,23 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   }, [isWeb3Enabled, robotFetch, setRobotPackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
-    const robotPackage = new web3.eth.Contract(
-      abi as AbiItem[],
-      process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
-    )
+    if (isAuthenticated) {
+      const robotPackage = new web3.eth.Contract(
+        abi as AbiItem[],
+        process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
+      )
 
-    await robotPackage.methods
-      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
-      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      await robotPackage.methods
+        .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+        .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+    }
   }
 
   return (
     <>
       <Item
-        type="Robot"
+        isAuthenticated={isAuthenticated}
+        type="robot"
         id={id}
         units={units}
         items={items}

@@ -3,19 +3,31 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { getTimeRemaining } from 'helpers/timer'
+import { classNames } from '../../../helpers/class-names'
 
 interface ItemProps {
+  isAuthenticated: boolean
   id: number
   units: number
   price: number
   packageBought: number
   items: string[]
-  type: 'Robot' | 'Pieces'
+  type: 'robot' | 'piece'
   onBuy: () => void
   children: JSX.Element
 }
 
-export const Item = ({ id, units, items, price, packageBought, onBuy, children }: ItemProps) => {
+export const Item = ({
+  isAuthenticated,
+  id,
+  units,
+  items,
+  price,
+  type,
+  packageBought,
+  onBuy,
+  children
+}: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
 
   useEffect(() => {
@@ -37,14 +49,14 @@ export const Item = ({ id, units, items, price, packageBought, onBuy, children }
           </a>
         </Link>
       </div>
-      <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 lg:px-38 2xl:mx-96 2xl:px-28">
+      <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 xl:mx-[200px] 2xl:mx-[350px] desktop:mx-[500px]">
         <div className="flex justify-center items-center flex-col">
           <div className="relative w-72 h-56 mx-auto">
             <Image
               alt="Logo Meka Miners"
               layout="fill"
               objectFit="contain"
-              src={`/gif/boxLvl${id}-piece.gif`}
+              src={`/gif/boxLvl${id}-${type}.gif`}
             />
           </div>
           <div className="text-3xl justify-center items-center space-x-2 font-extrabold flex text-white">
@@ -65,12 +77,15 @@ export const Item = ({ id, units, items, price, packageBought, onBuy, children }
                 alt="Logo Meka Miners"
                 layout="fill"
                 objectFit="contain"
-                src="/button-item.png"
+                src={`/button-item${isAuthenticated ? '' : '-disabled'}.png`}
               />
             </div>
             <button
               type="button"
-              className="uppercase mt-2 absolute inline-flex items-center text-3xl font-bold text-white"
+              className={classNames(
+                isAuthenticated ? '' : 'cursor-not-allowed',
+                'uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
+              )}
               onClick={() => onBuy()}
             >
               Buy Now

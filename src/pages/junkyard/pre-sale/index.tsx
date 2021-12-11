@@ -119,9 +119,9 @@ const PreSale = () => {
       </div>
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
-          <TopCard title="Available Pieces" description={`${pieceCount}/625`} img="piece" />
+          <TopCard title="Available Pieces" description={`${pieceCount}/590`} img="piece" />
           <Timer title="Time Remaining" />
-          <TopCard title="Available Robots" description={`${robotCount}/510`} img="wheel" />
+          <TopCard title="Available Robots" description={`${robotCount}/470`} img="wheel" />
         </div>
         <div className="py-6 font-tech">
           <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">
@@ -131,7 +131,7 @@ const PreSale = () => {
             <div className="sm:py-2 text-mariner-50">Robots</div>
           </div>
         </div>
-        <div className="mx-2 mt-2">
+        <div className="mx-2 mt-8">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
             {robots.map(({ title, total, bought, price, id }) => (
               <Card
@@ -155,7 +155,7 @@ const PreSale = () => {
             <div className="sm:py-2 text-mariner-50">Pieces</div>
           </div>
         </div>
-        <div className="mx-2 mt-2 mb-10">
+        <div className="mx-2 mt-8 mb-10">
           <div className="md:grid md:grid-cols-3 md:gap-x-5 space-y-10 md:space-y-0">
             {pieces.map(({ title, total, bought, price, id }) => (
               <Card

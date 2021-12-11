@@ -27,7 +27,7 @@ const navigation = [
     defaultHref: '/',
     href: '/',
     icon: TrendingUpIcon,
-    disable: false,
+    disable: true,
     layoutBig: false
   },
   {
@@ -81,8 +81,6 @@ export const Layout = ({ children }: LayoutProps) => {
       web3.givenProvider?.selectedAddress || user?.get('ethAddress') || defaultWallet
     )
   }, [web3, setWalletAddress, user])
-
-  console.log(router.pathname)
 
   return (
     <>
