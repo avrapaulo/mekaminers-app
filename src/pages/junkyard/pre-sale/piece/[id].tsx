@@ -69,18 +69,6 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
-  pieceFetch({
-    onSuccess: (result: any) => {
-      if (
-        (id === 1 && result._firstPackageCount === 3) ||
-        (id === 2 && result._secondPackageCount === 0) ||
-        (id === 3 && result._thirdPackageCount === 2)
-      ) {
-        alert('sold out')
-      }
-    }
-  })
-
   useEffect(() => {
     if (isWeb3Enabled) {
       pieceFetch({
@@ -104,9 +92,21 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
       process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
     )
 
-    await piecePackage.methods
-      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
-      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+    pieceFetch({
+      onSuccess: (result: any) => {
+        if (
+          (id === 1 && result._firstPackageCount >= pieces[0].units) ||
+          (id === 2 && result._secondPackageCount >= pieces[1].units) ||
+          (id === 3 && result._thirdPackageCount >= pieces[2].units)
+        ) {
+          alert('sold out')
+        } else {
+          piecePackage.methods
+            .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+            .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+        }
+      }
+    })
   }
 
   return (
