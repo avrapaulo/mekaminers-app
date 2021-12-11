@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
-import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
+import { AbiItem } from 'web3-utils'
 import { walletAtom } from 'recoil/atoms'
 import { Item, PiecesItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
 import { usePackagePiece } from 'hooks'
+import { Notification } from 'components/notification'
 
 interface PiecesProps {
   id: number
@@ -65,11 +66,18 @@ const pieces = [
 
 const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
+  const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
+  const [show, setShow] = useState(false)
+  const [message, setMessage] = useState('')
 
-  const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction()
+  const piecesPackage = new web3.eth.Contract(
+    abi as AbiItem[],
+    process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
+  )
+
+  const { fetch, isLoading } = useWeb3ExecuteFunction()
 
   useEffect(() => {
     if (isWeb3Enabled) {
@@ -90,48 +98,39 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
 
   const buyPackage = async (id: number, amount: number) => {
     if (isAuthenticated) {
-      // const piecePackage = new web3.eth.Contract(
-      //   abi as AbiItem[],
-      //   process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
-      // )
-
-      // pieceFetch({
-      //   onSuccess: (result: any) => {
-      //     if (
-      //       (id === 1 && result._firstPackageCount >= pieces[0].units) ||
-      //       (id === 2 && result._secondPackageCount >= pieces[1].units) ||
-      //       (id === 3 && result._thirdPackageCount >= pieces[2].units)
-      //     ) {
-      //       alert('sold out')
-      //     } else {
-      //       piecePackage.methods
-      //         .createPackage(id, true)
-      //         .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
-      //     }
-      //   }
-      // })
-      // await piecePackage.methods
-      //   .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
-      //   .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
-      const options = {
-        abi,
-        contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
-        functionName: 'createPackage',
-        msgValue: Moralis.Units.ETH(amount.toString()),
-        params: {
-          _packageType: id,
-          _isPresale: true
-          // _owner: wallet,
-          // _amount: amount,
-          // _packageType: id
+      pieceFetch({
+        onSuccess: async (result: any) => {
+          if (
+            (id === 1 && result._firstPackageCount >= pieces[0].units) ||
+            (id === 2 && result._secondPackageCount >= pieces[1].units) ||
+            (id === 3 && result._thirdPackageCount >= pieces[2].units)
+          ) {
+            setShow(true)
+            setMessage('Sold out!')
+          } else if ((await piecesPackage.methods.tokenOfOwner(wallet).call()).length === 5) {
+            setShow(true)
+            setMessage('You only can buy 5 packages of pieces')
+          } else {
+            const options = {
+              abi,
+              contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+              functionName: 'createPackage',
+              msgValue: Moralis.Units.ETH(amount.toString()),
+              params: {
+                _packageType: id,
+                _isPresale: true
+              }
+            }
+            await fetch({ params: options })
+          }
         }
-      }
-      await fetch({ params: options })
+      })
     }
   }
 
   return (
     <>
+      <Notification isShow={show} setShow={setShow} message={message} />
       <Item
         isAuthenticated={isAuthenticated}
         isLoading={isLoading}
