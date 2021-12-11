@@ -49,7 +49,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
       )
 
       await robotPackage.methods
-        .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+        .createPackage(id, true)
         .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
     }
   }

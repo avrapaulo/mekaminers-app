@@ -103,7 +103,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
             alert('sold out')
           } else {
             piecePackage.methods
-              .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+              .createPackage(id, true)
               .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
           }
         }
