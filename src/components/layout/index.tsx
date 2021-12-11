@@ -27,7 +27,7 @@ const navigation = [
     defaultHref: '/',
     href: '/',
     icon: TrendingUpIcon,
-    disable: false,
+    disable: true,
     layoutBig: false
   },
   {

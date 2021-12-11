@@ -9,9 +9,9 @@ import { abi as abiRobot } from 'contracts/RobotPackage.json'
 
 const Inventory = () => {
   const wallet = useRecoilValue(walletAtom)
-  const [myRobots, setMyRobots] = useState<number[]>([])
-  const [myPieces, setMyPieces] = useState<number[]>([])
-  const { web3, isWeb3Enabled } = useMoralis()
+  const [myRobots, setMyRobots] = useState<{ id: number; count: number }[]>([])
+  const [myPieces, setMyPieces] = useState<{ id: number; count: number }[]>([])
+  const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
 
   useEffect(() => {
     const result = async () => {
@@ -30,71 +30,130 @@ const Inventory = () => {
       ])
 
       robotPackageOwned.forEach(async element => {
-        const id = await robotPackage.methods.getPackage(element).call()
-        setMyRobots(robotId => [...robotId, id[2]])
+        const robotData = await robotPackage.methods.getPackage(element).call()
+        setMyRobots(robotsId =>
+          robotsId.find(robot => robot.id === robotData[2])
+            ? [
+                ...robotsId.filter(item => item.id !== robotData[2]),
+                {
+                  id: robotData[2],
+                  count: robotsId.filter(item => item.id === robotData[2])[0].count + 1
+                }
+              ]
+            : [...robotsId, { id: robotData[2], count: 1 }]
+        )
       })
 
       piecesPackageOwned.forEach(async element => {
-        const id = await piecesPackage.methods.getPackage(element).call()
-        setMyPieces(piecesId => [...piecesId, id[2]])
+        const pieceData = await piecesPackage.methods.getPackage(element).call()
+        setMyPieces(piecesId =>
+          piecesId.find(piece => piece.id === pieceData[2])
+            ? [
+                ...piecesId.filter(item => item.id !== pieceData[2]),
+                {
+                  id: pieceData[2],
+                  count: piecesId.filter(item => item.id === pieceData[2])[0].count + 1
+                }
+              ]
+            : [...piecesId, { id: pieceData[2], count: 1 }]
+        )
       })
     }
-    if (wallet !== defaultWallet && isWeb3Enabled) result()
-  }, [web3, isWeb3Enabled, wallet])
+    try {
+      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) result()
+    } catch (error) {
+      console.log(error)
+    }
+    if (!isAuthenticated) {
+      setMyRobots([])
+      setMyPieces([])
+    }
+  }, [web3, isWeb3Enabled, wallet, isAuthenticated])
 
   return (
     <div>
       <div className="mx-2 my-8 ">
         <div className="md:grid md:grid-cols-3 md:gap-x-5">
-          {myRobots?.sort().map(id => (
-            <div key={id}>
-              <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
-                <div className="absolute w-full h-full">
-                  <Image
-                    src="/card-bg-robot.png"
-                    layout="fill"
-                    objectFit="contain"
-                    alt="card presale"
-                  />
-                </div>
-                <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
-                  <div className="relative mx-auto w-full h-full">
-                    <Image
-                      alt="Logo Meka Miners"
-                      layout="fill"
-                      objectFit="contain"
-                      src={`/gif/boxLvl${id}-robot.gif`}
-                    />
+          {myRobots
+            ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
+            .map(({ id, count }) => (
+              <div key={id}>
+                <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+                  <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
+                    <div className="relative mx-auto w-full h-full">
+                      <Image
+                        alt="Logo Meka Miners"
+                        layout="fill"
+                        objectFit="contain"
+                        src={`/gif/boxLvl${id}-robot.gif`}
+                      />
+                      <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
+                        <div className="text-white">{count}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <div className="relative w-64 h-20">
+                        <Image
+                          alt="Logo Meka Miners"
+                          layout="fill"
+                          objectFit="contain"
+                          src="/button-item-disabled.png"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
+                      >
+                        Open box
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-          {myPieces?.sort().map(id => (
-            <div key={id}>
-              <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
-                <div className="absolute w-full h-full">
-                  <Image
-                    src="/card-bg-piece.png"
-                    layout="fill"
-                    objectFit="contain"
-                    alt="card presale"
-                  />
-                </div>
-                <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
-                  <div className="relative mx-auto w-full h-full">
-                    <Image
-                      alt="Logo Meka Miners"
-                      layout="fill"
-                      objectFit="contain"
-                      src={`/gif/boxLvl${id}-piece.gif`}
-                    />
+            ))}
+          {myPieces
+            ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
+            .map(({ id, count }) => (
+              <div key={id}>
+                <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+                  <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
+                    <div className="relative mx-auto w-full h-full">
+                      <Image
+                        alt="Logo Meka Miners"
+                        layout="fill"
+                        objectFit="contain"
+                        src={`/gif/boxLvl${id}-piece.gif`}
+                      />
+                      <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
+                        <div className="text-white">{count}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <div className="relative w-64 h-20">
+                        <Image
+                          alt="Logo Meka Miners"
+                          layout="fill"
+                          objectFit="contain"
+                          src="/button-item-disabled.png"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
+                      >
+                        Open
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
+        {myRobots.length === 0 && myPieces.length === 0 && (
+          <div className="uppercase text-3xl flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold">
+            empty
+          </div>
+        )}
       </div>
     </div>
   )

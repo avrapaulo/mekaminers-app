@@ -20,7 +20,7 @@ interface PiecesProps {
 
 const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { web3, Moralis, isWeb3Enabled } = useMoralis()
+  const { web3, Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
@@ -42,20 +42,23 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   }, [isWeb3Enabled, pieceFetch, setPiecePackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
-    const piecePackage = new web3.eth.Contract(
-      abi as AbiItem[],
-      process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
-    )
+    if (isAuthenticated) {
+      const piecePackage = new web3.eth.Contract(
+        abi as AbiItem[],
+        process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
+      )
 
-    await piecePackage.methods
-      .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
-      .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      await piecePackage.methods
+        .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+        .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+    }
   }
 
   return (
     <>
       <Item
-        type="Pieces"
+        isAuthenticated={isAuthenticated}
+        type="piece"
         id={id}
         units={units}
         items={items}
