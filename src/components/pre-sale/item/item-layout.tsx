@@ -82,23 +82,30 @@ export const Item = ({
                 src={`/button-item${isAuthenticated && !isLoading ? '' : '-disabled'}.png`}
               />
             </div>
-            <button
-              type="button"
+            <div
               className={classNames(
                 isAuthenticated && !isLoading ? '' : 'cursor-not-allowed',
-                'uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
+                'absolute'
               )}
-              onClick={() => onBuy()}
             >
-              {isLoading ? (
-                <div
-                  style={{ borderTopColor: 'transparent' }}
-                  className="h-6 w-6 mt-3 border-4 border-white border-solid rounded-full animate-spin"
-                />
-              ) : (
-                'Buy Now'
-              )}
-            </button>
+              <button
+                type="button"
+                className={classNames(
+                  isAuthenticated && !isLoading ? '' : 'pointer-events-none',
+                  'uppercase justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
+                )}
+                onClick={() => onBuy()}
+              >
+                {isLoading ? (
+                  <div
+                    style={{ borderTopColor: 'transparent' }}
+                    className="h-6 w-6 mt-3 border-4 border-white border-solid rounded-full animate-spin"
+                  />
+                ) : (
+                  'Buy Now'
+                )}
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex flex-col w-full">
