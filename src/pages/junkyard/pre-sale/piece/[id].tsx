@@ -32,7 +32,7 @@ const pieces = [
       { classType: 's', chance: 1 }
     ],
     price: 0.2,
-    items: ['2 Random NFT Piece from E to S']
+    items: ['2 Random NFT Pieces from E to S']
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ const pieces = [
       { classType: 's', chance: 3 }
     ],
     price: 0.5,
-    items: ['4 Random NFT Piece from C to S']
+    items: ['4 Random NFT Pieces from C to S']
   },
   {
     id: 3,
@@ -60,7 +60,7 @@ const pieces = [
       { classType: 's', chance: 6 }
     ],
     price: 0.9,
-    items: ['6 Random NFT Piece from B to S']
+    items: ['6 Random NFT Pieces from B to S']
   }
 ]
 
