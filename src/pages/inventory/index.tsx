@@ -72,91 +72,94 @@ const Inventory = () => {
   }, [web3, isWeb3Enabled, wallet, isAuthenticated])
 
   return (
-    <div>
-      <div className="mx-2 my-8 ">
-        <div className="md:grid md:grid-cols-3 md:gap-x-5">
-          {myRobots
-            ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
-            .map(({ id, count }) => (
-              <div key={id}>
-                <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
-                  <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
-                    <div className="relative mx-auto w-full h-full">
-                      <Image
-                        alt="Logo Meka Miners"
-                        layout="fill"
-                        objectFit="contain"
-                        src={`/gif/boxLvl${id}-robot.gif`}
-                      />
-                      <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
-                        <div className="text-white">{count}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <div className="relative w-64 h-20">
-                        <Image
-                          alt="Logo Meka Miners"
-                          layout="fill"
-                          objectFit="contain"
-                          src="/button-item-disabled.png"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
-                      >
-                        Open box
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          {myPieces
-            ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
-            .map(({ id, count }) => (
-              <div key={id}>
-                <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
-                  <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
-                    <div className="relative mx-auto w-full h-full">
-                      <Image
-                        alt="Logo Meka Miners"
-                        layout="fill"
-                        objectFit="contain"
-                        src={`/gif/boxLvl${id}-piece.gif`}
-                      />
-                      <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
-                        <div className="text-white">{count}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <div className="relative w-64 h-20">
-                        <Image
-                          alt="Logo Meka Miners"
-                          layout="fill"
-                          objectFit="contain"
-                          src="/button-item-disabled.png"
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
-                      >
-                        Open box
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
-        {myRobots.length === 0 && myPieces.length === 0 && (
-          <div className="uppercase text-3xl flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold">
-            empty
+    <>
+      {myRobots.length === 0 && myPieces.length === 0 ? (
+        <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
+          <div className="md:relative md:p-80">
+            <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/empty.png" />
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      ) : (
+        <div className="mx-2 my-8 ">
+          <div className="md:grid md:grid-cols-3 md:gap-x-5">
+            {myRobots
+              ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
+              .map(({ id, count }) => (
+                <div key={id}>
+                  <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+                    <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
+                      <div className="relative mx-auto w-full h-full">
+                        <Image
+                          alt="Logo Meka Miners"
+                          layout="fill"
+                          objectFit="contain"
+                          src={`/gif/boxLvl${id}-robot.gif`}
+                        />
+                        <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
+                          <div className="text-white">{count}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="relative w-64 h-20">
+                          <Image
+                            alt="Logo Meka Miners"
+                            layout="fill"
+                            objectFit="contain"
+                            src="/button-item-disabled.png"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
+                        >
+                          Open box
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            {myPieces
+              ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
+              .map(({ id, count }) => (
+                <div key={id}>
+                  <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
+                    <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
+                      <div className="relative mx-auto w-full h-full">
+                        <Image
+                          alt="Logo Meka Miners"
+                          layout="fill"
+                          objectFit="contain"
+                          src={`/gif/boxLvl${id}-piece.gif`}
+                        />
+                        <div className="text-3xl text-center font-bold absolute top-0 right-0 bg-tory-blue-500 rounded-full block h-10 w-10">
+                          <div className="text-white">{count}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="relative w-64 h-20">
+                          <Image
+                            alt="Logo Meka Miners"
+                            layout="fill"
+                            objectFit="contain"
+                            src="/button-item-disabled.png"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
+                        >
+                          Open box
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
