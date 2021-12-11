@@ -37,7 +37,7 @@ export const Item = ({
       setTimeLeft(getTimeRemaining())
     }, 1000)
     return () => clearTimeout(timer)
-  }, [])
+  })
 
   return (
     <section className="relative h-full" aria-labelledby="join-heading">
