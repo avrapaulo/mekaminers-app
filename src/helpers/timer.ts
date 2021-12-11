@@ -1,5 +1,5 @@
 export const getTimeRemaining = () => {
-  const difference = +new Date('2021-12-10') - +new Date()
+  const difference = +new Date('2021-12-13T17:00:00') - +new Date()
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24))
   const hours = `0${Math.floor((difference / (1000 * 60 * 60)) % 24)}`.slice(-2)

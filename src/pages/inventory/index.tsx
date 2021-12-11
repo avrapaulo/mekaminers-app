@@ -32,30 +32,30 @@ const Inventory = () => {
       robotPackageOwned.forEach(async element => {
         const robotData = await robotPackage.methods.getPackage(element).call()
         setMyRobots(robotsId =>
-          robotsId.find(robot => robot.id === robotData[2])
+          robotsId.find(robot => robot.id === robotData[3])
             ? [
-                ...robotsId.filter(item => item.id !== robotData[2]),
+                ...robotsId.filter(item => item.id !== robotData[3]),
                 {
-                  id: robotData[2],
-                  count: robotsId.filter(item => item.id === robotData[2])[0].count + 1
+                  id: robotData[3],
+                  count: robotsId.filter(item => item.id === robotData[3])[0].count + 1
                 }
               ]
-            : [...robotsId, { id: robotData[2], count: 1 }]
+            : [...robotsId, { id: robotData[3], count: 1 }]
         )
       })
 
       piecesPackageOwned.forEach(async element => {
         const pieceData = await piecesPackage.methods.getPackage(element).call()
         setMyPieces(piecesId =>
-          piecesId.find(piece => piece.id === pieceData[2])
+          piecesId.find(piece => piece.id === pieceData[3])
             ? [
-                ...piecesId.filter(item => item.id !== pieceData[2]),
+                ...piecesId.filter(item => item.id !== pieceData[3]),
                 {
-                  id: pieceData[2],
-                  count: piecesId.filter(item => item.id === pieceData[2])[0].count + 1
+                  id: pieceData[3],
+                  count: piecesId.filter(item => item.id === pieceData[3])[0].count + 1
                 }
               ]
-            : [...piecesId, { id: pieceData[2], count: 1 }]
+            : [...piecesId, { id: pieceData[3], count: 1 }]
         )
       })
     }
@@ -64,6 +64,7 @@ const Inventory = () => {
     } catch (error) {
       console.log(error)
     }
+
     if (!isAuthenticated) {
       setMyRobots([])
       setMyPieces([])
@@ -141,7 +142,7 @@ const Inventory = () => {
                         type="button"
                         className="cursor-not-allowed uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20"
                       >
-                        Open
+                        Open box
                       </button>
                     </div>
                   </div>

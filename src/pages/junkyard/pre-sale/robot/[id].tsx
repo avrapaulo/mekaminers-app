@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
 import { walletAtom } from 'recoil/atoms'
@@ -8,7 +8,7 @@ import { usePackageRobot } from 'hooks'
 import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
-import { abi } from 'contracts/PiecePackage.json'
+import { abi } from 'contracts/RobotPackage.json'
 
 interface RobotsProps {
   id: number
@@ -23,6 +23,8 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const { web3, Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+
+  const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction()
 
   useEffect(() => {
     if (isWeb3Enabled) {
@@ -43,14 +45,26 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
 
   const buyPackage = async (id: number, amount: number) => {
     if (isAuthenticated) {
-      const robotPackage = new web3.eth.Contract(
-        abi as AbiItem[],
-        process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
-      )
+      // const robotPackage = new web3.eth.Contract(
+      //   abi as AbiItem[],
+      //   process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
+      // )
 
-      await robotPackage.methods
-        .createPackage(id, true)
-        .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      // await robotPackage.methods
+      //   .createPackage(id, true)
+      //   .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      const options = {
+        abi,
+        contractAddress: process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS,
+        functionName: 'createPackage',
+        msgValue: Moralis.Units.ETH(amount.toString()),
+        params: {
+          _packageType: id,
+          _isPresale: true
+        }
+      }
+
+      await fetch({ params: options })
     }
   }
 
@@ -58,6 +72,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
     <>
       <Item
         isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
         type="robot"
         id={id}
         units={units}

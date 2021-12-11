@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { useRecoilValue } from 'recoil'
 import { walletAtom } from 'recoil/atoms'
@@ -69,6 +69,8 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
 
+  const { data, error, fetch, isFetching, isLoading } = useWeb3ExecuteFunction()
+
   useEffect(() => {
     if (isWeb3Enabled) {
       pieceFetch({
@@ -88,26 +90,43 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
 
   const buyPackage = async (id: number, amount: number) => {
     if (isAuthenticated) {
-      const piecePackage = new web3.eth.Contract(
-        abi as AbiItem[],
-        process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
-      )
+      // const piecePackage = new web3.eth.Contract(
+      //   abi as AbiItem[],
+      //   process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
+      // )
 
-      pieceFetch({
-        onSuccess: (result: any) => {
-          if (
-            (id === 1 && result._firstPackageCount >= pieces[0].units) ||
-            (id === 2 && result._secondPackageCount >= pieces[1].units) ||
-            (id === 3 && result._thirdPackageCount >= pieces[2].units)
-          ) {
-            alert('sold out')
-          } else {
-            piecePackage.methods
-              .createPackage(id, true)
-              .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
-          }
+      // pieceFetch({
+      //   onSuccess: (result: any) => {
+      //     if (
+      //       (id === 1 && result._firstPackageCount >= pieces[0].units) ||
+      //       (id === 2 && result._secondPackageCount >= pieces[1].units) ||
+      //       (id === 3 && result._thirdPackageCount >= pieces[2].units)
+      //     ) {
+      //       alert('sold out')
+      //     } else {
+      //       piecePackage.methods
+      //         .createPackage(id, true)
+      //         .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      //     }
+      //   }
+      // })
+      // await piecePackage.methods
+      //   .createPackage(wallet, Moralis.Units.ETH(amount.toString()), id)
+      //   .send({ from: wallet, value: Moralis.Units.ETH(amount.toString()) })
+      const options = {
+        abi,
+        contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+        functionName: 'createPackage',
+        msgValue: Moralis.Units.ETH(amount.toString()),
+        params: {
+          _packageType: id,
+          _isPresale: true
+          // _owner: wallet,
+          // _amount: amount,
+          // _packageType: id
         }
-      })
+      }
+      await fetch({ params: options })
     }
   }
 
@@ -115,6 +134,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
     <>
       <Item
         isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
         type="piece"
         id={id}
         units={units}

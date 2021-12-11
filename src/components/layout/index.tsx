@@ -320,7 +320,11 @@ export const Layout = ({ children }: LayoutProps) => {
                   style={{
                     background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
                   }}
-                  onClick={() => (isAuthenticated ? setDisconnect(true) : authenticate())}
+                  onClick={() =>
+                    isAuthenticated
+                      ? setDisconnect(true)
+                      : authenticate({ signingMessage: 'Welcome to Mekaminers' })
+                  }
                   className="flex-nowrap space-x-1 relative inline-flex items-center px-4 py-2 lg:py-2.5 xl:py-2 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
                   <div className="lg:hidden xl:block">

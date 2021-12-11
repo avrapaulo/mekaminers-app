@@ -7,6 +7,7 @@ import { classNames } from '../../../helpers/class-names'
 
 interface ItemProps {
   isAuthenticated: boolean
+  isLoading: boolean
   id: number
   units: number
   price: number
@@ -18,6 +19,7 @@ interface ItemProps {
 }
 
 export const Item = ({
+  isLoading = true,
   isAuthenticated,
   id,
   units,
@@ -65,7 +67,7 @@ export const Item = ({
             </div>
             <div>{price} BNB</div>
           </div>
-          <div className="text-white font-medium text-xs flex justify-center space-x-10 mx-5 my-5">
+          <div className="text-white font-bold text-xs flex justify-center space-x-10 mx-5 my-5">
             <div>Remaining time: {timeLeft}</div>
             <div>
               {packageBought}/{units}
@@ -77,18 +79,25 @@ export const Item = ({
                 alt="Logo Meka Miners"
                 layout="fill"
                 objectFit="contain"
-                src={`/button-item${isAuthenticated ? '' : '-disabled'}.png`}
+                src={`/button-item${isAuthenticated && !isLoading ? '' : '-disabled'}.png`}
               />
             </div>
             <button
               type="button"
               className={classNames(
-                isAuthenticated ? '' : 'cursor-not-allowed',
+                isAuthenticated && !isLoading ? '' : 'cursor-not-allowed',
                 'uppercase absolute justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
               )}
               onClick={() => onBuy()}
             >
-              Buy Now
+              {isLoading ? (
+                <div
+                  style={{ borderTopColor: 'transparent' }}
+                  className="h-6 w-6 mt-3 border-4 border-white border-solid rounded-full animate-spin"
+                />
+              ) : (
+                'Buy Now'
+              )}
             </button>
           </div>
         </div>
