@@ -1,11 +1,11 @@
 import { useEffect, Fragment, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { Dialog, Transition } from '@headlessui/react'
 import { NextSeo } from 'next-seo'
 import { useMoralis } from 'react-moralis'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRouter } from 'next/router'
+import { Dialog, Transition } from '@headlessui/react'
 import { walletCoins } from 'recoil/selector'
 import { defaultWallet, walletAtom, disconnectAtom } from 'recoil/atoms'
 import {
@@ -49,7 +49,7 @@ const navigation = [
   {
     name: 'Inventory',
     defaultHref: '/inventory',
-    href: '/inventory',
+    href: '/inventory/boxes',
     icon: BriefcaseIcon,
     disable: false,
     layoutBig: false

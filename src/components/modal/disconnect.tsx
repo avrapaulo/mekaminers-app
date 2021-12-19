@@ -2,7 +2,7 @@ import { Fragment, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { useMoralis } from 'react-moralis'
 import { Dialog, Transition } from '@headlessui/react'
-import { disconnectAtom } from 'recoil/atoms/disconnect'
+import { disconnectAtom } from 'recoil/atoms'
 
 export const DisconnectModel = () => {
   const { logout } = useMoralis()

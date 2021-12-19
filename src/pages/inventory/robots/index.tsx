@@ -1,0 +1,172 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { Card } from 'components/card'
+import { Layout } from 'components/inventory'
+import { State } from 'components/card/state'
+import { RobotBody } from 'components/card/robot-body'
+
+const robots = [
+  {
+    id: 1,
+    title: 'robot asd asd asd asd ',
+    imageSrc: '/banner.png',
+    bonus: 0.2,
+    state: 'selling',
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ]
+  },
+  {
+    id: 2,
+    rarityId: 2,
+    title: 'robot asd asd asd asd ',
+    imageSrc: '/banner.png',
+    bonus: 0.2,
+    state: 'selling',
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ],
+    piecesStatus: [
+      { key: 'c', value: 0.5 },
+      { key: 'e', value: 0.25 },
+      { key: 'o', value: 0.5 },
+      { key: 'st', value: 0.5 },
+      { key: 'sp', value: 0.5 }
+    ]
+  },
+  {
+    id: 3,
+    rarityId: 3,
+    title: 'Basic Tee',
+    imageSrc: '/banner.png',
+    bonus: 0.2,
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ],
+    piecesStatus: [
+      { key: 'c', value: 0.5 },
+      { key: 'e', value: 0.25 },
+      { key: 'o', value: 0.5 },
+      { key: 'st', value: 0.5 },
+      { key: 'sp', value: 0.5 }
+    ]
+  },
+  {
+    id: 4,
+    rarityId: 4,
+    title: 'Basic Tee',
+    imageSrc: '/banner.png',
+    bonus: 0.2,
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ],
+    piecesStatus: [
+      { key: 'c', value: 0.5 },
+      { key: 'e', value: 0.25 },
+      { key: 'o', value: 0.5 },
+      { key: 'st', value: 0.5 },
+      { key: 'sp', value: 0.5 }
+    ]
+  },
+  {
+    id: 5,
+    rarityId: 5,
+    title: 'Basic Tee',
+    imageSrc: '/banner.png',
+    bonus: 0.2,
+    state: 'farm',
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ],
+    piecesStatus: []
+  },
+  {
+    id: 6,
+    rarityId: 5,
+    title: 'Basic Tee',
+    imageSrc: '/banner.png',
+    bonus: 0.5,
+    robotStatus: [
+      { key: 'c', value: 10 },
+      { key: 'e', value: 60 },
+      { key: 'o', value: 50 },
+      { key: 'st', value: 2 },
+      { key: 'sp', value: 3 }
+    ],
+    piecesStatus: [
+      { key: 'c', value: 0.5 },
+      { key: 'e', value: 0.25 },
+      { key: 'o', value: 0.5 },
+      { key: 'st', value: 0.5 },
+      { key: 'sp', value: 0.5 }
+    ]
+  }
+]
+
+const RobotsPage = () => {
+  return (
+    <Layout>
+      <>
+        {robots.map(
+          ({
+            id,
+            title,
+            imageSrc,
+            rarityId = 'default',
+            robotStatus,
+            piecesStatus,
+            bonus,
+            state
+          }) => (
+            <Link key={id} href={`/inventory/robots/${id}`}>
+              <a className="relative flex">
+                <State stateId={state} />
+                <Card
+                  rarityId={rarityId}
+                  title={title}
+                  imageCard={
+                    <Image
+                      alt="Logo Meka Miners"
+                      layout="fill"
+                      objectFit="contain"
+                      src={imageSrc}
+                    />
+                  }
+                >
+                  <RobotBody
+                    bonus={bonus}
+                    piecesStatus={piecesStatus}
+                    rarityId={rarityId}
+                    robotStatus={robotStatus}
+                  />
+                </Card>
+              </a>
+            </Link>
+          )
+        )}
+      </>
+    </Layout>
+  )
+}
+
+export default RobotsPage
