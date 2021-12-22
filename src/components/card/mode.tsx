@@ -1,13 +1,13 @@
 import { CurrencyDollarIcon } from '@heroicons/react/solid'
 import { PickaxeIcon } from 'icons'
 
-interface StateProps {
-  stateId?: string
+interface modeProps {
+  modeId?: string
 }
 
-export const State = ({ stateId }: StateProps) => (
+export const Mode = ({ modeId }: modeProps) => (
   <>
-    {stateId === 'selling' && (
+    {modeId === 'selling' && (
       <div
         title="On sale"
         className="absolute bg-green-600 bottom-2 -right-3 z-10 block rounded-full"
@@ -15,7 +15,7 @@ export const State = ({ stateId }: StateProps) => (
         <CurrencyDollarIcon className="h-7 w-7 text-black" aria-hidden="true" />
       </div>
     )}
-    {stateId === 'farm' && (
+    {modeId === 'farm' && (
       <div
         title="Farm"
         className="absolute bg-black bottom-2 -right-3 z-10 block rounded-full ring-2 ring-pickled-bean-500"

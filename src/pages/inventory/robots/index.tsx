@@ -2,16 +2,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
-import { State } from 'components/card/state'
+import { Mode } from 'components/card/mode'
 import { RobotBody } from 'components/card/robot-body'
 
 const robots = [
   {
-    id: 1,
+    token: 1,
     title: 'robot asd asd asd asd ',
     imageSrc: '/banner.png',
     bonus: 0.2,
-    state: 'selling',
+    mode: 'selling',
     robotStatus: [
       { key: 'c', value: 10 },
       { key: 'e', value: 60 },
@@ -21,12 +21,12 @@ const robots = [
     ]
   },
   {
-    id: 2,
+    token: 2,
     rarityId: 2,
     title: 'robot asd asd asd asd ',
     imageSrc: '/banner.png',
     bonus: 0.2,
-    state: 'selling',
+    mode: 'selling',
     robotStatus: [
       { key: 'c', value: 10 },
       { key: 'e', value: 60 },
@@ -43,7 +43,7 @@ const robots = [
     ]
   },
   {
-    id: 3,
+    token: 3,
     rarityId: 3,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
@@ -64,7 +64,7 @@ const robots = [
     ]
   },
   {
-    id: 4,
+    token: 4,
     rarityId: 4,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
@@ -85,12 +85,12 @@ const robots = [
     ]
   },
   {
-    id: 5,
+    token: 5,
     rarityId: 5,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
     bonus: 0.2,
-    state: 'farm',
+    mode: 'farm',
     robotStatus: [
       { key: 'c', value: 10 },
       { key: 'e', value: 60 },
@@ -101,7 +101,7 @@ const robots = [
     piecesStatus: []
   },
   {
-    id: 6,
+    token: 6,
     rarityId: 5,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
@@ -129,18 +129,18 @@ const RobotsPage = () => {
       <>
         {robots.map(
           ({
-            id,
+            token,
             title,
             imageSrc,
             rarityId = 'default',
             robotStatus,
             piecesStatus,
             bonus,
-            state
+            mode
           }) => (
-            <Link key={id} href={`/inventory/robots/${id}`}>
+            <Link key={token} href={`/inventory/robots/${token}`}>
               <a className="relative flex">
-                <State stateId={state} />
+                <Mode modeId={mode} />
                 <Card
                   rarityId={rarityId}
                   title={title}

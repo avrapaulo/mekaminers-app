@@ -2,25 +2,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
-import { State } from 'components/card/state'
+import { Mode } from 'components/card/mode'
 import { PiecesBody } from 'components/card/piece-body'
-
 const pieces = [
   {
-    id: 1,
+    token: 1,
     rarityId: 5,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
-    bonus: 0.3,
     piecesStatus: [{ key: 'c', value: 10 }],
-    state: 'sell'
+    mode: 'sell'
   },
   {
-    id: 1,
+    token: 1,
     rarityId: 1,
     title: 'Basic Tee',
     imageSrc: '/banner.png',
-    bonus: 0.3,
     piecesStatus: [{ key: 'c', value: 10 }]
   }
 ]
@@ -29,10 +26,10 @@ const PiecesPage = () => {
   return (
     <Layout>
       <>
-        {pieces.map(({ id, title, imageSrc, rarityId = 'default', piecesStatus, state }) => (
-          <Link key={id} href={`/inventory/pieces/${id}`}>
+        {pieces.map(({ token, title, imageSrc, rarityId = 'default', piecesStatus, mode }) => (
+          <Link key={token} href={`/inventory/pieces/${token}`}>
             <a className="relative flex">
-              <State stateId={state} />
+              <Mode modeId={mode} />
               <Card
                 rarityId={rarityId}
                 title={title}
