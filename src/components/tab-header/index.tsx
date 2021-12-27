@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import { classNames } from 'helpers/class-names'
 
 const junkyardType = 'junkyard'
@@ -26,9 +25,7 @@ export const Header = ({ type }: HeaderProps) => {
     <>
       {type === junkyardType && (
         <div className="mx-10 my-5 md:my-0">
-          <div className="relative h-52 md:h-96 w-full">
-            <Image src="/logo.png" layout="fill" objectFit="contain" alt="Banner" />
-          </div>
+          <img src="/logo.png" height="200" width="200" alt="Banner" />
         </div>
       )}
       <div className="mx-10">

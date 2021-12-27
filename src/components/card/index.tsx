@@ -30,7 +30,9 @@ const Card = ({ rarityId = 'default', title, imageCard, children }: CardProps) =
       )}
     </div>
     <div className="px-1">
-      <div className="group-hover:opacity-75 relative w-full h-52">{imageCard}</div>
+      <div className="group-hover:opacity-75 relative w-full h-52 flex justify-center items-center">
+        {imageCard}
+      </div>
     </div>
     {children}
   </div>

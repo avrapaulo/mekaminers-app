@@ -1,5 +1,4 @@
 import { useEffect, Fragment, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 import { useMoralis } from 'react-moralis'
@@ -152,7 +151,7 @@ export const Layout = ({ children }: LayoutProps) => {
                 </Transition.Child>
                 <div className="flex items-center flex-shrink-0 px-4">
                   <div className="h-28 w-full relative">
-                    <Image alt="Logo" layout="fill" objectFit="contain" src="/logo.png" />
+                    <img alt="Logo" src="/logo.png" />
                   </div>
                 </div>
                 <nav className="mt-5 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
@@ -180,7 +179,7 @@ export const Layout = ({ children }: LayoutProps) => {
                             {(router.pathname === item.defaultHref ||
                               (item.defaultHref.length > 1 &&
                                 router.pathname.startsWith(item.defaultHref))) && (
-                              <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                              <img alt="Logo" src="/bar.png" />
                             )}
                             <div className="bg-white rounded-full p-1 absolute right-px transform -translate-x-6 bottom-1">
                               <item.icon
@@ -202,7 +201,7 @@ export const Layout = ({ children }: LayoutProps) => {
                     className="mt-16 mx-6 my-1 inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                   >
                     <div className="h-6 w-6 relative">
-                      <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
+                      <img alt="Logo" src="/favicon.ico" />
                     </div>
                     <span>{meka}</span>
                   </button>
@@ -214,7 +213,7 @@ export const Layout = ({ children }: LayoutProps) => {
                     className="mx-6 my-1 space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                   >
                     <div className="h-8 w-8 relative">
-                      <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
+                      <img alt="Logo" src="/ore.png" />
                     </div>
                     <span>{ore}</span>
                   </button>
@@ -240,7 +239,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-2 xl:px-8 items-center text-white">
               <div className="hidden h-28 w-28 lg:block relative">
-                <Image alt="Logo" layout="fill" objectFit="contain" src="/logo-top.png" />
+                <img alt="Logo" src="/logo-top.png" />
               </div>
               <div className="flex-1 flex lg:hidden"></div>
               <nav className="hidden lg:flex flex-row space-x-1" aria-label="Sidebar">
@@ -269,7 +268,7 @@ export const Layout = ({ children }: LayoutProps) => {
                         {(router.pathname === item.defaultHref ||
                           (item.defaultHref.length > 1 &&
                             router.pathname.startsWith(item.defaultHref))) && (
-                          <Image alt="Logo" layout="fill" objectFit="contain" src="/bar.png" />
+                          <img alt="Logo" className="absolute left-0" src="/bar.png" />
                         )}
                         <div className="relative xl:text-xl pl-0.5 xl:pl-1">{item.name}</div>
                         <div
@@ -299,7 +298,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   className="w-24 hidden sm:inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
                   <div className="h-6 w-6 relative">
-                    <Image alt="Logo" layout="fill" objectFit="contain" src="/favicon.ico" />
+                    <img alt="Logo" src="/favicon.ico" />
                   </div>
                   <span>{meka}</span>
                 </button>
@@ -311,7 +310,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   className="w-24 space-x-2 relative hidden sm:inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
                 >
                   <div className="h-8 w-8 relative">
-                    <Image alt="Logo" layout="fill" objectFit="contain" src="/ore.png" />
+                    <img alt="Logo" src="/ore.png" />
                   </div>
                   <span>{ore}</span>
                 </button>

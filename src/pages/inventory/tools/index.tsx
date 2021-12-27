@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 
@@ -24,13 +23,7 @@ const Tools = () => {
     <Layout>
       <>
         {items.map(({ id, title, imageSrc, quantity, description }) => (
-          <Card
-            title={title}
-            key={id}
-            imageCard={
-              <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src={imageSrc} />
-            }
-          >
+          <Card title={title} key={id} imageCard={<img alt="Logo Meka Miners" src={imageSrc} />}>
             <div className="flex-1 p-4 flex flex-col">
               <div className="h-full flex justify-between flex-col">
                 <div className="space-y-1 flex flex-col">

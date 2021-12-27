@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
@@ -33,9 +32,7 @@ const PiecesPage = () => {
               <Card
                 rarityId={rarityId}
                 title={title}
-                imageCard={
-                  <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src={imageSrc} />
-                }
+                imageCard={<img alt="Logo Meka Miners" src={imageSrc} />}
               >
                 <PiecesBody piecesStatus={piecesStatus} rarityId={rarityId} />
               </Card>

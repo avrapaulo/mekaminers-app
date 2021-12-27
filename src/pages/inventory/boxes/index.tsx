@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { useMoralis } from 'react-moralis'
-import Image from 'next/image'
 import { AbiItem } from 'web3-utils'
 import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { Card } from 'components/card'
@@ -85,9 +84,7 @@ const Boxes = () => {
     <>
       {myRobots.length === 0 && myPieces.length === 0 ? (
         <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
-          <div className="md:relative md:p-80">
-            <Image alt="Logo Meka Miners" layout="fill" objectFit="contain" src="/empty.png" />
-          </div>
+          <img alt="Logo Meka Miners" width="500" src="/empty.png" />
         </div>
       ) : (
         <Layout>
@@ -98,14 +95,7 @@ const Boxes = () => {
                 <Card
                   title={type === 'robot' ? `Package Robot ${id}` : `Package Pieces ${id}`}
                   key={id}
-                  imageCard={
-                    <Image
-                      alt="Logo Meka Miners"
-                      layout="fill"
-                      objectFit="contain"
-                      src={`/gif/boxLvl${id}-${type}.gif`}
-                    />
-                  }
+                  imageCard={<img alt="Logo Meka Miners" src={`/gif/boxLvl${id}-${type}.gif`} />}
                 >
                   <div className="flex-1 p-4 flex flex-col">
                     <div className="h-full flex justify-between flex-col">
