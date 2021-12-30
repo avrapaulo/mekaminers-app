@@ -116,9 +116,9 @@ const PreSale = () => {
       </div>
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
-          <TopCard title="Available Pieces" description={`${pieceCount}/590`} img="piece" />
+          <TopCard title="Available Pieces" description="0/700" img="piece" />
           <Timer title="Starts in" />
-          <TopCard title="Available Robots" description={`${robotCount}/470`} img="wheel" />
+          <TopCard title="Available Robots" description="0/700" img="wheel" />
         </div>
         <div className="py-6 font-tech">
           <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">
