@@ -112,12 +112,12 @@ const PreSale = () => {
   return (
     <>
       <div className="mx-10 my-5 md:my-0 flex justify-center">
-        <img src="/logo.png" width="250" alt="Banner" />
+        <img src="/logo.png" width="300" alt="Banner" />
       </div>
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
           <TopCard title="Available Pieces" description={`${pieceCount}/590`} img="piece" />
-          <Timer title="Time Remaining" />
+          <Timer title="Starts in" />
           <TopCard title="Available Robots" description={`${robotCount}/470`} img="wheel" />
         </div>
         <div className="py-6 font-tech">

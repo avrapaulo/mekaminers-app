@@ -9,7 +9,7 @@ export const getTimeRemaining = () => {
     date.getUTCSeconds()
   )
 
-  const difference = +new Date(Date.UTC(2021, 11, 13, 17, 0, 0)) - nowUtc
+  const difference = +new Date(Date.UTC(2022, 0, 15, 17, 0, 0)) - nowUtc
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24))
   const hours = `0${Math.floor((difference / (1000 * 60 * 60)) % 24)}`.slice(-2)

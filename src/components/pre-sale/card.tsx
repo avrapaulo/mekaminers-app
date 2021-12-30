@@ -18,8 +18,7 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
         <div className="relative flex justify-center">
           <img
             alt="Logo Meka Miners"
-            width="250"
-            height="250"
+            className="h-full -mb-10"
             src={`/gif/boxLvl${id}-${type}.gif`}
           />
         </div>
