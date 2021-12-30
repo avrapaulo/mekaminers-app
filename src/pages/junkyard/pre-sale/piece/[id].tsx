@@ -68,7 +68,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const wallet = useRecoilValue(walletAtom)
   const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
-  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
+  const { packagePieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -81,7 +81,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
 
   useEffect(() => {
     if (isWeb3Enabled) {
-      pieceFetch({
+      packagePieceFetch({
         onSuccess: (result: any) => {
           setPiecePackageBought({
             pack1: +result._firstPackageCount,
@@ -94,11 +94,11 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
         }
       })
     }
-  }, [isWeb3Enabled, pieceFetch, setPiecePackageBought])
+  }, [isWeb3Enabled, packagePieceFetch, setPiecePackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
     if (isAuthenticated) {
-      pieceFetch({
+      packagePieceFetch({
         onSuccess: async (result: any) => {
           if (
             (id === 1 && result._firstPackageCount >= pieces[0].units) ||

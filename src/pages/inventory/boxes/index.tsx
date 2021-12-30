@@ -3,14 +3,14 @@ import { useRecoilValue } from 'recoil'
 import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { walletAtom, defaultWallet } from 'recoil/atoms'
-import { Card } from 'components/card'
+import { Box } from 'components/box'
 import { Layout } from 'components/inventory'
 import { abi as abiPiece } from 'contracts/PiecePackage.json'
 import { abi as abiRobot } from 'contracts/RobotPackage.json'
 
 interface MyPackages {
   id: number
-  count: number
+  count: number[]
   type: 'robot' | 'piece'
 }
 
@@ -36,36 +36,45 @@ const Boxes = () => {
         piecesPackage.methods.tokenOfOwner(wallet).call()
       ])
 
-      robotPackageOwned.forEach(async element => {
+      let myRobots = []
+      robotPackageOwned.forEach(async (element, index, array) => {
         const robotData = await robotPackage.methods.getPackage(element).call()
-        setMyRobots(robotsId =>
-          robotsId.find(robot => robot.id === robotData[3])
-            ? [
-                ...robotsId.filter(item => item.id !== robotData[3]),
-                {
-                  id: robotData[3],
-                  count: robotsId.filter(item => item.id === robotData[3])[0].count + 1,
-                  type: 'robot'
-                }
-              ]
-            : [...robotsId, { id: robotData[3], count: 1, type: 'robot' }]
-        )
+
+        myRobots = myRobots.find(robot => robot.id === robotData[3])
+          ? [
+              ...myRobots.filter(item => item.id !== robotData[3]),
+              {
+                id: robotData[3],
+                count: [
+                  ...myRobots.filter(item => item.id === robotData[3])[0].count,
+                  robotData[1]
+                ],
+                type: 'robot'
+              }
+            ]
+          : [...myRobots, { id: robotData[3], count: [robotData[1]], type: 'robot' }]
+
+        if (index + 1 === array.length) setMyRobots(myRobots)
       })
 
-      piecesPackageOwned.forEach(async element => {
+      let myPieces = []
+      piecesPackageOwned.forEach(async (element, index, array) => {
         const pieceData = await piecesPackage.methods.getPackage(element).call()
-        setMyPieces(piecesId =>
-          piecesId.find(piece => piece.id === pieceData[3])
-            ? [
-                ...piecesId.filter(item => item.id !== pieceData[3]),
-                {
-                  id: pieceData[3],
-                  count: piecesId.filter(item => item.id === pieceData[3])[0].count + 1,
-                  type: 'piece'
-                }
-              ]
-            : [...piecesId, { id: pieceData[3], count: 1, type: 'piece' }]
-        )
+        myPieces = myPieces.find(piece => piece.id === pieceData[3])
+          ? [
+              ...myPieces.filter(item => item.id !== pieceData[3]),
+              {
+                id: pieceData[3],
+                count: [
+                  ...myPieces.filter(item => item.id === pieceData[3])[0].count,
+                  pieceData[1]
+                ],
+                type: 'piece'
+              }
+            ]
+          : [...myPieces, { id: pieceData[3], count: [pieceData[1]], type: 'piece' }]
+
+        if (index + 1 === array.length) setMyPieces(myPieces)
       })
     }
     try {
@@ -92,25 +101,7 @@ const Boxes = () => {
             {[...myRobots, ...myPieces]
               ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
               .map(({ id, count, type }) => (
-                <Card
-                  title={type === 'robot' ? `Package Robot ${id}` : `Package Pieces ${id}`}
-                  key={id}
-                  imageCard={<img alt="Logo Meka Miners" src={`/gif/boxLvl${id}-${type}.gif`} />}
-                >
-                  <div className="flex-1 p-4 flex flex-col">
-                    <div className="h-full flex justify-between flex-col">
-                      <div className="flex justify-center items-center mb-6">
-                        <button
-                          type="button"
-                          className="cursor-not-allowed inline-flex items-center px-4 py-2 border border-transparent text-lg font-semibold rounded-md shadow-sm text-black bg-white hover:bg-gray-200"
-                        >
-                          Open
-                        </button>
-                      </div>
-                      <div className="text-sm font-medium text-right">( x{count} )</div>
-                    </div>
-                  </div>
-                </Card>
+                <Box key={`${id}${type}`} count={count} id={id} type={type} />
               ))}
           </>
         </Layout>

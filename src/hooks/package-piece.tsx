@@ -1,16 +1,22 @@
 import { useWeb3ExecuteFunction } from 'react-moralis'
-import { abi } from 'contracts/RobotPackage.json'
+import { abi } from 'contracts/PiecePackage.json'
 
 interface packageProps {
   functionName: string
+  params?: { [key: string]: string | number }
 }
 
-export const usePackagePiece = ({ functionName }: packageProps) => {
-  const { fetch: pieceFetch } = useWeb3ExecuteFunction({
-    abi,
-    contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
-    functionName
-  })
+export const packagePieceProps = (params, functionName) => ({
+  abi,
+  contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+  functionName,
+  params
+})
 
-  return { pieceFetch }
+export const usePackagePiece = ({ params, functionName }: packageProps) => {
+  const { fetch: packagePieceFetch } = useWeb3ExecuteFunction(
+    packagePieceProps(params, functionName)
+  )
+
+  return { packagePieceFetch }
 }

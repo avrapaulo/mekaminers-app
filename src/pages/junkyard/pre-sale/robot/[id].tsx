@@ -74,7 +74,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
   const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
   const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
-  const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -87,7 +87,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
 
   useEffect(() => {
     if (isWeb3Enabled) {
-      robotFetch({
+      packageRobotFetch({
         onSuccess: (result: any) => {
           setRobotPackageBought({
             pack1: +result._firstPackageCount,
@@ -100,11 +100,11 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
         }
       })
     }
-  }, [isWeb3Enabled, robotFetch, setRobotPackageBought])
+  }, [isWeb3Enabled, packageRobotFetch, setRobotPackageBought])
 
   const buyPackage = async (id: number, amount: number) => {
     if (isAuthenticated) {
-      robotFetch({
+      packageRobotFetch({
         onSuccess: async (result: any) => {
           if (
             (id === 1 && result._firstPackageCount >= robots[0].units) ||

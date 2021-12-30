@@ -17,8 +17,8 @@ import { pieceCountSelector, robotCountSelector } from 'recoil/selector'
 
 const PreSale = () => {
   const { isWeb3Enabled } = useMoralis()
-  const { pieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
-  const { robotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+  const { packagePieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
+  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
 
   const [piecePackageBought, setPiecePackageBought] = useRecoilState(piecePackageCount)
   const [robotPackageBought, setRobotPackageBought] = useRecoilState(robotPackageCount)
@@ -28,7 +28,7 @@ const PreSale = () => {
 
   useEffect(() => {
     if (isWeb3Enabled) {
-      pieceFetch({
+      packagePieceFetch({
         onSuccess: (result: any) => {
           setPiecePackageBought({
             pack1: +result._firstPackageCount,
@@ -40,7 +40,7 @@ const PreSale = () => {
           // console.log(data)
         }
       })
-      robotFetch({
+      packageRobotFetch({
         onSuccess: (result: any) => {
           setRobotPackageBought({
             pack1: +result._firstPackageCount,
@@ -53,7 +53,13 @@ const PreSale = () => {
         }
       })
     }
-  }, [isWeb3Enabled, pieceFetch, robotFetch, setRobotPackageBought, setPiecePackageBought])
+  }, [
+    isWeb3Enabled,
+    packagePieceFetch,
+    packageRobotFetch,
+    setRobotPackageBought,
+    setPiecePackageBought
+  ])
 
   const robots = [
     {
