@@ -59,24 +59,27 @@ const PreSale = () => {
     {
       id: 1,
       title: 'Package 1',
-      bought: robotPackageBought.pack1,
-      total: 300,
+      // bought: robotPackageBought.pack1,
+      bought: 0,
+      total: 400,
       icon: ClockIcon,
       price: 0.2
     },
     {
       id: 2,
       title: 'Package 2',
-      bought: robotPackageBought.pack2,
-      total: 120,
+      // bought: robotPackageBought.pack2,
+      bought: 0,
+      total: 200,
       icon: BadgeCheckIcon,
       price: 0.5
     },
     {
       id: 3,
       title: 'Package 3',
-      bought: robotPackageBought.pack3,
-      total: 50,
+      // bought: robotPackageBought.pack3,
+      bought: 0,
+      total: 100,
       icon: UsersIcon,
       price: 0.9
     }
@@ -86,7 +89,8 @@ const PreSale = () => {
     {
       id: 1,
       title: 'Package 1',
-      bought: piecePackageBought.pack1,
+      // bought: piecePackageBought.pack1,
+      bought: 0,
       total: 340,
       icon: CashIcon,
       price: 0.2
@@ -94,7 +98,8 @@ const PreSale = () => {
     {
       id: 2,
       title: 'Package 2',
-      bought: piecePackageBought.pack2,
+      // bought: piecePackageBought.pack2,
+      bought: 0,
       total: 175,
       icon: ReceiptRefundIcon,
       price: 0.5
@@ -102,7 +107,8 @@ const PreSale = () => {
     {
       id: 3,
       title: 'Package 3',
-      bought: piecePackageBought.pack3,
+      // bought: piecePackageBought.pack3,
+      bought: 0,
       total: 75,
       icon: AcademicCapIcon,
       price: 0.9

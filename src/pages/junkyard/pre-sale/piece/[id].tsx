@@ -107,9 +107,6 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
           ) {
             setShow(true)
             setMessage('Sold out!')
-          } else if ((await piecesPackage.methods.tokenOfOwner(wallet).call()).length === 5) {
-            setShow(true)
-            setMessage('You only can buy 5 packages of pieces')
           } else {
             const options = {
               abi,
@@ -139,7 +136,8 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
         units={units}
         items={items}
         price={price}
-        packageBought={piecePackageBought[`pack${id}`]}
+        // packageBought={piecePackageBought[`pack${id}`]}
+        packageBought={0}
         onBuy={() => buyPackage(id, price)}
       >
         <PiecesItem classes={classes} bonus={classBonusPieces} />

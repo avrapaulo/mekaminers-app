@@ -14,7 +14,7 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
   <div>
     <div className="relative w-72 sm:w-80 md:w-52 xl:w-80 2xl:w-96 h-80 md:h-60 xl:h-80 2xl:h-96 mx-auto text-tory-blue-500">
       <img className="absolute" src={`/card-bg-${type}.png`} height="250" alt="card presale" />
-      <div className="p-3 pb-6 flex flex-col place-content-between h-full ">
+      <div className="p-3 pb-6 flex flex-col h-full">
         <div className="relative flex justify-center">
           <img
             alt="Logo Meka Miners"
