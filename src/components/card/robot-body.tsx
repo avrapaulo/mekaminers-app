@@ -1,56 +1,70 @@
 import { classNames } from 'helpers/class-names'
-import { rarity } from 'constants/rarity'
+import { rarityInfo } from 'constants/rarity'
 import { statusDescription } from 'constants/status'
 
 interface RobotBodyProps {
-  rarityId?: number | string
+  rarity?: number | string
   bonus: number
   robotStatus: { key: string; value: number }[]
   piecesStatus: { key: string; value: number }[]
 }
 
-export const RobotBody = ({ rarityId, bonus, robotStatus, piecesStatus }: RobotBodyProps) => (
+export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBodyProps) => (
   <div className="flex-1 p-4 flex flex-col">
     <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2 lg:grid-cols-2 lg:gap-x-1">
       {robotStatus.map(({ key, value }) => {
         switch (key) {
-          case 'c':
+          case 'Capacity':
             return (
               <div
                 className={classNames(
-                  'flex space-x-1 justify-center border-2 rounded-md',
-                  rarity[rarityId].border
+                  'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}
                 title={statusDescription[key]}
               >
-                <div className="uppercase">{key}:</div>
+                <div className="uppercase h-5 w-5">
+                  <img
+                    alt="Logo Meka Miners"
+                    className="h-full w-full object-contain"
+                    src={`/icons-status/${key.toLowerCase()}.png`}
+                  />
+                </div>
                 <div className="">{value}</div>
-                <div className="text-xs">
-                  {piecesStatus && piecesStatus?.length !== 0 && (
-                    <span className="text-green-500">
+                <div className="text-xs flex justify-center items-center">
+                  {piecesStatus && piecesStatus?.length !== 0 ? (
+                    <span className="text-green-900">
                       +
-                      {value * bonus +
-                        value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}
+                      {(value * bonus) / 100 +
+                        (value *
+                          piecesStatus?.find(({ key: pieceKey }) => key === pieceKey).value) /
+                          100}
                     </span>
+                  ) : (
+                    <span className="text-green-500">+{(value * bonus) / 100}</span>
                   )}
                 </div>
               </div>
             )
-          case 'e':
+          case 'Efficiency':
             return (
               <div
                 className={classNames(
-                  'flex space-x-1 justify-center border-2 rounded-md',
-                  rarity[rarityId].border
+                  'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}
                 title={statusDescription[key]}
               >
-                <div className="uppercase">{key}:</div>
+                <div className="uppercase h-5 w-5">
+                  <img
+                    alt="Logo Meka Miners"
+                    className="h-full w-full object-contain"
+                    src={`/icons-status/${key.toLowerCase()}.png`}
+                  />
+                </div>
                 <div className="">
                   {value}
                   {piecesStatus?.find(({ key: pieceKey }) => key === pieceKey) ? '' : 'm'}
                 </div>
-                <div className="text-xs">
+                <div className="text-xs flex justify-center items-center">
                   {piecesStatus && piecesStatus?.length !== 0 && (
                     <span className="text-green-500">
                       -{value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}m
@@ -59,20 +73,25 @@ export const RobotBody = ({ rarityId, bonus, robotStatus, piecesStatus }: RobotB
                 </div>
               </div>
             )
-          case 'o':
-          case 'st':
-          case 'sp':
+          case 'OilDecrease':
+          case 'Stealthiness':
+          case 'Speed':
             return (
               <div
                 className={classNames(
-                  'flex space-x-1 justify-center border-2 rounded-md',
-                  rarity[rarityId].border
+                  'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}
                 title={statusDescription[key]}
               >
-                <div className="uppercase">{key}:</div>
+                <div className="uppercase h-5 w-5">
+                  <img
+                    alt="Logo Meka Miners"
+                    className="h-full w-full object-contain"
+                    src={`/icons-status/${key.toLowerCase()}.png`}
+                  />
+                </div>
                 <div className="">{value}</div>
-                <div className="text-xs">
+                <div className="text-xs flex justify-center items-center">
                   {piecesStatus && piecesStatus?.length !== 0 && (
                     <span className="text-green-500">
                       +{value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}

@@ -84,6 +84,7 @@ export const Box = ({ id, count, type }: BoxProps) => {
     { packageType: +id },
     { autoFetch: false }
   )
+
   const router = useRouter()
   const [output, setOutput] = useState<string>()
   const [received, setReceived] = useState([])

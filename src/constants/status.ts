@@ -1,7 +1,7 @@
 export const statusDescription = {
-  c: 'Capacity (Right Arm)',
-  e: 'Efficiency (Left Arm)',
-  o: 'Oil Decrease (Chest)',
-  st: 'Stealthiness (Head)',
-  sp: 'Speed (Legs)'
+  Capacity: 'Capacity (Right Arm)',
+  Efficiency: 'Efficiency (Left Arm)',
+  OilDecrease: 'Oil Decrease (Chest)',
+  Stealthiness: 'Stealthiness (Head)',
+  Speed: 'Speed (Legs)'
 }
