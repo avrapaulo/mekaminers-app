@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
@@ -9,124 +9,7 @@ import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { Mode } from 'components/card/mode'
 import { RobotBody } from 'components/card/robot-body'
-
-const robots = [
-  {
-    token: 1,
-    title: 'robot asd asd asd asd ',
-    imageSrc: '/banner.png',
-    bonus: 0.2,
-    mode: 'selling',
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ]
-  },
-  {
-    token: 2,
-    rarityId: 2,
-    title: 'robot asd asd asd asd ',
-    imageSrc: '/banner.png',
-    bonus: 0.2,
-    mode: 'selling',
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ],
-    piecesStatus: [
-      { key: 'c', value: 0.5 },
-      { key: 'e', value: 0.25 },
-      { key: 'o', value: 0.5 },
-      { key: 'st', value: 0.5 },
-      { key: 'sp', value: 0.5 }
-    ]
-  },
-  {
-    token: 3,
-    rarityId: 3,
-    title: 'Basic Tee',
-    imageSrc: '/banner.png',
-    bonus: 0.2,
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ],
-    piecesStatus: [
-      { key: 'c', value: 0.5 },
-      { key: 'e', value: 0.25 },
-      { key: 'o', value: 0.5 },
-      { key: 'st', value: 0.5 },
-      { key: 'sp', value: 0.5 }
-    ]
-  },
-  {
-    token: 4,
-    rarityId: 4,
-    title: 'Basic Tee',
-    imageSrc: '/banner.png',
-    bonus: 0.2,
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ],
-    piecesStatus: [
-      { key: 'c', value: 0.5 },
-      { key: 'e', value: 0.25 },
-      { key: 'o', value: 0.5 },
-      { key: 'st', value: 0.5 },
-      { key: 'sp', value: 0.5 }
-    ]
-  },
-  {
-    token: 5,
-    rarityId: 5,
-    title: 'Basic Tee',
-    imageSrc: '/banner.png',
-    bonus: 0.2,
-    mode: 'farm',
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ],
-    piecesStatus: []
-  },
-  {
-    token: 6,
-    rarityId: 5,
-    title: 'Basic Tee',
-    imageSrc: '/banner.png',
-    bonus: 0.5,
-    robotStatus: [
-      { key: 'c', value: 10 },
-      { key: 'e', value: 60 },
-      { key: 'o', value: 50 },
-      { key: 'st', value: 2 },
-      { key: 'sp', value: 3 }
-    ],
-    piecesStatus: [
-      { key: 'c', value: 0.5 },
-      { key: 'e', value: 0.25 },
-      { key: 'o', value: 0.5 },
-      { key: 'st', value: 0.5 },
-      { key: 'sp', value: 0.5 }
-    ]
-  }
-]
+import { Robot } from 'components/3D'
 
 interface RobotsProps {
   bonus: number
@@ -134,7 +17,8 @@ interface RobotsProps {
   token: number
   rarity: string
   title: string
-  robotStatus: { key: string; value: number }[]
+  type: string
+  robotStatus: { key: string; value: number; id: number }[]
   piecesStatus: { key: string; value: number }[]
 }
 
@@ -160,14 +44,19 @@ const RobotsPage = () => {
     <Layout>
       <>
         {(data as RobotsProps[])?.map(
-          ({ token, title, rarity = 'default', robotStatus, piecesStatus, bonus, mode }) => (
+          ({ token, title, rarity = 'default', robotStatus, piecesStatus, bonus, mode, type }) => (
             <Link key={token} href={`/inventory/robots/${token}`}>
               <a className="relative flex">
                 <Mode modeId={mode} />
+
                 <Card
                   rarity={rarity}
                   title={title}
-                  imageCard={<img alt="Logo Meka Miners" src="/banner.png" />}
+                  imageCard={
+                    <Suspense fallback={null}>
+                      <Robot rarity={rarity} robotType={type.toLowerCase()} />
+                    </Suspense>
+                  }
                 >
                   <RobotBody
                     bonus={bonus}

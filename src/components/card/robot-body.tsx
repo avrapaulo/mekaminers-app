@@ -17,6 +17,7 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
           case 'Capacity':
             return (
               <div
+                key={value}
                 className={classNames(
                   'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}
@@ -48,6 +49,7 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
           case 'Efficiency':
             return (
               <div
+                key={value}
                 className={classNames(
                   'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}
@@ -78,6 +80,7 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
           case 'Speed':
             return (
               <div
+                key={value}
                 className={classNames(
                   'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
                 )}

@@ -10,7 +10,7 @@ const pieces = [
     title: 'Basic Tee',
     imageSrc: '/banner.png',
     piecesStatus: [{ key: 'c', value: 10 }],
-    mode: 'sell'
+    mode: 1
   },
   {
     token: 1,
@@ -30,7 +30,7 @@ const PiecesPage = () => {
             <a className="relative flex">
               <Mode modeId={mode} />
               <Card
-                rarityId={rarityId}
+                rarity={rarityId}
                 title={title}
                 imageCard={<img alt="Logo Meka Miners" src={imageSrc} />}
               >
