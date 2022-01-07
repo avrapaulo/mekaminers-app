@@ -26,7 +26,7 @@ const RobotsPage = () => {
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
   const { fetch, data } = useMoralisCloudFunction('getMintedRobots ', {}, { autoFetch: false })
-  console.log(data)
+
   useEffect(() => {
     const robots1 = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
     const result = async () => {

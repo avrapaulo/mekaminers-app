@@ -8,8 +8,9 @@ import { usePackageRobot } from 'hooks'
 import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
-import { abi } from 'contracts/RobotPackage.json'
+import { abi } from 'contracts/RobotPackageGen1.json'
 import { Notification } from 'components/notification'
+import { addressType } from 'helpers/address'
 
 interface RobotsProps {
   id: number
@@ -78,10 +79,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const robotPackage = new web3.eth.Contract(
-    abi as AbiItem[],
-    process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
-  )
+  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('robot', 0))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 
@@ -116,7 +114,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
           } else {
             const options = {
               abi,
-              contractAddress: process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS,
+              contractAddress: addressType('robot', 0),
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {

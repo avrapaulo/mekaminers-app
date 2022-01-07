@@ -7,11 +7,13 @@ import { walletAtom } from 'recoil/atoms'
 import { useMeka, packagePieceProps, packageRobotProps } from 'hooks'
 import { Card } from 'components/card'
 import { classNames } from 'helpers/class-names'
+import { addressType } from 'helpers/address'
 
 interface BoxProps {
   id: number
-  count: number[]
+  gen: number
   type: string
+  count: number[]
 }
 
 const config = {
@@ -29,7 +31,7 @@ const config = {
 }
 
 const animationDelay = 4000
-const amountToApprove = 100000
+const amountToApprove = 5
 
 const robotTest = [{ key: 'd' }, { key: 'e' }]
 
@@ -46,17 +48,14 @@ const buttonText = (loading, unseenItems, isOpen, boxToOpen) => {
   return 'Open'
 }
 
-export const Box = ({ id, count, type }: BoxProps) => {
+export const Box = ({ id, count, type, gen }: BoxProps) => {
   const wallet = useRecoilValue(walletAtom)
   const { Moralis } = useMoralis()
 
   const { fetchMeka: fetchMekaAllowance } = useMeka({
     functionName: 'allowance',
     params: {
-      spender:
-        type === 'robot'
-          ? process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
-          : process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+      spender: addressType(type, gen),
       owner: wallet
     }
   })
@@ -64,10 +63,7 @@ export const Box = ({ id, count, type }: BoxProps) => {
   const { fetchMeka: fetchMekaApprove } = useMeka({
     functionName: 'approve',
     params: {
-      spender:
-        type === 'robot'
-          ? process.env.NEXT_PUBLIC_ROBOTPACKAGE_ADDRESS
-          : process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+      spender: addressType(type, gen),
       amount: Moralis.Units.ETH(amountToApprove)
     }
   })
@@ -81,7 +77,7 @@ export const Box = ({ id, count, type }: BoxProps) => {
   )
   const { fetch: fetchUnpackedPieces } = useMoralisCloudFunction(
     'getUnpackedPieces',
-    { packageType: +id },
+    { packageType: gen === 0 ? +id : +id - 3 },
     { autoFetch: false }
   )
 
@@ -97,7 +93,9 @@ export const Box = ({ id, count, type }: BoxProps) => {
   return (
     <Card
       // TODO add pieces also
-      title={type === 'robot' ? `Package Robots ${id}` : `Package Pieces ${id}`}
+      title={
+        type === 'robot' ? `Package Robots ${id} - Gen ${gen}` : `Package Pieces ${id} - Gen ${gen}`
+      }
       imageCard={
         loading ? (
           <div className="flex h-full justify-center items-center animation-y">
@@ -106,7 +104,10 @@ export const Box = ({ id, count, type }: BoxProps) => {
             </div>
           </div>
         ) : (
-          <img alt="Logo Meka Miners" src={isOpen ? output : `/gif/boxLvl${id}-${type}.gif`} />
+          <img
+            alt="Logo Meka Miners"
+            src={isOpen ? output : `/gif/boxLvl${gen === 0 ? +id : +id - 3}-${type}.gif`}
+          />
         )
       }
     >
@@ -137,11 +138,13 @@ export const Box = ({ id, count, type }: BoxProps) => {
 
                       const robotParams = packageRobotProps(
                         { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                        'openPackage'
+                        'openPackage',
+                        gen
                       )
                       const pieceParams = packagePieceProps(
                         { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                        'openPackage'
+                        'openPackage',
+                        gen
                       )
 
                       await packageFetch({

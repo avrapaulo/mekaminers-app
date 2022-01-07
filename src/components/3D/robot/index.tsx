@@ -47,7 +47,6 @@ type ActionName = 'Click'
 type GLTFActions = Record<ActionName, THREE.AnimationAction>
 
 export const Robot = ({ ...props }: RobotProps & JSX.IntrinsicElements['group']) => {
-  console.log(props.robotType)
   const group = useRef<THREE.Group>()
   const { nodes: nodeHead, materials: materialsHead } = useGLTF(
     `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].Stealthiness}.glb`

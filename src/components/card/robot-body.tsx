@@ -32,8 +32,8 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
                 </div>
                 <div className="">{value}</div>
                 <div className="text-xs flex justify-center items-center">
-                  {piecesStatus && piecesStatus?.length !== 0 ? (
-                    <span className="text-green-900">
+                  {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) ? (
+                    <span className="text-green-500">
                       +
                       {(value * bonus) / 100 +
                         (value *
@@ -67,7 +67,7 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
                   {piecesStatus?.find(({ key: pieceKey }) => key === pieceKey) ? '' : 'm'}
                 </div>
                 <div className="text-xs flex justify-center items-center">
-                  {piecesStatus && piecesStatus?.length !== 0 && (
+                  {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) && (
                     <span className="text-green-500">
                       -{value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}m
                     </span>
@@ -95,9 +95,9 @@ export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBod
                 </div>
                 <div className="">{value}</div>
                 <div className="text-xs flex justify-center items-center">
-                  {piecesStatus && piecesStatus?.length !== 0 && (
+                  {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) && (
                     <span className="text-green-500">
-                      +{value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}
+                      +{value * piecesStatus?.find(({ key: pieceKey }) => key === pieceKey)?.value}
                     </span>
                   )}
                 </div>

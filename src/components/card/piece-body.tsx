@@ -1,5 +1,5 @@
 import { classNames } from 'helpers/class-names'
-import { rarity } from 'constants/rarity'
+import { rarityInfo } from 'constants/rarity'
 import { statusDescription } from 'constants/status'
 
 interface PiecesBodyProps {
@@ -15,7 +15,7 @@ export const PiecesBody = ({ piecesStatus, rarityId }: PiecesBodyProps) => (
           key={key}
           className={classNames(
             'flex space-x-1 justify-center border-2 rounded-md px-2 py-1',
-            rarity[rarityId].border
+            (rarityInfo[rarityId] || rarityInfo.default).border
           )}
           title={statusDescription[key]}
         >

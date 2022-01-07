@@ -10,6 +10,7 @@ import { classBonusPieces } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
 import { usePackagePiece } from 'hooks'
 import { Notification } from 'components/notification'
+import { addressType } from 'helpers/address'
 
 interface PiecesProps {
   id: number
@@ -72,10 +73,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const piecesPackage = new web3.eth.Contract(
-    abi as AbiItem[],
-    process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS
-  )
+  const piecesPackage = new web3.eth.Contract(abi as AbiItem[], addressType('robot', 1))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 
@@ -110,7 +108,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
           } else {
             const options = {
               abi,
-              contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+              contractAddress: addressType('robot', 1),
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {
@@ -138,7 +136,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
         price={price}
         // packageBought={piecePackageBought[`pack${id}`]}
         packageBought={0}
-        onBuy={() => buyPackage(id, price)}
+        onBuy={() => buyPackage(id + 3, price)}
       >
         <PiecesItem classes={classes} bonus={classBonusPieces} />
       </Item>

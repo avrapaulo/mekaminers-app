@@ -1,14 +1,15 @@
 import { useWeb3ExecuteFunction } from 'react-moralis'
 import { abi } from 'contracts/PiecePackage.json'
+import { addressType } from 'helpers/address'
 
 interface packageProps {
   functionName: string
   params?: { [key: string]: string | number }
 }
 
-export const packagePieceProps = (params, functionName) => ({
+export const packagePieceProps = (params, functionName: string, gen = 0) => ({
   abi,
-  contractAddress: process.env.NEXT_PUBLIC_PIECEPACKAGE_ADDRESS,
+  contractAddress: addressType('piece', gen),
   functionName,
   params
 })
