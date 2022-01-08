@@ -93,9 +93,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
   return (
     <Card
       // TODO add pieces also
-      title={
-        type === 'robot' ? `Package Robots ${id} - Gen ${gen}` : `Package Pieces ${id} - Gen ${gen}`
-      }
+      title={`Package ${type}s ${gen === 0 ? +id : +id - 3} - Gen ${gen}`}
       imageCard={
         loading ? (
           <div className="flex h-full justify-center items-center animation-y">

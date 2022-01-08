@@ -179,9 +179,14 @@ export const Layout = ({ children }: LayoutProps) => {
                             {(router.pathname === item.defaultHref ||
                               (item.defaultHref.length > 1 &&
                                 router.pathname.startsWith(item.defaultHref))) && (
-                              <img alt="Logo" src="/bar.png" />
+                              <img alt="Logo" className="absolute left-0" src="/bar.png" />
                             )}
-                            <div className="bg-white rounded-full p-1 absolute right-px transform -translate-x-6 bottom-1">
+                            <div
+                              className={classNames(
+                                '-translate-x-3',
+                                'bg-white rounded-full p-1 absolute right-1.5 transform'
+                              )}
+                            >
                               <item.icon
                                 className="flex-shrink-0 h-8 w-8 text-black"
                                 aria-hidden="true"
