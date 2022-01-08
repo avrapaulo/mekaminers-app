@@ -41,10 +41,10 @@ const later = async (delay = 1000) => {
 }
 
 // TODO add pieces also
-const buttonText = (loading, unseenItems, isOpen, boxToOpen) => {
+const buttonText = (loading, unseenItems, isOpen, boxToOpen, type) => {
   if (loading) return '\u00A0'
   if (unseenItems !== 0) return 'Next'
-  if (isOpen) return boxToOpen !== 0 ? 'Next Box' : 'My Robots'
+  if (isOpen) return boxToOpen !== 0 ? 'Next Box' : `My ${type[0].toUpperCase()}${type.slice(1)}s`
   return 'Open'
 }
 
@@ -92,8 +92,9 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
 
   return (
     <Card
-      // TODO add pieces also
-      title={`Package ${type}s ${gen === 0 ? +id : +id - 3} - Gen ${gen}`}
+      title={`Package ${type[0].toUpperCase()}${type.slice(1)}s ${
+        gen === 0 ? +id : +id - 3
+      } - Gen ${gen}`}
       imageCard={
         loading ? (
           <div className="flex h-full justify-center items-center animation-y">
@@ -126,8 +127,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                 fetchMekaAllowance({
                   onSuccess: async (result: string | number) => {
                     if (received.length === 0 && boxNumbers.length === 0) {
-                      // TODO add pieces also
-                      return router.push('/inventory/robots')
+                      return router.push(`/inventory/${type}s`)
                     }
 
                     let resultFetch = received
@@ -170,9 +170,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                           }
 
                           setLoading(false)
-                          setOutput(
-                            `/gif/${type}/${resultFetch[0].type}-${resultFetch[0].rarity}.gif`.toLowerCase()
-                          )
+                          setOutput('/logo.png')
                           setReceived(resultFetch.slice(1))
                           setTimeout(() => setInactive(false), animationDelay)
                           setIsOpen(true)
@@ -187,9 +185,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                     } else {
                       await later(2000)
                       setLoading(false)
-                      setOutput(
-                        `/gif/${type}/${resultFetch[0].type}-${resultFetch[0].rarity}.gif`.toLowerCase()
-                      )
+                      setOutput('/logo.png')
                       setReceived(resultFetch.slice(1))
                       setTimeout(() => setInactive(false), animationDelay)
                       setDisplayConfetti(true)
@@ -203,7 +199,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
               }}
             >
               <Confetti active={displayConfetti} config={config} />
-              {buttonText(loading, received.length, isOpen, boxNumbers.length)}
+              {buttonText(loading, received.length, isOpen, boxNumbers.length, type)}
             </button>
           </div>
           <div className="text-sm font-medium text-right">( x{boxNumbers.length} )</div>

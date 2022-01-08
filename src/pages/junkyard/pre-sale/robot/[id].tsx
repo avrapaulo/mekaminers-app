@@ -75,11 +75,11 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
   const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
   const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
-  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount', gen: 1 })
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('robot', 0))
+  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('piece', 0))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 
@@ -114,7 +114,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
           } else {
             const options = {
               abi,
-              contractAddress: addressType('robot', 0),
+              contractAddress: addressType('piece', 0),
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {
@@ -141,8 +141,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
         units={units}
         items={items}
         price={price}
-        // packageBought={robotPackageBought[`pack${id}`]}
-        packageBought={0}
+        packageBought={robotPackageBought[`pack${id}`]}
         onBuy={() => buyPackage(id, price)}
       >
         <RobotItem classes={classes} bonus={classBonusRobots} />

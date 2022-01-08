@@ -4,6 +4,7 @@ import { addressType } from 'helpers/address'
 
 interface packageProps {
   functionName: string
+  gen?: number
   params?: { [key: string]: string | number }
 }
 
@@ -14,9 +15,9 @@ export const packageRobotProps = (params, functionName: string, gen = 0) => ({
   params
 })
 
-export const usePackageRobot = ({ functionName, params }: packageProps) => {
+export const usePackageRobot = ({ functionName, params, gen }: packageProps) => {
   const { fetch: packageRobotFetch } = useWeb3ExecuteFunction(
-    packageRobotProps(params, functionName)
+    packageRobotProps(params, functionName, gen)
   )
 
   return { packageRobotFetch }

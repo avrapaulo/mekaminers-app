@@ -17,8 +17,8 @@ import { pieceCountSelector, robotCountSelector } from 'recoil/selector'
 
 const PreSale = () => {
   const { isWeb3Enabled } = useMoralis()
-  const { packagePieceFetch } = usePackagePiece({ functionName: 'getPackagesCount' })
-  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount' })
+  const { packagePieceFetch } = usePackagePiece({ functionName: 'getPackagesCount', gen: 1 })
+  const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount', gen: 1 })
 
   const [piecePackageBought, setPiecePackageBought] = useRecoilState(piecePackageCount)
   const [robotPackageBought, setRobotPackageBought] = useRecoilState(robotPackageCount)
@@ -65,8 +65,7 @@ const PreSale = () => {
     {
       id: 1,
       title: 'Package 1',
-      // bought: robotPackageBought.pack1,
-      bought: 0,
+      bought: robotPackageBought.pack1,
       total: 400,
       icon: ClockIcon,
       price: 0.2
@@ -74,8 +73,7 @@ const PreSale = () => {
     {
       id: 2,
       title: 'Package 2',
-      // bought: robotPackageBought.pack2,
-      bought: 0,
+      bought: robotPackageBought.pack2,
       total: 200,
       icon: BadgeCheckIcon,
       price: 0.5
@@ -83,8 +81,7 @@ const PreSale = () => {
     {
       id: 3,
       title: 'Package 3',
-      // bought: robotPackageBought.pack3,
-      bought: 0,
+      bought: robotPackageBought.pack3,
       total: 100,
       icon: UsersIcon,
       price: 0.9
@@ -95,8 +92,7 @@ const PreSale = () => {
     {
       id: 1,
       title: 'Package 1',
-      // bought: piecePackageBought.pack1,
-      bought: 0,
+      bought: piecePackageBought.pack1,
       total: 340,
       icon: CashIcon,
       price: 0.2
@@ -104,8 +100,7 @@ const PreSale = () => {
     {
       id: 2,
       title: 'Package 2',
-      // bought: piecePackageBought.pack2,
-      bought: 0,
+      bought: piecePackageBought.pack2,
       total: 175,
       icon: ReceiptRefundIcon,
       price: 0.5
@@ -113,8 +108,7 @@ const PreSale = () => {
     {
       id: 3,
       title: 'Package 3',
-      // bought: piecePackageBought.pack3,
-      bought: 0,
+      bought: piecePackageBought.pack3,
       total: 75,
       icon: AcademicCapIcon,
       price: 0.9
@@ -128,9 +122,9 @@ const PreSale = () => {
       </div>
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
-          <TopCard title="Available Pieces" description="0/700" img="piece" />
+          <TopCard title="Available Pieces" description={`${pieceCount}/700`} img="piece" />
           <Timer title="Starts in" />
-          <TopCard title="Available Robots" description="0/700" img="wheel" />
+          <TopCard title="Available Robots" description={`${robotCount}/700`} img="wheel" />
         </div>
         <div className="py-6 font-tech">
           <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">
