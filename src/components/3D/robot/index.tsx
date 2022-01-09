@@ -47,21 +47,22 @@ type ActionName = 'Click'
 type GLTFActions = Record<ActionName, THREE.AnimationAction>
 
 export const Robot = ({ ...props }: RobotProps & JSX.IntrinsicElements['group']) => {
+  const { robotType, rarity } = props
   const group = useRef<THREE.Group>()
   const { nodes: nodeHead, materials: materialsHead } = useGLTF(
-    `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].Stealthiness}.glb`
+    `/3d/${robotType}/${rarity}-${robotDefault[robotType].Stealthiness}.glb`
   ) as GLTFResult
   const { nodes: nodeBody, materials: materialsBody } = useGLTF(
-    `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].OilDecrease}.glb`
+    `/3d/${robotType}/${rarity}-${robotDefault[robotType].OilDecrease}.glb`
   ) as GLTFResult
   const { nodes: nodeArmL, materials: materialsArmL } = useGLTF(
-    `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].Efficiency}.glb`
+    `/3d/${robotType}/${rarity}-${robotDefault[robotType].Efficiency}.glb`
   ) as GLTFResult
   const { nodes: nodeArmR, materials: materialsArmR } = useGLTF(
-    `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].Capacity}.glb`
+    `/3d/${robotType}/${rarity}-${robotDefault[robotType].Capacity}.glb`
   ) as GLTFResult
   const { nodes: nodeLegs, materials: materialsLegs } = useGLTF(
-    `/3d/${props.robotType}/${props.rarity}-${robotDefault[props.robotType].Speed}.glb`
+    `/3d/${robotType}/${rarity}-${robotDefault[robotType].Speed}.glb`
   ) as GLTFResult
   // const { actions } = useAnimations<GLTFActions>(animations, group)
   return (
@@ -69,35 +70,29 @@ export const Robot = ({ ...props }: RobotProps & JSX.IntrinsicElements['group'])
       <group ref={group} {...props} dispose={null} position={[0, -1.35, 0]}>
         <primitive object={nodeArmR.Main} />
         <skinnedMesh
-          geometry={
-            nodeHead[`${props.rarity}-${robotDefault[props.robotType].Stealthiness}`].geometry
-          }
-          material={materialsHead[`${props.rarity}-${robotDefault[props.robotType].Stealthiness}`]}
-          skeleton={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].skeleton}
+          geometry={nodeHead[`${rarity}-${robotDefault[robotType].Stealthiness}`].geometry}
+          material={materialsHead[`${rarity}-${robotDefault[robotType].Stealthiness}`]}
+          skeleton={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].skeleton}
         />
         <skinnedMesh
-          geometry={
-            nodeBody[`${props.rarity}-${robotDefault[props.robotType].OilDecrease}`].geometry
-          }
-          material={materialsBody[`${props.rarity}-${robotDefault[props.robotType].OilDecrease}`]}
-          skeleton={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].skeleton}
+          geometry={nodeBody[`${rarity}-${robotDefault[robotType].OilDecrease}`].geometry}
+          material={materialsBody[`${rarity}-${robotDefault[robotType].OilDecrease}`]}
+          skeleton={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].skeleton}
         />
         <skinnedMesh
-          geometry={
-            nodeArmL[`${props.rarity}-${robotDefault[props.robotType].Efficiency}`].geometry
-          }
-          material={materialsArmL[`${props.rarity}-${robotDefault[props.robotType].Efficiency}`]}
-          skeleton={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].skeleton}
+          geometry={nodeArmL[`${rarity}-${robotDefault[robotType].Efficiency}`].geometry}
+          material={materialsArmL[`${rarity}-${robotDefault[robotType].Efficiency}`]}
+          skeleton={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].skeleton}
         />
         <skinnedMesh
-          geometry={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].geometry}
-          material={materialsArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`]}
-          skeleton={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].skeleton}
+          geometry={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].geometry}
+          material={materialsArmR[`${rarity}-${robotDefault[robotType].Capacity}`]}
+          skeleton={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].skeleton}
         />
         <skinnedMesh
-          geometry={nodeLegs[`${props.rarity}-${robotDefault[props.robotType].Speed}`].geometry}
-          material={materialsLegs[`${props.rarity}-${robotDefault[props.robotType].Speed}`]}
-          skeleton={nodeArmR[`${props.rarity}-${robotDefault[props.robotType].Capacity}`].skeleton}
+          geometry={nodeLegs[`${rarity}-${robotDefault[robotType].Speed}`].geometry}
+          material={materialsLegs[`${rarity}-${robotDefault[robotType].Speed}`]}
+          skeleton={nodeArmR[`${rarity}-${robotDefault[robotType].Capacity}`].skeleton}
         />
       </group>
     </CanvasContainer>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction, useWeb3ExecuteFunction } from 'react-moralis'
@@ -8,12 +8,21 @@ import { useMeka, packagePieceProps, packageRobotProps } from 'hooks'
 import { Card } from 'components/card'
 import { classNames } from 'helpers/class-names'
 import { addressType } from 'helpers/address'
+import { Piece } from 'components/3D'
 
 interface BoxProps {
   id: number
   gen: number
+  token: number
   type: string
   count: number[]
+}
+
+interface BoxResultProps {
+  token: number
+  rarity: string
+  type: string
+  pieceStatus?: { key: string; id: number }[]
 }
 
 const config = {
@@ -31,7 +40,7 @@ const config = {
 }
 
 const animationDelay = 4000
-const amountToApprove = 5
+const amountToApprove = 10000
 
 const robotTest = [{ key: 'd' }, { key: 'e' }]
 
@@ -40,7 +49,6 @@ const later = async (delay = 1000) => {
   return robotTest
 }
 
-// TODO add pieces also
 const buttonText = (loading, unseenItems, isOpen, boxToOpen, type) => {
   if (loading) return '\u00A0'
   if (unseenItems !== 0) return 'Next'
@@ -82,13 +90,23 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
   )
 
   const router = useRouter()
-  const [output, setOutput] = useState<string>()
+  const [output, setOutput] = useState<BoxResultProps>()
   const [received, setReceived] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [inactive, setInactive] = useState(false)
   const [boxNumbers, setBoxNumbers] = useState(count)
   const [displayConfetti, setDisplayConfetti] = useState(false)
+
+  useEffect(() => {
+    if (isOpen && type === 'piece') {
+      const confettiPieces = async () => {
+        await later(1000)
+        setDisplayConfetti(true)
+      }
+      confettiPieces()
+    }
+  }, [isOpen, output, type])
 
   return (
     <Card
@@ -102,10 +120,22 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
               <img alt="Logo Meka Miners" src={'/meka.png'} />
             </div>
           </div>
+        ) : isOpen && type === 'piece' ? (
+          <Suspense fallback={null}>
+            <Piece
+              pieceId={output.pieceStatus[0].id}
+              rarity={output.rarity}
+              robotType={output.type}
+            />
+          </Suspense>
         ) : (
           <img
             alt="Logo Meka Miners"
-            src={isOpen ? output : `/gif/boxLvl${gen === 0 ? +id : +id - 3}-${type}.gif`}
+            src={
+              isOpen
+                ? `/gif/${type}/${output.type}-${output.rarity}.gif`.toLowerCase()
+                : `/gif/boxLvl${gen === 0 ? +id : +id - 3}-${type}.gif`
+            }
           />
         )
       }
@@ -168,14 +198,13 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
 
                             type === 'robot' ? unpackedRobots() : unpackedPieces()
                           }
-
+                          if (type !== 'piece') setDisplayConfetti(true)
                           setLoading(false)
-                          setOutput('/logo.png')
+                          setOutput(resultFetch[0])
                           setReceived(resultFetch.slice(1))
                           setTimeout(() => setInactive(false), animationDelay)
                           setIsOpen(true)
                           setBoxNumbers(boxNumbers.splice(1))
-                          setDisplayConfetti(true)
                         },
                         onError: () => {
                           setInactive(false)
@@ -185,10 +214,10 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                     } else {
                       await later(2000)
                       setLoading(false)
-                      setOutput('/logo.png')
+                      setOutput(resultFetch[0])
                       setReceived(resultFetch.slice(1))
                       setTimeout(() => setInactive(false), animationDelay)
-                      setDisplayConfetti(true)
+                      if (type !== 'piece') setDisplayConfetti(true)
                     }
                   },
                   onError: () => {
