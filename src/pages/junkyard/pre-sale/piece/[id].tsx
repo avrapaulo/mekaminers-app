@@ -112,7 +112,7 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {
-                _packageType: id,
+                _packageType: id + 3,
                 _isPresale: true
               }
             }

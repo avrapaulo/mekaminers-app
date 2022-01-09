@@ -11,7 +11,7 @@ interface RobotBodyProps {
 
 export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBodyProps) => (
   <div className="flex-1 p-4 flex flex-col">
-    <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2 lg:grid-cols-2 lg:gap-x-1">
+    <div className="grid grid-cols-2 sm:gap-x-6 gap-y-2 gap-x-1">
       {robotStatus.map(({ key, value }) => {
         switch (key) {
           case 'Capacity':

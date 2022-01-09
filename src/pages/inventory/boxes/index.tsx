@@ -20,8 +20,7 @@ interface MyPackages {
 
 const Boxes = () => {
   const wallet = useRecoilValue(walletAtom)
-  const [myRobots, setMyRobots] = useState<MyPackages[]>([])
-  const [myPieces, setMyPieces] = useState<MyPackages[]>([])
+  const [myRobotsPieces, setMyRobotsPieces] = useState<MyPackages[]>([])
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Boxes = () => {
         ])
 
       let myRobotsSave = []
-      robotPackageOwned.forEach(async (element, index, array) => {
+      for (const element of robotPackageOwned) {
         const robotData = await robotPackage.methods.getPackage(element).call()
 
         myRobotsSave = myRobotsSave.find(robot => robot.id === robotData[3])
@@ -64,11 +63,9 @@ const Boxes = () => {
               }
             ]
           : [...myRobotsSave, { id: robotData[3], count: [robotData[1]], type: 'robot', gen: 0 }]
+      }
 
-        if (index + 1 === array.length) setMyRobots(myRobotsSave)
-      })
-
-      robotPackageOwnedGen1.forEach(async (element, index, array) => {
+      for (const element of robotPackageOwnedGen1) {
         const robotData = await robotPackageGen1.methods.getPackage(element).call()
 
         myRobotsSave = myRobotsSave.find(robot => robot.id === robotData[3])
@@ -85,12 +82,10 @@ const Boxes = () => {
               }
             ]
           : [...myRobotsSave, { id: robotData[3], count: [robotData[1]], type: 'robot', gen: 1 }]
-
-        if (index + 1 === array.length) setMyRobots(myRobotsSave)
-      })
+      }
 
       let myPiecesSave = []
-      piecesPackageOwned.forEach(async (element, index, array) => {
+      for (const element of piecesPackageOwned) {
         const pieceData = await piecesPackage.methods.getPackage(element).call()
 
         myPiecesSave = myPiecesSave.find(piece => piece.id === pieceData[3])
@@ -107,33 +102,28 @@ const Boxes = () => {
               }
             ]
           : [...myPiecesSave, { id: pieceData[3], count: [pieceData[1]], type: 'piece', gen: 0 }]
+      }
 
-        if (index + 1 === array.length) setMyPieces(myPiecesSave)
-      })
-
-      piecesPackageOwnedGen1.forEach(async (element, index, array) => {
+      for (const element of piecesPackageOwnedGen1) {
         const pieceData = await piecesPackageGen1.methods.getPackage(element).call()
 
-        myPiecesSave = myPiecesSave.find(piece => piece.id === +pieceData[3] + 3)
+        myPiecesSave = myPiecesSave.find(piece => piece.id === pieceData[3])
           ? [
-              ...myPiecesSave.filter(item => item.id !== +pieceData[3] + 3),
+              ...myPiecesSave.filter(item => item.id !== pieceData[3]),
               {
-                id: +pieceData[3] + 3,
+                id: pieceData[3],
                 count: [
-                  ...myPiecesSave.filter(item => item.id === +pieceData[3] + 3)[0].count,
+                  ...myPiecesSave.filter(item => item.id === pieceData[3])[0].count,
                   pieceData[1]
                 ],
                 type: 'piece',
                 gen: 1
               }
             ]
-          : [
-              ...myPiecesSave,
-              { id: +pieceData[3] + 3, count: [pieceData[1]], type: 'piece', gen: 1 }
-            ]
+          : [...myPiecesSave, { id: pieceData[3], count: [pieceData[1]], type: 'piece', gen: 1 }]
+      }
 
-        if (index + 1 === array.length) setMyPieces(myPiecesSave)
-      })
+      setMyRobotsPieces([...myPiecesSave, ...myRobotsSave])
     }
     try {
       if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) result()
@@ -142,21 +132,20 @@ const Boxes = () => {
     }
 
     if (!isAuthenticated) {
-      setMyRobots([])
-      setMyPieces([])
+      setMyRobotsPieces([])
     }
   }, [web3, isWeb3Enabled, wallet, isAuthenticated])
 
   return (
     <>
-      {myRobots.length === 0 && myPieces.length === 0 ? (
+      {myRobotsPieces.length === 0 ? (
         <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
           <img alt="Logo Meka Miners" width="500" src="/empty.png" />
         </div>
       ) : (
         <Layout>
           <>
-            {[...myRobots, ...myPieces]
+            {myRobotsPieces
               ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
               .map(({ id, count, type, gen }) => (
                 <Box key={`${id}${type}${gen}`} count={count} id={id} type={type} gen={gen} />

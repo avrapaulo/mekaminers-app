@@ -3,12 +3,13 @@ import { rarityInfo } from 'constants/rarity'
 
 interface CardProps {
   rarity?: number | string
-  title: string
+  title?: string
+  description: string
   imageCard: JSX.Element
   children: JSX.Element
 }
 
-const Card = ({ rarity = 'default', title, imageCard, children }: CardProps) => (
+const Card = ({ rarity = 'default', title, description, imageCard, children }: CardProps) => (
   <div
     className={classNames(
       'group relative border rounded-2xl flex flex-col overflow-hidden w-60 bg-gray-500 bg-opacity-10',
@@ -16,7 +17,15 @@ const Card = ({ rarity = 'default', title, imageCard, children }: CardProps) => 
     )}
   >
     <div className="flex flex-row justify-end py-2">
-      <div className="flex justify-center flex-1 my-1 font-bold">{title}</div>
+      <div className="flex flex-col flex-1 justify-center">
+        {title && (
+          <>
+            <div className="flex justify-center font-bold">{title}</div>
+            <div className=" border-t border-gray-300 mx-10" />
+          </>
+        )}
+        <div className="flex justify-center font-bold">{description}</div>
+      </div>
       {rarity !== 'default' && (
         <>
           <div className="font-bold rotate-45 pr-3 absolute z-10">

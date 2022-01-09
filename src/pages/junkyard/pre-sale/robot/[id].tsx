@@ -114,7 +114,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
           } else {
             const options = {
               abi,
-              contractAddress: addressType('piece', 0),
+              contractAddress: addressType('pieces', 0),
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {

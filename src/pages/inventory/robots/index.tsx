@@ -25,12 +25,12 @@ interface RobotsProps {
 const RobotsPage = () => {
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
-  const { fetch, data } = useMoralisCloudFunction('getMintedRobots ', {}, { autoFetch: false })
+  const { fetch, data } = useMoralisCloudFunction('getMintedRobots', {}, { autoFetch: false })
 
   useEffect(() => {
-    const robots1 = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
+    const robots = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
     const result = async () => {
-      const tokenIds = await robots1.methods.tokenOfOwner(wallet).call()
+      const tokenIds = await robots.methods.tokenOfOwner(wallet).call()
       fetch({ params: { tokenIds: tokenIds.map((token: string) => +token) } })
     }
     try {
@@ -51,7 +51,7 @@ const RobotsPage = () => {
 
                 <Card
                   rarity={rarity}
-                  title={title}
+                  description={title}
                   imageCard={
                     <Suspense fallback={null}>
                       <Robot rarity={rarity} robotType={type.toLowerCase()} />

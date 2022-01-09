@@ -13,7 +13,6 @@ import { Piece } from 'components/3D'
 interface BoxProps {
   id: number
   gen: number
-  token: number
   type: string
   count: number[]
 }
@@ -22,7 +21,7 @@ interface BoxResultProps {
   token: number
   rarity: string
   type: string
-  pieceStatus?: { key: string; id: number }[]
+  piecesStatus?: { key: string; id: number }[]
 }
 
 const config = {
@@ -85,7 +84,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
   )
   const { fetch: fetchUnpackedPieces } = useMoralisCloudFunction(
     'getUnpackedPieces',
-    { packageType: gen === 0 ? +id : +id - 3 },
+    { packageType: +id },
     { autoFetch: false }
   )
 
@@ -110,7 +109,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
 
   return (
     <Card
-      title={`Package ${type[0].toUpperCase()}${type.slice(1)}s ${
+      description={`Package ${type[0].toUpperCase()}${type.slice(1)}s ${
         gen === 0 ? +id : +id - 3
       } - Gen ${gen}`}
       imageCard={
@@ -123,7 +122,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
         ) : isOpen && type === 'piece' ? (
           <Suspense fallback={null}>
             <Piece
-              pieceId={output.pieceStatus[0].id}
+              pieceId={output.piecesStatus[0].id}
               rarity={output.rarity}
               robotType={output.type}
             />
