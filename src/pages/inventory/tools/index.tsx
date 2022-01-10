@@ -1,39 +1,43 @@
+import { useEffect } from 'react'
+import { useMoralisCloudFunction, useMoralis } from 'react-moralis'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 
-const items = [
-  {
-    id: 1,
-    title: 'oil',
-    quantity: 158,
-    description: 'scrambled it to make a type scrambled it',
-    imageSrc: '/banner.png'
-  },
-  {
-    id: 1,
-    title: 'Toolkit',
-    quantity: 158,
-    description: 'scrambled it to make a type scrambled it',
-    imageSrc: '/banner.png'
-  }
-]
+interface ToolsProps {
+  value: number
+  key: string
+}
+
+const toolDescription = {
+  Toolkit: 'Used to activate mining bot operational systems',
+  Oil: 'Used to ensure robots gears do not become stuck, causing impact in the farm efficiency.'
+}
 
 const Tools = () => {
+  const { isAuthenticated } = useMoralis()
+  const { fetch, data } = useMoralisCloudFunction('getUtilities')
+
+  useEffect(() => {
+    const fetchTools = async () => await fetch()
+    if (isAuthenticated) fetchTools()
+  }, [isAuthenticated, fetch])
+
+  console.log(data)
   return (
     <Layout>
       <>
-        {items.map(({ id, title, imageSrc, quantity, description }) => (
+        {(data as ToolsProps[])?.map(({ key, value }) => (
           <Card
-            description={title}
-            key={id}
-            imageCard={<img alt="Logo Meka Miners" src={imageSrc} />}
+            description={key}
+            key={key}
+            imageCard={<img alt="Logo Meka Miners" src={`/${key.toLowerCase()}.png`} />}
           >
-            <div className="flex-1 p-4 flex flex-col">
+            <div className="flex-1 p-4 flex flex-col mt-5">
               <div className="h-full flex justify-between flex-col">
                 <div className="space-y-1 flex flex-col">
-                  <div className="text-center">{description}</div>
+                  <div className="text-center">{toolDescription[key]}</div>
                 </div>
-                <div className="text-sm font-medium text-right">( x{quantity} )</div>
+                <div className="text-sm font-medium text-right">( x{value} )</div>
               </div>
             </div>
           </Card>
