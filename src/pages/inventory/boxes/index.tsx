@@ -148,7 +148,9 @@ const Boxes = () => {
             {myRobotsPieces
               ?.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0))
               .map(({ id, count, type, gen }) => (
-                <Box key={`${id}${type}${gen}`} count={count} id={id} type={type} gen={gen} />
+                <div key={`${id}${type}${gen}`} className="flex justify-center">
+                  <Box count={count} id={id} type={type} gen={gen} />
+                </div>
               ))}
           </>
         </Layout>

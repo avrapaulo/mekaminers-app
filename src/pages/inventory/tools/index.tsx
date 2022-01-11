@@ -27,20 +27,23 @@ const Tools = () => {
     <Layout>
       <>
         {(data as ToolsProps[])?.map(({ key, value }) => (
-          <Card
-            description={key}
-            key={key}
-            imageCard={<img alt="Logo Meka Miners" src={`/${key.toLowerCase()}.png`} />}
-          >
-            <div className="flex-1 p-4 flex flex-col mt-5">
-              <div className="h-full flex justify-between flex-col">
-                <div className="space-y-1 flex flex-col">
-                  <div className="text-center">{toolDescription[key]}</div>
+          <div key={key} className="flex justify-center">
+            <Card
+              description={key}
+              imageCard={
+                <img alt="Logo Meka Miners" className="p-5" src={`/${key.toLowerCase()}.png`} />
+              }
+            >
+              <div className="flex-1 p-4 flex flex-col mt-5">
+                <div className="h-full flex justify-between flex-col">
+                  <div className="space-y-1 flex flex-col">
+                    <div className="text-center">{toolDescription[key]}</div>
+                  </div>
+                  <div className="text-sm font-medium text-right">( x{value} )</div>
                 </div>
-                <div className="text-sm font-medium text-right">( x{value} )</div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </div>
         ))}
       </>
     </Layout>

@@ -45,7 +45,7 @@ const PiecesPage = () => {
         {(data as PiecesProps[])?.map(
           ({ token, title, rarity = 'default', piecesStatus, mode, type }) => (
             <Link key={token} href={`/inventory/pieces/${token}`}>
-              <a className="relative flex">
+              <a className="relative flex justify-center">
                 <Mode modeId={mode} />
                 <Card
                   rarity={rarity}

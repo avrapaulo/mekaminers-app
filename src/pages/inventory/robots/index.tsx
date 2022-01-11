@@ -46,7 +46,7 @@ const RobotsPage = () => {
         {(data as RobotsProps[])?.map(
           ({ token, title, rarity = 'default', robotStatus, piecesStatus, bonus, mode, type }) => (
             <Link key={token} href={`/inventory/robots/${token}`}>
-              <a className="relative flex">
+              <a className="relative flex justify-center">
                 <Mode modeId={mode} />
 
                 <Card
