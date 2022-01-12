@@ -27,7 +27,7 @@ export const Piece = ({ ...props }: RobotProps & JSX.IntrinsicElements['group'])
     `/3d/${robotType.toLowerCase()}/${rarity}-${pieceId}.glb`
   ) as GLTFResult
   return (
-    <CanvasContainer camera={35}>
+    <CanvasContainer camera={45}>
       <group ref={group} {...props} dispose={null} position={[0, -1.35, 0]}>
         <primitive object={nodes.Main} />
         <skinnedMesh
