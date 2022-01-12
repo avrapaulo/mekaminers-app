@@ -2,7 +2,7 @@ import { Header } from 'components/tab-header'
 
 const Robots = () => (
   <>
-    <Header type="junkyard" />
+    {/* <Header type="junkyard" /> */}
     <div>Robots</div>
   </>
 )

@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
 import { walletCoins } from 'recoil/selector'
-import { defaultWallet, walletAtom, disconnectAtom } from 'recoil/atoms'
+import { defaultWallet, walletAtom, disconnectAtom, screenAtom } from 'recoil/atoms'
 import {
   ShoppingCartIcon,
   MenuAlt1Icon,
@@ -68,6 +68,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
+  const screen = useRecoilValue(screenAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
@@ -101,7 +102,7 @@ export const Layout = ({ children }: LayoutProps) => {
         }}
       />
       <DisconnectModel />
-      <div className="min-h-full">
+      <div className="max-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -231,7 +232,7 @@ export const Layout = ({ children }: LayoutProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className="flex flex-col flex-1">
+        <div className={`flex flex-col flex-1 ${screen ? 'h-screen' : ''}`}>
           <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none bg-gradient-to-t from-blue-zodiac-500 to-blue-zodiac-700">
             <button
               type="button"

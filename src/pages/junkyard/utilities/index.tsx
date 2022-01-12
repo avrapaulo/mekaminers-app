@@ -2,7 +2,7 @@ import { Header } from 'components/tab-header'
 
 const Utilities = () => (
   <>
-    <Header type="junkyard" />
+    {/* <Header type="junkyard" /> */}
     <div>Utilities</div>
   </>
 )

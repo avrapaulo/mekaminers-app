@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
-import { walletAtom, defaultWallet } from 'recoil/atoms'
+import { walletAtom, defaultWallet, screenAtom } from 'recoil/atoms'
 import { Box } from 'components/box'
 import { Layout } from 'components/inventory'
 import { abi as abiPiece } from 'contracts/PiecePackage.json'
@@ -10,6 +10,7 @@ import { abi as abiPieceGen1 } from 'contracts/PiecePackageGen1.json'
 import { abi as abiRobot } from 'contracts/RobotPackage.json'
 import { abi as abiRobotGen1 } from 'contracts/RobotPackageGen1.json'
 import { addressType } from 'helpers/address'
+import { MiniHeader } from 'components/inventory/header-mini'
 
 interface MyPackages {
   type: 'robot' | 'piece'
@@ -20,8 +21,11 @@ interface MyPackages {
 
 const Boxes = () => {
   const wallet = useRecoilValue(walletAtom)
+  const [isLoadingPage, setIsLoadingPage] = useState(true)
+  const setScreen = useSetRecoilState(screenAtom)
   const [myRobotsPieces, setMyRobotsPieces] = useState<MyPackages[]>([])
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
+  setScreen(isLoadingPage || myRobotsPieces.length === 0)
 
   useEffect(() => {
     const result = async () => {
@@ -124,6 +128,7 @@ const Boxes = () => {
       }
 
       setMyRobotsPieces([...myPiecesSave, ...myRobotsSave])
+      setIsLoadingPage(false)
     }
     try {
       if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) result()
@@ -138,10 +143,19 @@ const Boxes = () => {
 
   return (
     <>
+      <MiniHeader />
       {myRobotsPieces.length === 0 ? (
-        <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
-          <img alt="Logo Meka Miners" width="500" src="/empty.png" />
-        </div>
+        isLoadingPage ? (
+          <div className="flex h-full justify-center items-center animation-y">
+            <div className="h-40 w-40 relative">
+              <img alt="Logo Meka Miners" src={'/meka.png'} />
+            </div>
+          </div>
+        ) : (
+          <div className="uppercase flex justify-center items-center text-white font-bold -z-10">
+            <img alt="Logo Meka Miners" width="500" src="/empty.png" />
+          </div>
+        )
       ) : (
         <Layout>
           <>
