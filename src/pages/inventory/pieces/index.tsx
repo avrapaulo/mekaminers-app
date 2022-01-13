@@ -76,13 +76,11 @@ const PiecesPage = () => {
                       description={title}
                       title={type}
                       imageCard={
-                        <Suspense fallback={null}>
-                          <Piece
-                            rarity={rarity}
-                            robotType={type.toLowerCase()}
-                            pieceId={piecesStatus[0].id}
-                          />
-                        </Suspense>
+                        <Piece
+                          rarity={rarity}
+                          robotType={type.toLowerCase()}
+                          pieceId={piecesStatus[0].id}
+                        />
                       }
                     >
                       <PiecesBody piecesStatus={piecesStatus} rarity={rarity} />

@@ -85,11 +85,7 @@ const RobotsPage = () => {
                     <Card
                       rarity={rarity}
                       description={title}
-                      imageCard={
-                        <Suspense fallback={null}>
-                          <Robot rarity={rarity} robotType={type.toLowerCase()} />
-                        </Suspense>
-                      }
+                      imageCard={<Robot rarity={rarity} robotType={type.toLowerCase()} />}
                     >
                       <RobotBody
                         bonus={bonus}
