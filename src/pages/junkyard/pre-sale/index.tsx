@@ -66,7 +66,7 @@ const PreSale = () => {
       id: 1,
       title: 'Package 1',
       bought: robotPackageBought.pack1,
-      total: 400,
+      total: 600,
       icon: ClockIcon,
       price: 0.2
     },
@@ -74,7 +74,7 @@ const PreSale = () => {
       id: 2,
       title: 'Package 2',
       bought: robotPackageBought.pack2,
-      total: 200,
+      total: 400,
       icon: BadgeCheckIcon,
       price: 0.5
     },
@@ -82,7 +82,7 @@ const PreSale = () => {
       id: 3,
       title: 'Package 3',
       bought: robotPackageBought.pack3,
-      total: 100,
+      total: 200,
       icon: UsersIcon,
       price: 0.9
     }
@@ -93,7 +93,7 @@ const PreSale = () => {
       id: 1,
       title: 'Package 1',
       bought: piecePackageBought.pack1,
-      total: 340,
+      total: 600,
       icon: CashIcon,
       price: 0.2
     },
@@ -101,7 +101,7 @@ const PreSale = () => {
       id: 2,
       title: 'Package 2',
       bought: piecePackageBought.pack2,
-      total: 175,
+      total: 400,
       icon: ReceiptRefundIcon,
       price: 0.5
     },
@@ -109,7 +109,7 @@ const PreSale = () => {
       id: 3,
       title: 'Package 3',
       bought: piecePackageBought.pack3,
-      total: 75,
+      total: 200,
       icon: AcademicCapIcon,
       price: 0.9
     }
@@ -122,9 +122,9 @@ const PreSale = () => {
       </div>
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
-          <TopCard title="Available Pieces" description={`${pieceCount}/700`} img="piece" />
+          <TopCard title="Available Pieces" description={`${pieceCount}/1200`} img="piece" />
           <Timer title="Starts in" />
-          <TopCard title="Available Robots" description={`${robotCount}/700`} img="wheel" />
+          <TopCard title="Available Robots" description={`${robotCount}/1200`} img="wheel" />
         </div>
         <div className="py-6 font-tech">
           <div className="text-3xl xl:text-5xl flex justify-center font-semibold relative mt-10">

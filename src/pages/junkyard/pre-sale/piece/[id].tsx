@@ -23,7 +23,7 @@ interface PiecesProps {
 const pieces = [
   {
     id: 1,
-    units: 340,
+    units: 600,
     classes: [
       { classType: 'e', chance: 50 },
       { classType: 'd', chance: 20 },
@@ -37,7 +37,7 @@ const pieces = [
   },
   {
     id: 2,
-    units: 175,
+    units: 400,
     classes: [
       { classType: 'e', chance: 0 },
       { classType: 'd', chance: 0 },
@@ -51,7 +51,7 @@ const pieces = [
   },
   {
     id: 3,
-    units: 75,
+    units: 200,
     classes: [
       { classType: 'e', chance: 0 },
       { classType: 'd', chance: 0 },
@@ -105,6 +105,9 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
           ) {
             setShow(true)
             setMessage('Sold out!')
+          } else if ((await piecesPackage.methods.tokenOfOwner(wallet).call()).length === 5) {
+            setShow(true)
+            setMessage('You only can buy 5 packages of pieces')
           } else {
             const options = {
               abi,

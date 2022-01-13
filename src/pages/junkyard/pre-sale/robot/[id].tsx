@@ -23,7 +23,7 @@ interface RobotsProps {
 const robots = [
   {
     id: 1,
-    units: 400,
+    units: 600,
     classes: [
       { classType: 'e', chance: 50 },
       { classType: 'd', chance: 20 },
@@ -37,7 +37,7 @@ const robots = [
   },
   {
     id: 2,
-    units: 200,
+    units: 400,
     classes: [
       { classType: 'e', chance: 0 },
       { classType: 'd', chance: 0 },
@@ -51,7 +51,7 @@ const robots = [
   },
   {
     id: 3,
-    units: 100,
+    units: 200,
     classes: [
       { classType: 'e', chance: 0 },
       { classType: 'd', chance: 0 },
@@ -111,6 +111,9 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
           ) {
             setShow(true)
             setMessage('Sold out!')
+          } else if ((await robotPackage.methods.tokenOfOwner(wallet).call()).length === 5) {
+            setShow(true)
+            setMessage('You only can buy 5 packages of robots')
           } else {
             const options = {
               abi,
