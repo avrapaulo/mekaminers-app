@@ -79,7 +79,7 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('piece', 0))
+  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('robot', 1))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 
@@ -114,11 +114,11 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
           } else {
             const options = {
               abi,
-              contractAddress: addressType('pieces', 0),
+              contractAddress: addressType('robot', 1),
               functionName: 'createPackage',
               msgValue: Moralis.Units.ETH(amount.toString()),
               params: {
-                _packageType: id,
+                _packageType: id + 3,
                 _isPresale: true
               }
             }
