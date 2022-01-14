@@ -34,7 +34,7 @@ const Tools = () => {
   return (
     <>
       <MiniHeader />
-      {data === null ? (
+      {(data as ToolsProps[])?.length === 0 ? (
         isLoadingPage || isLoading || isFetching ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">

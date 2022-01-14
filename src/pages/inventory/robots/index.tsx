@@ -52,7 +52,7 @@ const RobotsPage = () => {
   return (
     <>
       <MiniHeader />
-      {data === null ? (
+      {(data as RobotsProps[])?.length === 0 ? (
         isLoadingPage || isLoading || isFetching ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
@@ -90,7 +90,6 @@ const RobotsPage = () => {
                       <RobotBody
                         bonus={bonus}
                         piecesStatus={piecesStatus}
-                        rarity={rarity}
                         robotStatus={robotStatus}
                       />
                     </Card>

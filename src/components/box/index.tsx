@@ -142,96 +142,93 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
       <div className="flex-1 p-4 flex flex-col">
         <div className="h-full flex justify-between flex-col">
           <div className="flex justify-center items-center mb-6">
-            <div className="cursor-not-allowed">
-              <button
-                type="button"
-                className={classNames(
-                  'w-32 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-md shadow-sm text-black bg-white hover:bg-gray-200',
-                  loading ? 'animate-pulse bg-gray-100' : '',
-                  inactive ? 'pointer-events-none' : '',
-                  'pointer-events-none'
-                )}
-                onClick={async () => {
-                  setInactive(true)
-                  setLoading(true)
-                  setDisplayConfetti(false)
-                  fetchMekaAllowance({
-                    onSuccess: async (result: string | number) => {
-                      if (received.length === 0 && boxNumbers.length === 0) {
-                        return router.push(`/inventory/${type}s`)
-                      }
-
-                      let resultFetch = received
-                      if (!isOpen || (received?.length === 0 && boxNumbers.length > 0)) {
-                        if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
-
-                        const robotParams = packageRobotProps(
-                          { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                          'openPackage',
-                          gen
-                        )
-                        const pieceParams = packagePieceProps(
-                          { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                          'openPackage',
-                          gen
-                        )
-
-                        await packageFetch({
-                          params: type === 'robot' ? robotParams : pieceParams,
-                          onSuccess: async () => {
-                            resultFetch = null
-                            while (!resultFetch || resultFetch?.length === 0) {
-                              await later(3000)
-
-                              const unpackedRobots = async () =>
-                                await fetchUnpackedRobots({
-                                  onSuccess: async robotsResult => {
-                                    resultFetch = robotsResult as any[]
-                                  }
-                                })
-
-                              const unpackedPieces = async () =>
-                                await fetchUnpackedPieces({
-                                  onSuccess: async robotsResult => {
-                                    resultFetch = robotsResult as any[]
-                                  }
-                                })
-
-                              type === 'robot' ? unpackedRobots() : unpackedPieces()
-                            }
-                            if (type !== 'piece') setDisplayConfetti(true)
-                            setLoading(false)
-                            setOutput(resultFetch[0])
-                            setReceived(resultFetch.slice(1))
-                            setTimeout(() => setInactive(false), animationDelay)
-                            setIsOpen(true)
-                            setBoxNumbers(boxNumbers.splice(1))
-                          },
-                          onError: () => {
-                            setInactive(false)
-                            setLoading(false)
-                          }
-                        })
-                      } else {
-                        await later(2000)
-                        setLoading(false)
-                        setOutput(resultFetch[0])
-                        setReceived(resultFetch.slice(1))
-                        setTimeout(() => setInactive(false), animationDelay)
-                        if (type !== 'piece') setDisplayConfetti(true)
-                      }
-                    },
-                    onError: () => {
-                      setLoading(false)
-                      setInactive(false)
+            <button
+              type="button"
+              className={classNames(
+                'w-32 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-md shadow-sm text-black bg-white hover:bg-gray-200',
+                loading ? 'animate-pulse bg-gray-100' : '',
+                inactive ? 'pointer-events-none' : ''
+              )}
+              onClick={async () => {
+                setInactive(true)
+                setLoading(true)
+                setDisplayConfetti(false)
+                fetchMekaAllowance({
+                  onSuccess: async (result: string | number) => {
+                    if (received.length === 0 && boxNumbers.length === 0) {
+                      return router.push(`/inventory/${type}s`)
                     }
-                  })
-                }}
-              >
-                <Confetti active={displayConfetti} config={config} />
-                {buttonText(loading, received.length, isOpen, boxNumbers.length, type)}
-              </button>
-            </div>
+
+                    let resultFetch = received
+                    if (!isOpen || (received?.length === 0 && boxNumbers.length > 0)) {
+                      if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+
+                      const robotParams = packageRobotProps(
+                        { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
+                        'openPackage',
+                        gen
+                      )
+                      const pieceParams = packagePieceProps(
+                        { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
+                        'openPackage',
+                        gen
+                      )
+
+                      await packageFetch({
+                        params: type === 'robot' ? robotParams : pieceParams,
+                        onSuccess: async () => {
+                          resultFetch = null
+                          while (!resultFetch || resultFetch?.length === 0) {
+                            await later(3000)
+
+                            const unpackedRobots = async () =>
+                              await fetchUnpackedRobots({
+                                onSuccess: async robotsResult => {
+                                  resultFetch = robotsResult as any[]
+                                }
+                              })
+
+                            const unpackedPieces = async () =>
+                              await fetchUnpackedPieces({
+                                onSuccess: async robotsResult => {
+                                  resultFetch = robotsResult as any[]
+                                }
+                              })
+
+                            type === 'robot' ? unpackedRobots() : unpackedPieces()
+                          }
+                          if (type !== 'piece') setDisplayConfetti(true)
+                          setLoading(false)
+                          setOutput(resultFetch[0])
+                          setReceived(resultFetch.slice(1))
+                          setTimeout(() => setInactive(false), animationDelay)
+                          setIsOpen(true)
+                          setBoxNumbers(boxNumbers.splice(1))
+                        },
+                        onError: () => {
+                          setInactive(false)
+                          setLoading(false)
+                        }
+                      })
+                    } else {
+                      await later(2000)
+                      setLoading(false)
+                      setOutput(resultFetch[0])
+                      setReceived(resultFetch.slice(1))
+                      setTimeout(() => setInactive(false), animationDelay)
+                      if (type !== 'piece') setDisplayConfetti(true)
+                    }
+                  },
+                  onError: () => {
+                    setLoading(false)
+                    setInactive(false)
+                  }
+                })
+              }}
+            >
+              <Confetti active={displayConfetti} config={config} />
+              {buttonText(loading, received.length, isOpen, boxNumbers.length, type)}
+            </button>
           </div>
           <div className="text-sm font-medium text-right">( x{boxNumbers.length} )</div>
         </div>

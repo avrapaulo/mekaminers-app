@@ -16,7 +16,7 @@ import {
   BriefcaseIcon
 } from '@heroicons/react/outline'
 import { getEllipsisTxt } from 'helpers/formatters'
-import { Wallet } from 'icons/wallet/index'
+import { Wallet } from 'icons/wallet'
 import { DisconnectModel } from 'components/modal'
 import { classNames } from 'helpers/class-names'
 

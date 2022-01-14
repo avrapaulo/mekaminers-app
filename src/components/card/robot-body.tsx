@@ -1,15 +1,13 @@
 import { classNames } from 'helpers/class-names'
-import { rarityInfo } from 'constants/rarity'
 import { statusDescription } from 'constants/status'
 
 interface RobotBodyProps {
-  rarity?: number | string
   bonus: number
   robotStatus: { key: string; value: number }[]
   piecesStatus: { key: string; value: number }[]
 }
 
-export const RobotBody = ({ rarity, bonus, robotStatus, piecesStatus }: RobotBodyProps) => (
+export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) => (
   <div className="flex-1 p-4 flex flex-col">
     <div className="grid grid-cols-2 sm:gap-x-6 gap-y-2 gap-x-1">
       {robotStatus.map(({ key, value }) => {

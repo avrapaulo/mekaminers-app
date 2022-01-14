@@ -51,7 +51,7 @@ const PiecesPage = () => {
   return (
     <>
       <MiniHeader />
-      {data === null ? (
+      {(data as PiecesProps[])?.length === 0 ? (
         isLoadingPage || isLoading || isFetching ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
