@@ -123,7 +123,7 @@ const PreSale = () => {
       <div className="mx-10 rounded-2xl rounded-tl-none mb-10">
         <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-7 sm:space-y-0 space-x-1 md:space-x-4 px-1">
           <TopCard title="Available Pieces" description={`${pieceCount}/1200`} img="piece" />
-          <Timer title="Starts in" />
+          <Timer title="Time Remaining" />
           <TopCard title="Available Robots" description={`${robotCount}/1200`} img="wheel" />
         </div>
         <div className="py-6 font-tech">
