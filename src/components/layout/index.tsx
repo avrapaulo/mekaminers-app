@@ -203,27 +203,27 @@ export const Layout = ({ children }: LayoutProps) => {
                   ))}
                   <button
                     type="button"
-                    style={{
-                      background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
-                    }}
-                    className="mt-16 mx-6 my-1 inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                    className="mt-20 ml-10 my-3 bg-white min-w-24 pl-6 mr-3 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                   >
-                    <div className="h-6 w-6 relative">
-                      <img alt="Logo" src="/favicon.ico" />
+                    <div className="h-16 w-16 -left-8 absolute">
+                      <img alt="Logo" src="/ore.png" />
                     </div>
-                    <span>{meka}</span>
+                    <div className="flex justify-end w-full items-center font-semibold">
+                      <CountUp end={ore} duration={5} />
+                      <PlusCircleIcon className="h-7 w-7 text-black" aria-hidden="true" />
+                    </div>
                   </button>
                   <button
                     type="button"
-                    style={{
-                      background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
-                    }}
-                    className="mx-6 my-1 space-x-2 relative inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                    className="mx-6 my-3 bg-white min-w-28 mr-3 pl-10 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                   >
-                    <div className="h-8 w-8 relative">
-                      <img alt="Logo" src="/ore.png" />
+                    <div className="h-12 w-12 -left-2 -top-3 absolute">
+                      <img alt="Logo" src="/favicon.ico" />
                     </div>
-                    <span>{ore}</span>
+                    <span className="flex justify-end w-full  items-center font-semibold">
+                      <CountUp end={meka} duration={5} />
+                      <PlusCircleIcon className="h-7 w-7 text-black" aria-hidden="true" />
+                    </span>
                   </button>
                 </nav>
               </div>
