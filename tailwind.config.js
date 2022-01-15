@@ -16,6 +16,10 @@ module.exports = {
         '-10': '-10',
         '-20': '-20'
       },
+      minWidth: {
+        24: '6rem',
+        28: '7rem'
+      },
       colors: {
         cyan: colors.cyan,
         'blue-zodiac': {

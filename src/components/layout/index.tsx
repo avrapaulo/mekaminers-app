@@ -4,6 +4,7 @@ import { NextSeo } from 'next-seo'
 import { useMoralis } from 'react-moralis'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
+import { PlusCircleIcon } from '@heroicons/react/solid'
 import { Dialog, Transition } from '@headlessui/react'
 import { walletCoins } from 'recoil/selector'
 import { defaultWallet, walletAtom, disconnectAtom, screenAtom } from 'recoil/atoms'
@@ -15,6 +16,7 @@ import {
   LibraryIcon,
   BriefcaseIcon
 } from '@heroicons/react/outline'
+import CountUp from 'react-countup'
 import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet'
 import { DisconnectModel } from 'components/modal'
@@ -295,30 +297,30 @@ export const Layout = ({ children }: LayoutProps) => {
                   </div>
                 ))}
               </nav>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center">
                 <button
                   type="button"
-                  style={{
-                    background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
-                  }}
-                  className="w-24 hidden sm:inline-flex space-x-1 relative items-center px-4 py-2  text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                  className="bg-white min-w-24 pl-6 mr-3 hidden sm:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                 >
-                  <div className="h-6 w-6 relative">
-                    <img alt="Logo" src="/favicon.ico" />
+                  <div className="h-16 w-16 -left-8 absolute">
+                    <img alt="Logo" src="/ore.png" />
                   </div>
-                  <span>{meka}</span>
+                  <div className="flex justify-end w-full items-center font-semibold">
+                    <CountUp end={ore} duration={5} />
+                    <PlusCircleIcon className="h-7 w-7 text-black" aria-hidden="true" />
+                  </div>
                 </button>
                 <button
                   type="button"
-                  style={{
-                    background: 'linear-gradient(142.02deg, #00CDE3 -0.22%, #124395 100.22%)'
-                  }}
-                  className="w-24 space-x-2 relative hidden sm:inline-flex items-center px-2 py-1 text-sm font-medium rounded-md text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-zodiac-300"
+                  className="bg-white min-w-28 mr-3 pl-10 hidden sm:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                 >
-                  <div className="h-8 w-8 relative">
-                    <img alt="Logo" src="/ore.png" />
+                  <div className="h-12 w-12 -left-2 -top-3 absolute">
+                    <img alt="Logo" src="/favicon.ico" />
                   </div>
-                  <span>{ore}</span>
+                  <span className="flex justify-end w-full  items-center font-semibold">
+                    <CountUp end={meka} duration={5} />
+                    <PlusCircleIcon className="h-7 w-7 text-black" aria-hidden="true" />
+                  </span>
                 </button>
                 <button
                   type="button"
