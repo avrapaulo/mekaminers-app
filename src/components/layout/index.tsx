@@ -59,7 +59,7 @@ const navigation = [
 
 const description =
   'MekaMiners starts as a play-to-earn strategic PVP/PVE blockchain passive farm game with NFT Robot characters, body parts, and item ownership. Merging the inspiration of games such PvU and Farmville with Tribal Wars and Lords Mobile we expect to build an amazing gameplay with very short time investment needs and good profitability.'
-const title = 'MekaMiners'
+const title = 'MekaMiners App'
 
 interface LayoutProps {
   children: JSX.Element
