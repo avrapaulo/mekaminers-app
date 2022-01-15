@@ -246,7 +246,7 @@ export const Layout = ({ children }: LayoutProps) => {
             </button>
 
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-2 xl:px-8 items-center text-white">
-              <div className="hidden h-28 w-28 lg:block relative">
+              <div className="hidden h-28 w-28 lg:flex items-center relative ">
                 <img alt="Logo" src="/logo-top.png" />
               </div>
               <div className="flex-1 flex lg:hidden"></div>
@@ -300,7 +300,7 @@ export const Layout = ({ children }: LayoutProps) => {
               <div className="flex items-center">
                 <button
                   type="button"
-                  className="bg-white min-w-24 pl-6 mr-3 hidden sm:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                  className="bg-white min-w-24 pl-6 mr-3 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                 >
                   <div className="h-16 w-16 -left-8 absolute">
                     <img alt="Logo" src="/ore.png" />
@@ -312,7 +312,7 @@ export const Layout = ({ children }: LayoutProps) => {
                 </button>
                 <button
                   type="button"
-                  className="bg-white min-w-28 mr-3 pl-10 hidden sm:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                  className="bg-white min-w-28 mr-3 pl-10 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                 >
                   <div className="h-12 w-12 -left-2 -top-3 absolute">
                     <img alt="Logo" src="/favicon.ico" />

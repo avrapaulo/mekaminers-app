@@ -22,10 +22,8 @@ interface MyPackages {
 const Boxes = () => {
   const wallet = useRecoilValue(walletAtom)
   const [isLoadingPage, setIsLoadingPage] = useState(true)
-  const setScreen = useSetRecoilState(screenAtom)
   const [myRobotsPieces, setMyRobotsPieces] = useState<MyPackages[]>([])
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
-  setScreen(isLoadingPage || myRobotsPieces.length === 0)
 
   useEffect(() => {
     const result = async () => {
@@ -131,7 +129,9 @@ const Boxes = () => {
       setIsLoadingPage(false)
     }
     try {
-      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) result()
+      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) {
+        result()
+      }
     } catch (error) {
       console.log(error)
     }

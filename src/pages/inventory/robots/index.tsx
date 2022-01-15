@@ -1,9 +1,9 @@
-import { useEffect, Suspense, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
-import { walletAtom, defaultWallet, screenAtom } from 'recoil/atoms'
+import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { abi } from 'contracts/RobotCore.json'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
@@ -27,23 +27,24 @@ const RobotsPage = () => {
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
-  const setScreen = useSetRecoilState(screenAtom)
-  const { fetch, data, isLoading, isFetching } = useMoralisCloudFunction(
-    'getMintedRobots',
-    {},
-    { autoFetch: false }
-  )
-  setScreen(isLoadingPage || isLoading || isFetching || data === null)
+  const { fetch, data } = useMoralisCloudFunction('getMintedRobots', {}, { autoFetch: false })
 
   useEffect(() => {
     const robots = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
     const result = async () => {
       const tokenIds = await robots.methods.tokenOfOwner(wallet).call()
-      fetch({ params: { tokenIds: tokenIds.map((token: string) => +token) } })
+      fetch({
+        params: { tokenIds: tokenIds.map((token: string) => +token) }
+      })
       setIsLoadingPage(false)
     }
+
     try {
-      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) result()
+      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) {
+        result()
+      } else {
+        setIsLoadingPage(false)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -52,8 +53,8 @@ const RobotsPage = () => {
   return (
     <>
       <MiniHeader />
-      {(data as RobotsProps[])?.length === 0 ? (
-        isLoadingPage || isLoading || isFetching ? (
+      {data === null || (data as RobotsProps[])?.length === 0 ? (
+        isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
               <img alt="Logo Meka Miners" src={'/meka.png'} />

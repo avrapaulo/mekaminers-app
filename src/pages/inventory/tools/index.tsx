@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { useMoralisCloudFunction, useMoralis } from 'react-moralis'
-import { screenAtom } from 'recoil/atoms'
+import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
@@ -17,25 +17,28 @@ const toolDescription = {
 }
 
 const Tools = () => {
-  const { isAuthenticated } = useMoralis()
+  const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
-  const setScreen = useSetRecoilState(screenAtom)
-  const { fetch, data, isLoading, isFetching } = useMoralisCloudFunction('getUtilities')
-  setScreen(isLoadingPage || isLoading || isFetching || data === null)
+  const wallet = useRecoilValue(walletAtom)
+  const { fetch, data } = useMoralisCloudFunction('getUtilities')
 
   useEffect(() => {
     const fetchTools = async () => {
       await fetch()
       setIsLoadingPage(false)
     }
-    if (isAuthenticated) fetchTools()
-  }, [isAuthenticated, fetch, setIsLoadingPage])
+    if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) {
+      fetchTools()
+    } else {
+      setIsLoadingPage(false)
+    }
+  }, [web3, isWeb3Enabled, wallet, isAuthenticated, fetch])
 
   return (
     <>
       <MiniHeader />
-      {(data as ToolsProps[])?.length === 0 ? (
-        isLoadingPage || isLoading || isFetching ? (
+      {data === null || (data as ToolsProps[])?.length === 0 ? (
+        isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
               <img alt="Logo Meka Miners" src={'/meka.png'} />
