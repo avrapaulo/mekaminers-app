@@ -20,7 +20,7 @@ interface RobotsProps {
   title: string
   type: string
   robotStatus: { key: string; value: number; id: number }[]
-  piecesStatus: { key: string; value: number }[]
+  piecesStatus: { key: string; value: number; id: number }[]
 }
 
 const RobotsPage = () => {
@@ -86,7 +86,13 @@ const RobotsPage = () => {
                     <Card
                       rarity={rarity}
                       description={title}
-                      imageCard={<Robot rarity={rarity} robotType={type.toLowerCase()} />}
+                      imageCard={
+                        <Robot
+                          rarity={rarity}
+                          robotType={type.toLowerCase()}
+                          piecesStatus={piecesStatus}
+                        />
+                      }
                     >
                       <RobotBody
                         bonus={bonus}

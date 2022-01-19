@@ -5,3 +5,11 @@ export const statusDescription = {
   Stealthiness: 'Stealthiness (Head)',
   Speed: 'Speed (Legs)'
 }
+
+export const typeDescription = {
+  Capacity: 'Right Arm',
+  Efficiency: 'Left Arm',
+  OilDecrease: 'Chest',
+  Stealthiness: 'Head',
+  Speed: 'Legs'
+}

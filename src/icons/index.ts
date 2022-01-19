@@ -1,2 +1,5 @@
 export * from './wallet'
 export * from './pickaxe'
+export * from './robot/basic'
+export * from './robot/stealth'
+export * from './robot/tank'
