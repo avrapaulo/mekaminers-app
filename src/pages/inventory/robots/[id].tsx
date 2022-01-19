@@ -156,10 +156,11 @@ const RobotsDetail = () => {
                                           ) && (
                                             <span className="text-green-500">
                                               -
-                                              {value *
+                                              {(value *
                                                 piecesStatus.find(
                                                   ({ key: pieceKey }) => key === pieceKey
-                                                ).value}
+                                                ).value) /
+                                                100}
                                               m
                                             </span>
                                           )}
@@ -252,16 +253,10 @@ const RobotsDetail = () => {
               </div>
             </div>
           </div>
-          {/* <div className="box col-start-2 col-span-2 "></div> */}
         </div>
       </div>
     </>
   )
 }
-
-// rarity
-// nome ??
-// season
-// status
 
 export default RobotsDetail

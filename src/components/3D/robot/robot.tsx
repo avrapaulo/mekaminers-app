@@ -15,7 +15,7 @@ type GLTFResult = GLTF & {
 
 export interface RobotObjectProps {
   autoRotate?: boolean
-  piecesStatus?: { id: number; key: string }[]
+  piecesStatus?: { id: number; key: string; rarity: string }[]
   rarity: string
   robotType: string
 }
@@ -50,67 +50,62 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>
 export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElements['group']) => {
   const { robotType, rarity, piecesStatus = [] } = props
 
-  const stealthiness =
-    piecesStatus?.find(({ key }) => key === 'Stealthiness')?.id ||
-    robotDefault[robotType].Stealthiness
+  const stealthinessStatus = piecesStatus?.find(({ key }) => key === 'Stealthiness')
+  const oilDecreaseStatus = piecesStatus?.find(({ key }) => key === 'OilDecrease')
+  const efficiencyStatus = piecesStatus?.find(({ key }) => key === 'Efficiency')
+  const capacityStatus = piecesStatus?.find(({ key }) => key === 'Capacity')
+  const speedStatus = piecesStatus?.find(({ key }) => key === 'Speed')
 
-  const oilDecrease =
-    piecesStatus?.find(({ key }) => key === 'OilDecrease')?.id ||
-    robotDefault[robotType].OilDecrease
-
-  const efficiency =
-    piecesStatus?.find(({ key }) => key === 'Efficiency')?.id || robotDefault[robotType].Efficiency
-
-  const capacity =
-    piecesStatus?.find(({ key }) => key === 'Capacity')?.id || robotDefault[robotType].Capacity
-
-  const speed =
-    piecesStatus?.find(({ key }) => key === 'Speed')?.id || robotDefault[robotType].Speed
+  const stealthiness = stealthinessStatus?.id || robotDefault[robotType].Stealthiness
+  const oilDecrease = oilDecreaseStatus?.id || robotDefault[robotType].OilDecrease
+  const efficiency = efficiencyStatus?.id || robotDefault[robotType].Efficiency
+  const capacity = capacityStatus?.id || robotDefault[robotType].Capacity
+  const speed = speedStatus?.id || robotDefault[robotType].Speed
 
   const group = useRef<THREE.Group>()
   const { nodes: nodeHead, materials: materialsHead } = useGLTF(
-    `/3d/${robotType}/${rarity}-${stealthiness}.glb`
+    `/3d/${robotType}/${stealthinessStatus?.rarity || rarity}-${stealthiness}.glb`
   ) as GLTFResult
   const { nodes: nodeBody, materials: materialsBody } = useGLTF(
-    `/3d/${robotType}/${rarity}-${oilDecrease}.glb`
+    `/3d/${robotType}/${oilDecreaseStatus?.rarity || rarity}-${oilDecrease}.glb`
   ) as GLTFResult
   const { nodes: nodeArmL, materials: materialsArmL } = useGLTF(
-    `/3d/${robotType}/${rarity}-${efficiency}.glb`
+    `/3d/${robotType}/${efficiencyStatus?.rarity || rarity}-${efficiency}.glb`
   ) as GLTFResult
   const { nodes: nodeArmR, materials: materialsArmR } = useGLTF(
-    `/3d/${robotType}/${rarity}-${capacity}.glb`
+    `/3d/${robotType}/${capacityStatus?.rarity || rarity}-${capacity}.glb`
   ) as GLTFResult
   const { nodes: nodeLegs, materials: materialsLegs } = useGLTF(
-    `/3d/${robotType}/${rarity}-${speed}.glb`
+    `/3d/${robotType}/${speedStatus?.rarity || rarity}-${speed}.glb`
   ) as GLTFResult
   // const { actions } = useAnimations<GLTFActions>(animations, group)
   return (
     <group ref={group} {...props} dispose={null} position={[0, -1.35, 0]}>
       <primitive object={nodeArmR.Main} />
       <skinnedMesh
-        geometry={nodeHead[`${rarity}-${stealthiness}`].geometry}
-        material={materialsHead[`${rarity}-${stealthiness}`]}
-        skeleton={nodeArmR[`${rarity}-${capacity}`].skeleton}
+        geometry={nodeHead[`${stealthinessStatus?.rarity || rarity}-${stealthiness}`].geometry}
+        material={materialsHead[`${stealthinessStatus?.rarity || rarity}-${stealthiness}`]}
+        skeleton={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].skeleton}
       />
       <skinnedMesh
-        geometry={nodeBody[`${rarity}-${oilDecrease}`].geometry}
-        material={materialsBody[`${rarity}-${oilDecrease}`]}
-        skeleton={nodeArmR[`${rarity}-${capacity}`].skeleton}
+        geometry={nodeBody[`${oilDecreaseStatus?.rarity || rarity}-${oilDecrease}`].geometry}
+        material={materialsBody[`${oilDecreaseStatus?.rarity || rarity}-${oilDecrease}`]}
+        skeleton={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].skeleton}
       />
       <skinnedMesh
-        geometry={nodeArmL[`${rarity}-${efficiency}`].geometry}
-        material={materialsArmL[`${rarity}-${efficiency}`]}
-        skeleton={nodeArmR[`${rarity}-${capacity}`].skeleton}
+        geometry={nodeArmL[`${efficiencyStatus?.rarity || rarity}-${efficiency}`].geometry}
+        material={materialsArmL[`${efficiencyStatus?.rarity || rarity}-${efficiency}`]}
+        skeleton={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].skeleton}
       />
       <skinnedMesh
-        geometry={nodeArmR[`${rarity}-${capacity}`].geometry}
-        material={materialsArmR[`${rarity}-${capacity}`]}
-        skeleton={nodeArmR[`${rarity}-${capacity}`].skeleton}
+        geometry={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].geometry}
+        material={materialsArmR[`${capacityStatus?.rarity || rarity}-${capacity}`]}
+        skeleton={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].skeleton}
       />
       <skinnedMesh
-        geometry={nodeLegs[`${rarity}-${speed}`].geometry}
-        material={materialsLegs[`${rarity}-${speed}`]}
-        skeleton={nodeArmR[`${rarity}-${capacity}`].skeleton}
+        geometry={nodeLegs[`${speedStatus?.rarity || rarity}-${speed}`].geometry}
+        material={materialsLegs[`${speedStatus?.rarity || rarity}-${speed}`]}
+        skeleton={nodeArmR[`${capacityStatus?.rarity || rarity}-${capacity}`].skeleton}
       />
     </group>
   )

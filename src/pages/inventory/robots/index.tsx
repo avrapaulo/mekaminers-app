@@ -20,7 +20,7 @@ interface RobotsProps {
   title: string
   type: string
   robotStatus: { key: string; value: number; id: number }[]
-  piecesStatus: { key: string; value: number; id: number }[]
+  piecesStatus: { key: string; value: number; id: number; rarity: string }[]
 }
 
 const RobotsPage = () => {
