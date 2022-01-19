@@ -76,6 +76,29 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
               </div>
             )
           case 'OilDecrease':
+            return (
+              <div
+                key={value}
+                className={classNames(
+                  'flex justify-start border-2 rounded-md space-x-1 pl-1 bg-white text-black font-semibold items-center'
+                )}
+                title={statusDescription[key]}
+              >
+                <div className="uppercase h-5 w-5">
+                  <img
+                    alt="Logo Meka Miners"
+                    className="h-full w-full object-contain"
+                    src={`/icons-status/${key.toLowerCase()}.png`}
+                  />
+                </div>
+                <div className="">{value}</div>
+                <div className="text-xs flex justify-center items-center">
+                  {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) && (
+                    <span className="text-green-500">+ {value}%</span>
+                  )}
+                </div>
+              </div>
+            )
           case 'Stealthiness':
           case 'Speed':
             return (

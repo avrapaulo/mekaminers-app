@@ -168,6 +168,17 @@ const RobotsDetail = () => {
                                     </>
                                   )
                                 case 'OilDecrease':
+                                  return (
+                                    <>
+                                      <span>{value}</span>
+                                      <span className="">
+                                        {piecesStatus &&
+                                          piecesStatus.some(
+                                            ({ key: pieceKey }) => key === pieceKey
+                                          ) && <span className="text-green-500">{value}</span>}
+                                      </span>
+                                    </>
+                                  )
                                 case 'Stealthiness':
                                 case 'Speed':
                                   return (
