@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { Dialog, Transition } from '@headlessui/react'
 import { walletCoins } from 'recoil/selector'
-import { defaultWallet, walletAtom, disconnectAtom, screenAtom } from 'recoil/atoms'
+import { defaultWallet, walletAtom, disconnectAtom, mekaAtom } from 'recoil/atoms'
 import {
   ShoppingCartIcon,
   MenuAlt1Icon,
@@ -21,6 +21,7 @@ import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet'
 import { DisconnectModel } from 'components/modal'
 import { classNames } from 'helpers/class-names'
+import { useMeka } from 'hooks'
 
 const navigation = [
   {
@@ -66,23 +67,35 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { web3, user, isAuthenticated, authenticate, enableWeb3 } = useMoralis()
+  const { web3, user, isAuthenticated, authenticate, enableWeb3, Moralis, isWeb3Enabled } =
+    useMoralis()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
-  const screen = useRecoilValue(screenAtom)
+  const setMekaAtom = useSetRecoilState(mekaAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
-  useEffect(() => {
-    enableWeb3()
-  }, [enableWeb3])
+  const { fetchMeka: fetchMekaAllowance } = useMeka({
+    functionName: 'balanceOf',
+    params: { account: walletAddress }
+  })
 
   useEffect(() => {
     setWalletAddress(
       web3.givenProvider?.selectedAddress || user?.get('ethAddress') || defaultWallet
     )
-  }, [web3, setWalletAddress, user])
+
+    isWeb3Enabled &&
+      fetchMekaAllowance({
+        onSuccess: result => setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+        onError: e => console.log(e)
+      })
+  }, [web3, setWalletAddress, user, setMekaAtom, fetchMekaAllowance, Moralis, isWeb3Enabled])
+
+  useEffect(() => {
+    enableWeb3()
+  }, [enableWeb3])
 
   return (
     <>
@@ -234,7 +247,7 @@ export const Layout = ({ children }: LayoutProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className={`flex flex-col flex-1 ${screen ? 'h-screen' : ''}`}>
+        <div className="flex flex-col flex-1">
           <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none bg-gradient-to-t from-blue-zodiac-500 to-blue-zodiac-700">
             <button
               type="button"
