@@ -69,7 +69,10 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
                 <div className="text-xs flex justify-center items-center">
                   {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) && (
                     <span className="text-green-500">
-                      -{value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value}m
+                      -
+                      {(value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value) /
+                        100}
+                      m
                     </span>
                   )}
                 </div>

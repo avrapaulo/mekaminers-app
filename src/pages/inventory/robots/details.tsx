@@ -175,7 +175,16 @@ const RobotsDetail = () => {
                                         {piecesStatus &&
                                           piecesStatus.some(
                                             ({ key: pieceKey }) => key === pieceKey
-                                          ) && <span className="text-green-500">+ {value}</span>}
+                                          ) && (
+                                            <span className="text-green-500">
+                                              +
+                                              {
+                                                piecesStatus.find(
+                                                  ({ key: pieceKey }) => key === pieceKey
+                                                ).value
+                                              }
+                                            </span>
+                                          )}
                                       </span>
                                     </>
                                   )
