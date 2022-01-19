@@ -26,10 +26,10 @@ interface RobotProps {
 
 const RobotsDetail = () => {
   const router = useRouter()
-  const { id } = router.query
+  const { id: robotId } = router.query
   const { data, fetch } = useMoralisCloudFunction(
     'getMintedRobots',
-    { tokenIds: [+id] },
+    { tokenIds: [+robotId] },
     { autoFetch: false }
   )
 
@@ -183,6 +183,7 @@ const RobotsDetail = () => {
                                                   ({ key: pieceKey }) => key === pieceKey
                                                 ).value
                                               }
+                                              %
                                             </span>
                                           )}
                                       </span>
@@ -256,7 +257,7 @@ const RobotsDetail = () => {
                         rarity: rarityPiece
                       }) => (
                         <RobotPiece
-                          robotId={+id}
+                          robotId={+robotId}
                           robotTypeStatus={key}
                           robotType={type}
                           key={key}
