@@ -79,7 +79,7 @@ const RobotsPage = () => {
                 mode,
                 type
               }) => (
-                <Link key={token} href={`/inventory/robots/${token}`}>
+                <Link key={token} href={`/inventory/robots/details?id=${token}`}>
                   <a className="relative flex justify-center">
                     <Mode modeId={mode} />
 
