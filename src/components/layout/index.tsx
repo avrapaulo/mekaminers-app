@@ -21,7 +21,7 @@ import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet'
 import { DisconnectModel } from 'components/modal'
 import { classNames } from 'helpers/class-names'
-import { useMeka } from 'hooks'
+import { UseBalanceOf } from 'hooks'
 
 const navigation = [
   {
@@ -76,10 +76,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
-  const { fetchMeka: fetchMekaAllowance } = useMeka({
-    functionName: 'balanceOf',
-    params: { account: walletAddress }
-  })
+  const { fetchBalanceOf } = UseBalanceOf()
 
   useEffect(() => {
     setWalletAddress(
@@ -87,11 +84,11 @@ export const Layout = ({ children }: LayoutProps) => {
     )
 
     isWeb3Enabled &&
-      fetchMekaAllowance({
+      fetchBalanceOf({
         onSuccess: result => setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
         onError: e => console.log(e)
       })
-  }, [web3, setWalletAddress, user, setMekaAtom, fetchMekaAllowance, Moralis, isWeb3Enabled])
+  }, [web3, setWalletAddress, user, setMekaAtom, fetchBalanceOf, Moralis, isWeb3Enabled])
 
   useEffect(() => {
     enableWeb3()

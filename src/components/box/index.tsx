@@ -1,10 +1,10 @@
 import { Suspense, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralis, useMoralisCloudFunction, useWeb3ExecuteFunction } from 'react-moralis'
 import Confetti from 'react-dom-confetti'
-import { walletAtom } from 'recoil/atoms'
-import { useMeka, packagePieceProps, packageRobotProps } from 'hooks'
+import { walletAtom, mekaAtom } from 'recoil/atoms'
+import { useMeka, packagePieceProps, packageRobotProps, UseBalanceOf } from 'hooks'
 import { Card } from 'components/card'
 import { classNames } from 'helpers/class-names'
 import { addressType } from 'helpers/address'
@@ -96,6 +96,9 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
   const [inactive, setInactive] = useState(false)
   const [boxNumbers, setBoxNumbers] = useState(count)
   const [displayConfetti, setDisplayConfetti] = useState(false)
+  const setMekaAtom = useSetRecoilState(mekaAtom)
+
+  const { fetchBalanceOf } = UseBalanceOf()
 
   useEffect(() => {
     if (isOpen && type === 'piece') {
@@ -204,10 +207,20 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                           setTimeout(() => setInactive(false), animationDelay)
                           setIsOpen(true)
                           setBoxNumbers(boxNumbers.splice(1))
+                          fetchBalanceOf({
+                            onSuccess: result =>
+                              setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                            onError: e => console.log(e)
+                          })
                         },
                         onError: () => {
                           setInactive(false)
                           setLoading(false)
+                          fetchBalanceOf({
+                            onSuccess: result =>
+                              setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                            onError: e => console.log(e)
+                          })
                         }
                       })
                     } else {
