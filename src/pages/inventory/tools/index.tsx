@@ -5,6 +5,7 @@ import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { Bug, Dog, Frog } from 'components/3D'
 
 interface ToolsProps {
   value: number
@@ -18,6 +19,8 @@ const toolDescription = {
   Frog: 'Automates oil application and 3% chance of finding 30 Shards of a NFT Piece',
   Dog: 'Automates oil application and 5% chance of finding 30 Shards of a NFT Piece'
 }
+
+const pets = { Bug: <Bug />, Frog: <Frog />, Dog: <Dog /> }
 
 const Tools = () => {
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
@@ -60,7 +63,15 @@ const Tools = () => {
                 <Card
                   description={key}
                   imageCard={
-                    <img alt="Logo Meka Miners" className="p-5" src={`/${key.toLowerCase()}.png`} />
+                    pets[key] ? (
+                      pets[key]
+                    ) : (
+                      <img
+                        alt="Logo Meka Miners"
+                        className="p-5"
+                        src={`/${key.toLowerCase()}.png`}
+                      />
+                    )
                   }
                 >
                   <div className="flex-1 p-4 flex flex-col mt-5">
