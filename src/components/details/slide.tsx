@@ -179,42 +179,14 @@ export const Slide = () => {
                       )}
                     </div>
                   </div>
-                  <div className={classNames(selected ? '' : 'cursor-not-allowed')}>
+                  <div className="cursor-not-allowed">
                     <div
                       className={classNames(
                         'flex-shrink-0 px-4 py-4 flex justify-end',
-                        selected ? '' : 'pointer-events-none'
+                        'pointer-events-none'
                       )}
                     >
-                      <button
-                        onClick={() => {
-                          fetchMekaAllowance({
-                            onSuccess: async (result: string | number) => {
-                              if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
-                              fetchSign({
-                                onSuccess: async (result: any) => {
-                                  await fetchMeka({
-                                    params: {
-                                      params: {
-                                        _owner: wallet,
-                                        _robotId: result.robotId,
-                                        _pieceId: result.pieceId,
-                                        _pieceType: result.pieceType,
-                                        _amount: Moralis.Units.ETH(5),
-                                        _nonce: result.nonce,
-                                        _signature: result.signature
-                                      }
-                                    },
-                                    onSuccess: () => fetch(),
-                                    onError: e => console.log(e)
-                                  })
-                                }
-                              })
-                            }
-                          })
-                        }}
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg w-full font-bold rounded-md text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-                      >
+                      <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg w-full font-bold rounded-md text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
                         Attach
                       </button>
                     </div>

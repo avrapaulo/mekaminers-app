@@ -30,6 +30,7 @@ export const Item = ({
   children
 }: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
+  const disableButton = true
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(getTimeRemaining())
@@ -70,19 +71,20 @@ export const Item = ({
             <div className="relative w-64 h-20">
               <img
                 alt="Logo Meka Miners"
-                src={`/button-item${isAuthenticated && !isLoading ? '' : '-disabled'}.png`}
+                src={`/button-item${!disableButton ? '' : '-disabled'}.png`}
               />
             </div>
             <div
               className={classNames(
-                isAuthenticated && !isLoading ? '' : 'cursor-not-allowed',
+                // isAuthenticated && !isLoading ? '' : 'cursor-not-allowed',
+                !disableButton ? '' : 'cursor-not-allowed',
                 'absolute'
               )}
             >
               <button
                 type="button"
                 className={classNames(
-                  isAuthenticated && !isLoading ? '' : 'pointer-events-none',
+                  !disableButton ? '' : 'pointer-events-none',
                   'uppercase justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
                 )}
                 onClick={() => onBuy()}
