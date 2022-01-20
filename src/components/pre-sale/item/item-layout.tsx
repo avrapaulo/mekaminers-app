@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { getTimeRemaining } from 'helpers/timer'
-import { classNames } from '../../../helpers/class-names'
+import { classNames } from 'helpers/class-names'
 
 interface ItemProps {
   isAuthenticated: boolean
@@ -30,7 +31,9 @@ export const Item = ({
   children
 }: ItemProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining())
-  const disableButton = true
+  const router = useRouter()
+  const { buy } = router.query
+  const disableButton = buy
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(getTimeRemaining())
@@ -71,20 +74,20 @@ export const Item = ({
             <div className="relative w-64 h-20">
               <img
                 alt="Logo Meka Miners"
-                src={`/button-item${!disableButton ? '' : '-disabled'}.png`}
+                src={`/button-item${disableButton ? '' : '-disabled'}.png`}
               />
             </div>
             <div
               className={classNames(
                 // isAuthenticated && !isLoading ? '' : 'cursor-not-allowed',
-                !disableButton ? '' : 'cursor-not-allowed',
+                disableButton ? '' : 'cursor-not-allowed',
                 'absolute'
               )}
             >
               <button
                 type="button"
                 className={classNames(
-                  !disableButton ? '' : 'pointer-events-none',
+                  disableButton ? '' : 'pointer-events-none',
                   'uppercase justify-center inline-flex items-center text-3xl font-bold text-white w-64 h-20'
                 )}
                 onClick={() => onBuy()}
