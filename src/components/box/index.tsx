@@ -182,7 +182,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                         onSuccess: async () => {
                           resultFetch = null
                           while (!resultFetch || resultFetch?.length === 0) {
-                            await later(6000)
+                            await later(10000)
 
                             const unpackedRobots = async () =>
                               await fetchUnpackedRobots({
