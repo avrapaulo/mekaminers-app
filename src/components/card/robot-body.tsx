@@ -70,8 +70,22 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
                   {piecesStatus && piecesStatus.some(({ key: pieceKey }) => key === pieceKey) && (
                     <span className="text-green-500">
                       -
-                      {(value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value) /
-                        100}
+                      {Math.floor(
+                        (value * piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value) /
+                          100
+                      )}
+                      :
+                      {Math.round(
+                        60 *
+                          ((value *
+                            piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value) /
+                            100 -
+                            Math.floor(
+                              (value *
+                                piecesStatus.find(({ key: pieceKey }) => key === pieceKey).value) /
+                                100
+                            ))
+                      )}
                       m
                     </span>
                   )}
