@@ -23,13 +23,18 @@ interface PiecesForRobotProps {
 
 const amountToApprove = 10000
 
-export const Slide = () => {
+interface SlideProps {
+  fetch: () => Promise<void>
+}
+
+export const Slide = ({ fetch }: SlideProps) => {
   const { web3, Moralis } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
   const [selected, setSelected] = useState()
+  const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useRecoilState(slideAtom)
   const { robotId, pieceType } = useRecoilValue(slideDataAtom)
-  const { data, fetch } = useMoralisCloudFunction(
+  const { data, fetch: fetchPiecesForRobot } = useMoralisCloudFunction(
     'getPiecesForRobot',
     { robotId, pieceType },
     { autoFetch: false }
@@ -74,12 +79,12 @@ export const Slide = () => {
   )
 
   useEffect(() => {
-    fetch()
-  }, [fetch])
+    fetchPiecesForRobot()
+  }, [fetchPiecesForRobot])
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
+      <Dialog as="div" className="fixed inset-0 overflow-hidden z-20" onClose={setOpen}>
         <div className="absolute inset-0 overflow-hidden">
           <Dialog.Overlay className="absolute inset-0" />
 
@@ -132,7 +137,7 @@ export const Slide = () => {
                                     )
                                   }
                                 >
-                                  {({ active, checked }) => (
+                                  {({ checked }) => (
                                     <>
                                       <div className="flex items-center">
                                         <div className="text-sm">
@@ -182,39 +187,55 @@ export const Slide = () => {
                       )}
                     </div>
                   </div>
-                  <div className={classNames('flex-shrink-0 px-4 py-4 flex justify-end')}>
-                    <button
-                      onClick={async () => {
-                        fetchMekaAllowance({
-                          onSuccess: async (result: string | number) => {
-                            if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
-                            fetchSign({
-                              onSuccess: async (result: any) => {
-                                await fetchMeka({
-                                  params: {
-                                    params: {
-                                      _owner: wallet,
-                                      _robotId: result.robotId,
-                                      _pieceId: result.pieceId,
-                                      _pieceType: result.pieceType,
-                                      _amount: Moralis.Units.ETH(5),
-                                      _nonce: result.nonce,
-                                      _signature: result.signature
-                                    }
-                                  },
-                                  onSuccess: () => fetch(),
-                                  onError: e => console.log(e)
-                                })
-                              }
-                            })
-                          }
-                        })
-                        // await fetchIsAttaching()
-                      }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg w-full font-bold rounded-md text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                  <div className={classNames(selected && !isLoading ? '' : 'cursor-not-allowed')}>
+                    <div
+                      className={classNames(
+                        'flex-shrink-0 px-4 py-4 flex justify-end',
+                        selected && !isLoading ? '' : 'pointer-events-none'
+                      )}
                     >
-                      Attach
-                    </button>
+                      <button
+                        onClick={async () => {
+                          setIsLoading(true)
+                          fetchMekaAllowance({
+                            onSuccess: async (result: string | number) => {
+                              if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                              fetchSign({
+                                onSuccess: async (result: any) => {
+                                  await fetchMeka({
+                                    params: {
+                                      params: {
+                                        _owner: wallet,
+                                        _robotId: result.robotId,
+                                        _pieceId: result.pieceId,
+                                        _pieceType: result.pieceType,
+                                        _amount: Moralis.Units.ETH(5),
+                                        _nonce: result.nonce,
+                                        _signature: result.signature
+                                      }
+                                    },
+                                    onSuccess: async () => {
+                                      await fetchIsAttaching()
+                                      fetch()
+                                      setOpen(false)
+                                      setIsLoading(false)
+                                    },
+                                    onError: e => {
+                                      setIsLoading(false)
+                                      console.log(e)
+                                    }
+                                  })
+                                }
+                              })
+                            },
+                            onError: () => setIsLoading(false)
+                          })
+                        }}
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg w-full font-bold rounded-md text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                      >
+                        Attach
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

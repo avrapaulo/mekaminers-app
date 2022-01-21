@@ -13,6 +13,7 @@ import { RobotPiece } from 'components/details/robot-piece'
 import { piecesDefault } from 'constants/robots-pieces'
 import { Slide } from 'components/details/slide'
 import { useEffect } from 'react'
+import { TimerStatus } from 'components/details/timer'
 
 interface RobotProps {
   bonus: number
@@ -20,6 +21,8 @@ interface RobotProps {
   owner: string
   rarity: string
   type: string
+  mode: string
+  lastAttachDate: string
   robotStatus: { key: string; value: number }[]
   piecesStatus: any[]
 }
@@ -44,12 +47,14 @@ const RobotsDetail = () => {
     type,
     robotStatus,
     bonus,
+    mode,
+    lastAttachDate,
     piecesStatus = []
   } = ((data && data[0]) as RobotProps) || ({ owner: defaultWallet } as RobotProps)
 
   return (
     <>
-      <Slide />
+      <Slide fetch={fetch} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">
         <div className="flex">
           <Link href="/inventory/robots">
@@ -236,7 +241,14 @@ const RobotsDetail = () => {
                 )}
               </div>
             </div>
-            <div className="flex-1 p-4 flex flex-col h-full w-full">
+            <div className="flex-1 p-4 flex flex-col relative">
+              {mode === 'Attaching' && (
+                <div className="bg-black absolute h-full w-full inset-0 z-10 bg-opacity-50">
+                  <div className="flex justify-center items-center h-full w-full text-8xl">
+                    <TimerStatus key="timerStatus" time={lastAttachDate} fetch={fetch} />
+                  </div>
+                </div>
+              )}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {type &&
                   piecesDefault

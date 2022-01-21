@@ -47,7 +47,7 @@ const robots = [
       { classType: 's', chance: 3 }
     ],
     price: 0.5,
-    items: ['2x NFT Robots', '20x oil', '10x Toolkit', '2x medium maintainer']
+    items: ['2x NFT Robots', '60x oil', '10x Toolkit', '2x medium maintainer']
   },
   {
     id: 3,
