@@ -11,11 +11,13 @@ import { Mode } from 'components/card/mode'
 import { RobotBody } from 'components/card/robot-body'
 import { Robot } from 'components/3D'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { Gen0, Gen1 } from 'icons'
 
 interface RobotsProps {
   bonus: number
   mode: number
   token: number
+  gen: number
   rarity: string
   title: string
   type: string
@@ -77,12 +79,18 @@ const RobotsPage = () => {
                 piecesStatus,
                 bonus,
                 mode,
-                type
+                type,
+                gen
               }) => (
                 <Link key={token} href={`/inventory/robots/details?id=${token}`}>
                   <a className="relative flex justify-center">
                     <Mode modeId={mode} />
-
+                    {gen !== undefined && (
+                      <div className="font-bold absolute z-10 -left-5">
+                        {gen === 0 && <Gen0 className="h-12 w-12" aria-hidden="true" />}
+                        {gen === 1 && <Gen1 className="h-12 w-12" aria-hidden="true" />}
+                      </div>
+                    )}
                     <Card
                       rarity={rarity}
                       description={title}

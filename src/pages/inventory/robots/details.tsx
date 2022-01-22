@@ -14,9 +14,11 @@ import { piecesDefault } from 'constants/robots-pieces'
 import { Slide } from 'components/details/slide'
 import { useEffect } from 'react'
 import { TimerStatus } from 'components/details/timer'
+import { Gen0, Gen1 } from 'icons'
 
 interface RobotProps {
   bonus: number
+  gen: number
   title: string
   owner: string
   rarity: string
@@ -43,6 +45,7 @@ const RobotsDetail = () => {
   const {
     title = ' ',
     owner,
+    gen,
     rarity,
     type,
     robotStatus,
@@ -69,7 +72,15 @@ const RobotsDetail = () => {
         <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full h-full">
           <div className="box">
             <div className="flex items-center justify-center flex-col w-full h-full">
-              <div className="text-5xl font-bold">{title}</div>
+              <div className="text-5xl font-bold flex justify-center items-center">
+                <div>{title}</div>
+                {gen !== undefined && (
+                  <div>
+                    {gen === 0 && <Gen0 className="h-12 w-12" aria-hidden="true" />}
+                    {gen === 1 && <Gen1 className="h-12 w-12" aria-hidden="true" />}
+                  </div>
+                )}
+              </div>
               <span className="text-sm font-semibold">{getEllipsisTxt(owner)}</span>
               <div className="w-full aspect-square">
                 {rarity && type && (

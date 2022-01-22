@@ -51,7 +51,7 @@ const navigation = [
   {
     name: 'Inventory',
     defaultHref: '/inventory',
-    href: '/inventory/boxes',
+    href: '/inventory/robots',
     icon: BriefcaseIcon,
     disable: false,
     layoutBig: false

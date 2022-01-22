@@ -16,7 +16,7 @@ const Card = ({ rarity = 'default', title, description, imageCard, children }: C
       (rarityInfo[rarity] || rarityInfo.default).border
     )}
   >
-    <div className="flex flex-row justify-end py-2">
+    <div className="flex flex-row  py-2">
       <div className="flex flex-col flex-1 justify-center">
         {title && (
           <>
@@ -27,17 +27,17 @@ const Card = ({ rarity = 'default', title, description, imageCard, children }: C
         <div className="flex justify-center font-bold">{description}</div>
       </div>
       {rarity !== 'default' && (
-        <>
-          <div className="font-bold rotate-45 pr-3 absolute z-10">
+        <div className="absolute right-0">
+          <div className="font-bold rotate-45 z-20 pr-3 ">
             {(rarityInfo[rarity] || rarityInfo.default).name}
+            <div
+              className={classNames(
+                'w-20 h-9 -left-7 transform  bottom-0 absolute -z-10',
+                (rarityInfo[rarity] || rarityInfo.default).bg
+              )}
+            />
           </div>
-          <div
-            className={classNames(
-              'absolute w-12 h-20 -rotate-45 transform origin-top-left top-0',
-              (rarityInfo[rarity] || rarityInfo.default).bg
-            )}
-          />
-        </>
+        </div>
       )}
     </div>
     <div className="px-1">
