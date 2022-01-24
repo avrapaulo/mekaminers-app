@@ -45,7 +45,7 @@ const navigation = [
     defaultHref: '/marketplace',
     href: '/marketplace',
     icon: LibraryIcon,
-    disable: true,
+    disable: false,
     layoutBig: true
   },
   {
@@ -114,7 +114,7 @@ export const Layout = ({ children }: LayoutProps) => {
         }}
       />
       <DisconnectModel />
-      <div className="max-h-full">
+      <div className="h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -244,7 +244,7 @@ export const Layout = ({ children }: LayoutProps) => {
           </Dialog>
         </Transition.Root>
 
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 h-full">
           <div className="relative flex-shrink-0 flex h-16 lg:h-28 lg:border-none bg-gradient-to-t from-blue-zodiac-500 to-blue-zodiac-700">
             <button
               type="button"

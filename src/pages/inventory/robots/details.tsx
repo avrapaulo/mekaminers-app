@@ -5,7 +5,6 @@ import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { Robot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
-import { defaultWallet } from 'recoil/atoms'
 import { getEllipsisTxt } from 'helpers/formatters'
 import { statusDescription } from 'constants/status'
 import { rarityInfo } from 'constants/rarity'
@@ -17,24 +16,28 @@ import { TimerStatus } from 'components/details/timer'
 import { Gen0, Gen1 } from 'icons'
 
 interface RobotProps {
-  bonus: number
-  gen: number
-  title: string
-  owner: string
-  rarity: string
-  type: string
-  mode: string
-  lastAttachDate: string
-  robotStatus: { key: string; value: number }[]
-  piecesStatus: any[]
+  robot: {
+    bonus: number
+    gen: number
+    price: number
+    mode: number
+    title: string
+    owner: string
+    rarity: string
+    type: string
+    lastAttachDate: string
+    robotStatus: { key: string; value: number }[]
+    piecesStatus: any[]
+  }
+  isOwner: boolean
 }
 
 const RobotsDetail = () => {
   const router = useRouter()
-  const { id: robotId } = router.query
+  const { id: robotId, market } = router.query
   const { data, fetch } = useMoralisCloudFunction(
-    'getMintedRobots',
-    { tokenIds: [+robotId] },
+    'getRobotDetail',
+    { tokenId: +robotId },
     { autoFetch: false }
   )
 
@@ -43,24 +46,28 @@ const RobotsDetail = () => {
   }, [fetch])
 
   const {
-    title = ' ',
-    owner,
-    gen,
-    rarity,
-    type,
-    robotStatus,
-    bonus,
-    mode,
-    lastAttachDate,
-    piecesStatus = []
-  } = ((data && data[0]) as RobotProps) || ({ owner: defaultWallet } as RobotProps)
+    robot: {
+      title = ' ',
+      owner,
+      rarity,
+      gen,
+      type,
+      robotStatus,
+      bonus,
+      mode,
+      lastAttachDate,
+      piecesStatus = [],
+      price
+    },
+    isOwner
+  } = (data || { robot: {} }) as RobotProps
 
   return (
     <>
       <Slide fetch={fetch} />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
         <div className="flex">
-          <Link href="/inventory/robots">
+          <Link href={market ? '/marketplace' : '/inventory/robots'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
                 <ChevronLeftIcon className="text-tree-poppy" />
@@ -72,7 +79,7 @@ const RobotsDetail = () => {
         <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full h-full">
           <div className="box">
             <div className="flex items-center justify-center flex-col w-full h-full">
-              <div className="text-5xl font-bold flex justify-center items-center">
+              <div className="text-5xl font-bold flex justify-center items-center text-white">
                 <div>{title}</div>
                 {gen !== undefined && (
                   <div>
@@ -81,7 +88,7 @@ const RobotsDetail = () => {
                   </div>
                 )}
               </div>
-              <span className="text-sm font-semibold">{getEllipsisTxt(owner)}</span>
+              <span className="text-sm font-semibold text-white">{getEllipsisTxt(owner)}</span>
               <div className="w-full aspect-square">
                 {rarity && type && (
                   <Robot
@@ -92,15 +99,27 @@ const RobotsDetail = () => {
                   />
                 )}
               </div>
-              <button
-                type="button"
-                className={classNames(
-                  'w-32 mb-10 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200',
-                  'cursor-not-allowed'
-                )}
-              >
-                Sell
-              </button>
+              {isOwner && (
+                <button
+                  type="button"
+                  className={classNames(
+                    'w-32 mb-10 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200'
+                  )}
+                >
+                  Sell
+                </button>
+              )}
+              {!isOwner && mode === 2 && price && (
+                <button
+                  type="button"
+                  className={classNames(
+                    'mb-10 flex justify-center items-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200'
+                  )}
+                >
+                  {price}
+                  <img alt="price" className="h-5 w-5 object-contain" src="/meka.png" />
+                </button>
+              )}
             </div>
           </div>
           <div className="box col-start-2 col-span-2">
@@ -271,7 +290,7 @@ const RobotsDetail = () => {
               </div>
             </div>
             <div className="flex-1 p-4 flex flex-col relative">
-              {mode === 'Attaching' && (
+              {mode === 4 && (
                 <div className="bg-black absolute h-full w-full inset-0 z-10 bg-opacity-50">
                   <div className="flex justify-center items-center h-full w-full text-8xl">
                     <TimerStatus key="timerStatus" time={lastAttachDate} fetch={fetch} />
@@ -298,6 +317,7 @@ const RobotsDetail = () => {
                         rarity: rarityPiece
                       }) => (
                         <RobotPiece
+                          canAttach={isOwner}
                           robotId={+robotId}
                           robotTypeStatus={key}
                           robotType={type}

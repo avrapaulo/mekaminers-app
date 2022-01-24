@@ -5,6 +5,7 @@ import { Piece } from 'components/3D'
 import { slideAtom, slideDataAtom } from 'recoil/atoms'
 
 interface RobotPieceProps {
+  canAttach?: boolean
   isDefault: boolean
   value: number
   pieceId: number
@@ -18,6 +19,7 @@ interface RobotPieceProps {
 }
 
 export const RobotPiece = ({
+  canAttach = false,
   robotId,
   value,
   pieceId,
@@ -44,8 +46,10 @@ export const RobotPiece = ({
         <div
           className="flex justify-center items-center h-full"
           onClick={async () => {
-            setSlideData({ robotId, pieceType: robotTypeStatus })
-            setSlide(true)
+            if (canAttach) {
+              setSlideData({ robotId, pieceType: robotTypeStatus })
+              setSlide(true)
+            }
           }}
         >
           <IconPiece className="h-24 w-24 p-1.5 " />

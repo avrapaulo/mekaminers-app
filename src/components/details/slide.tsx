@@ -225,6 +225,10 @@ export const Slide = ({ fetch }: SlideProps) => {
                                       console.log(e)
                                     }
                                   })
+                                },
+                                onError: e => {
+                                  setIsLoading(false)
+                                  console.log(e)
                                 }
                               })
                             },
