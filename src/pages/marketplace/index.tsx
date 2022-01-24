@@ -94,28 +94,17 @@ const MarketPlace = () => {
                   }) => (
                     <Link key={token} href={`/inventory/robots/details?id=${token}&market=true`}>
                       <a className="relative flex justify-center">
-                        <Mode modeId={mode} />
                         {gen !== undefined && (
                           <div className="font-bold absolute z-10 -left-5">
                             {gen === 0 && <Gen0 className="h-12 w-12" aria-hidden="true" />}
                             {gen === 1 && <Gen1 className="h-12 w-12" aria-hidden="true" />}
                           </div>
                         )}
-                        {price && (
-                          <div className="font-bold absolute z-10 -bottom-3 right-7">
-                            <div className="flex space-x-1 justify-center border rounded-md bg-green-600 text-white font-semibold items-center min-w-[4rem] px-1">
-                              <div>{Math.ceil(price)}</div>
-                              <img
-                                alt="meka"
-                                className="h-5 w-5 mt-1 object-contain"
-                                src="/meka.png"
-                              />
-                            </div>
-                          </div>
-                        )}
+
                         <Card
                           rarity={rarity}
                           description={title}
+                          price={price}
                           imageCard={
                             <Robot
                               rarity={rarity}

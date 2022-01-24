@@ -292,7 +292,7 @@ export const Layout = ({ children }: LayoutProps) => {
                         <div
                           className={classNames(
                             item.layoutBig
-                              ? '-translate-x-3.5'
+                              ? '-translate-x-2.5 xl:-translate-x-3.5'
                               : '-translate-x-1 xl:-translate-x-2',
                             'bg-white rounded-full p-1 absolute right-1.5 transform'
                           )}

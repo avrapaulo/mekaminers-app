@@ -2,7 +2,9 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
-import { useMoralisCloudFunction } from 'react-moralis'
+import { useRecoilValue } from 'recoil'
+import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
+import { AbiItem } from 'web3-utils'
 import { Robot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
 import { getEllipsisTxt } from 'helpers/formatters'
@@ -14,6 +16,10 @@ import { Slide } from 'components/details/slide'
 import { useEffect } from 'react'
 import { TimerStatus } from 'components/details/timer'
 import { Gen0, Gen1 } from 'icons'
+import { abi as robotAbi } from 'contracts/RobotCore.json'
+import { abi as robotMarketplaceAbi } from 'contracts/RobotMarketplace.json'
+import { walletAtom } from 'recoil/atoms'
+import { useMeka } from 'hooks'
 
 interface RobotProps {
   robot: {
@@ -32,14 +38,49 @@ interface RobotProps {
   isOwner: boolean
 }
 
+const amountToApprove = 10000
+
 const RobotsDetail = () => {
   const router = useRouter()
+  const { web3, Moralis } = useMoralis()
+  const wallet = useRecoilValue(walletAtom)
   const { id: robotId, market } = router.query
   const { data, fetch } = useMoralisCloudFunction(
     'getRobotDetail',
     { tokenId: +robotId },
     { autoFetch: false }
   )
+
+  const robotMarketplace = new web3.eth.Contract(
+    robotAbi as AbiItem[],
+    process.env.NEXT_PUBLIC_ROBOT_ADDRESS
+  )
+  const robotCancelSale = new web3.eth.Contract(
+    robotMarketplaceAbi as AbiItem[],
+    process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE
+  )
+
+  const { fetch: fetchMeka } = useWeb3ExecuteFunction({
+    contractAddress: process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE,
+    functionName: 'cancelSale',
+    abi: robotMarketplaceAbi
+  })
+
+  const { fetchMeka: fetchMekaAllowance } = useMeka({
+    functionName: 'allowance',
+    params: {
+      spender: process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE,
+      owner: wallet
+    }
+  })
+
+  const { fetchMeka: fetchMekaApprove } = useMeka({
+    functionName: 'approve',
+    params: {
+      spender: process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE,
+      amount: Moralis.Units.ETH(amountToApprove)
+    }
+  })
 
   useEffect(() => {
     fetch()
@@ -99,27 +140,6 @@ const RobotsDetail = () => {
                   />
                 )}
               </div>
-              {isOwner && (
-                <button
-                  type="button"
-                  className={classNames(
-                    'w-32 mb-10 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200'
-                  )}
-                >
-                  Sell
-                </button>
-              )}
-              {!isOwner && mode === 2 && price && (
-                <button
-                  type="button"
-                  className={classNames(
-                    'mb-10 flex justify-center items-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200'
-                  )}
-                >
-                  {price}
-                  <img alt="price" className="h-5 w-5 object-contain" src="/meka.png" />
-                </button>
-              )}
             </div>
           </div>
           <div className="box col-start-2 col-span-2">
@@ -336,6 +356,60 @@ const RobotsDetail = () => {
             </div>
           </div>
         </div>
+        {robotStatus && (
+          <div className="flex flex-col items-center">
+            {price && (
+              <div className="mb-3 flex justify-center items-center text-3xl font-semibold text-white">
+                {price}
+                <img alt="price" className="h-10 w-10 object-contain ml-1" src="/meka.png" />
+              </div>
+            )}
+            <button
+              type="button"
+              className={classNames(
+                'mb-10 flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200 w-24'
+              )}
+              onClick={async () => {
+                if (isOwner) {
+                  if (mode === 2) {
+                    await robotCancelSale.methods.cancelSale(+robotId).send({
+                      from: wallet
+                    })
+                    // await fetchMeka({
+                    //   params: {
+                    //     params: {
+                    //       _tokenId: robotId
+                    //     }
+                    //   }
+                    // })
+                  } else {
+                    await robotMarketplace.methods
+                      .createSale(+robotId, Moralis.Units.ETH(400))
+                      .send({
+                        from: wallet,
+                        value: Moralis.Units.ETH(0.005)
+                      })
+                  }
+                } else {
+                  if (mode === 2) {
+                    fetchMekaAllowance({
+                      onSuccess: async (result: string | number) => {
+                        if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                        await robotCancelSale.methods.bid(+robotId, Moralis.Units.ETH(price)).send({
+                          from: wallet,
+                          value: Moralis.Units.ETH(0.005)
+                        })
+                      }
+                    })
+                  }
+                }
+              }}
+            >
+              {!isOwner && 'Buy'}
+              {isOwner && (mode === 2 ? 'Cancel' : 'Sell')}
+            </button>
+          </div>
+        )}
       </div>
     </>
   )

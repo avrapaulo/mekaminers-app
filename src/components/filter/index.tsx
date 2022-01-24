@@ -169,7 +169,7 @@ export const Filters = () => {
           </button>
           <button
             type="button"
-            className="inline-block text-sm font-medium text-white hover:text-gray-300 sm:hidden"
+            className="inline-block text-sm font-medium text-black hover:text-gray-300 sm:hidden"
             onClick={() => setOpen(true)}
           >
             Filters
@@ -182,7 +182,7 @@ export const Filters = () => {
                 id="desktop-menu"
                 className="relative inline-block text-left"
               >
-                <Popover.Button className="group inline-flex items-center justify-center text-sm text-white font-bold hover:text-gray-300">
+                <Popover.Button className="group inline-flex items-center justify-center text-sm text-black font-bold hover:text-gray-300">
                   <span>{section.name}</span>
                   {filters?.[section.id].length > 0 ? (
                     <span className="ml-1.5 rounded py-0.5 px-1.5 bg-gray-200 text-xs font-semibold text-black tabular-nums">
@@ -190,7 +190,7 @@ export const Filters = () => {
                     </span>
                   ) : null}
                   <ChevronDownIcon
-                    className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-white group-hover:text-white"
+                    className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-black group-hover:text-black"
                     aria-hidden="true"
                   />
                 </Popover.Button>
