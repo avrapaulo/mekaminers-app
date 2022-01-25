@@ -1,6 +1,11 @@
 import { atom } from 'recoil'
 
-export const filterAtom = atom({
-  key: 'filterAtom',
+export const robotFilterAtom = atom({
+  key: 'robotFilterAtom',
   default: { rarity: [], type: [], gen: [], withPieces: [] }
+})
+
+export const pieceFilterAtom = atom({
+  key: 'pieceFilterAtom',
+  default: { robotType: [], pieceType: [], rarity: [], season: [] }
 })

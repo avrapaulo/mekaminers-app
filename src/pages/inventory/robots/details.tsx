@@ -368,7 +368,7 @@ const RobotsDetail = () => {
             </div>
           </div>
         </div>
-        {robotStatus && (
+        {robotStatus && (mode === 2 || isOwner) && (
           <div className="flex flex-col items-center">
             {price && (
               <div className="mb-3 flex justify-center items-center text-3xl font-semibold text-white">

@@ -2,16 +2,15 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
 import { useMoralisCloudFunction } from 'react-moralis'
-import { robotFilterAtom } from 'recoil/atoms'
+import { pieceFilterAtom } from 'recoil/atoms'
 import { Card } from 'components/card'
-import { RobotBody } from 'components/card/robot-body'
-import { Robot } from 'components/3D'
-import { Gen0, Gen1 } from 'icons'
+import { Piece } from 'components/3D'
 import { Pagination } from 'components/pagination'
 import { Filters } from 'components/filter'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { PiecesBody } from 'components/card/piece-body'
 
-interface RobotsProps {
+interface PiecesProps {
   bonus: number
   mode: number
   token: number
@@ -24,36 +23,36 @@ interface RobotsProps {
   piecesStatus: { key: string; value: number; id: number; rarity: string }[]
 }
 
-interface MarketplaceRobotsProps {
+interface MarketplacePiecesProps {
   isOwned: boolean
   totalPages: number
   totalRobots: number
   page: number
-  robots: RobotsProps[]
+  pieces: PiecesProps[]
 }
 
 const MarketPlace = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const [selectedPage, setSelectedPage] = useState(1)
-  const { gen, rarity, type, withPieces } = useRecoilValue(robotFilterAtom)
+  const { robotType, pieceType, rarity, season } = useRecoilValue(pieceFilterAtom)
 
   const { data, fetch } = useMoralisCloudFunction(
-    'getMarketplaceRobots',
+    'getMarketplacePieces',
     {
       filter: {
-        withPieces: withPieces.some(pi => pi === '1'),
-        withoutPieces: withPieces.some(pi => pi === '2'),
-        type,
+        robotType,
+        pieceType,
         rarity,
-        gen
+        season
       },
       page: selectedPage
     },
     { autoFetch: true }
   )
-  const { robots, totalPages, page } = (data || {
+
+  const { pieces, totalPages, page } = (data || {
     robots: []
-  }) as MarketplaceRobotsProps
+  }) as MarketplacePiecesProps
 
   return (
     <>
@@ -63,8 +62,8 @@ const MarketPlace = () => {
         </div>
         <Filters />
       </div>
-      {robots === null || (robots as RobotsProps[])?.length === 0 ? (
-        isLoadingPage || robots === null ? (
+      {pieces === null || (pieces as PiecesProps[])?.length === 0 ? (
+        isLoadingPage || pieces === null ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
               <img alt="" src={'/meka.png'} />
@@ -80,7 +79,7 @@ const MarketPlace = () => {
           <div className="flex flex-col">
             <div className="flex-grow">
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-5">
-                {(robots as RobotsProps[])?.map(
+                {(pieces as PiecesProps[])?.map(
                   ({
                     token,
                     price,
@@ -89,36 +88,23 @@ const MarketPlace = () => {
                     robotStatus,
                     piecesStatus,
                     bonus,
-                    mode,
-                    type,
-                    gen
+                    type
                   }) => (
-                    <Link key={token} href={`/inventory/robots/details?id=${token}&market=true`}>
+                    <Link key={token} href={`/inventory/pieces/details?id=${token}&market=true`}>
                       <a className="relative flex justify-center">
-                        {gen !== undefined && (
-                          <div className="font-bold absolute z-10 -left-5">
-                            {gen === 0 && <Gen0 className="h-12 w-12" aria-hidden="true" />}
-                            {gen === 1 && <Gen1 className="h-12 w-12" aria-hidden="true" />}
-                          </div>
-                        )}
-
                         <Card
                           rarity={rarity}
                           description={title}
-                          price={price}
+                          title={type}
                           imageCard={
-                            <Robot
+                            <Piece
                               rarity={rarity}
                               robotType={type.toLowerCase()}
-                              piecesStatus={piecesStatus}
+                              pieceId={piecesStatus[0].id}
                             />
                           }
                         >
-                          <RobotBody
-                            bonus={bonus}
-                            piecesStatus={piecesStatus}
-                            robotStatus={robotStatus}
-                          />
+                          <PiecesBody piecesStatus={piecesStatus} rarity={rarity} />
                         </Card>
                       </a>
                     </Link>
@@ -126,7 +112,7 @@ const MarketPlace = () => {
                 )}
               </div>
             </div>
-            {(robots as RobotsProps[])?.length > 0 && (
+            {(pieces as PiecesProps[])?.length > 0 && (
               <Pagination
                 pages={totalPages}
                 page={page}

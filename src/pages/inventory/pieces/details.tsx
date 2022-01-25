@@ -1,52 +1,107 @@
 /* eslint-disable indent */
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
-import { useMoralisCloudFunction } from 'react-moralis'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
+import { AbiItem } from 'web3-utils'
 import { Piece } from 'components/3D'
 import { classNames } from 'helpers/class-names'
-import { defaultWallet } from 'recoil/atoms'
+import { walletAtom, priceModalAtom, mekaAtom } from 'recoil/atoms'
 import { getEllipsisTxt } from 'helpers/formatters'
 import { statusDescription } from 'constants/status'
 import { rarityInfo } from 'constants/rarity'
-import { useEffect } from 'react'
+import { ModalPrice } from 'components/modal'
+import { abi as pieceMarketplaceAbi } from 'contracts/PieceMarketplace.json'
+import { abi as pieceAbi } from 'contracts/PieceCore.json'
+import { useMeka, UseBalanceOf } from 'hooks'
 
 interface PiecesProps {
-  bonus: number
-  title: string
-  owner: string
-  rarity: string
-  type: string
-  robotStatus: { key: string; value: number }[]
-  piecesStatus: any[]
+  piece: {
+    bonus: number
+    price: number
+    mode: number
+    title: string
+    owner: string
+    rarity: string
+    type: string
+    piecesStatus: any[]
+  }
+  isOwner: boolean
 }
+
+const amountToApprove = 10000
 
 const PiecesDetail = () => {
   const router = useRouter()
-  const { id } = router.query
+  const { id, market } = router.query
+  const { web3, Moralis } = useMoralis()
+  const { fetchBalanceOf } = UseBalanceOf()
+  const wallet = useRecoilValue(walletAtom)
+  const priceModal = useSetRecoilState(priceModalAtom)
+  const setMekaAtom = useSetRecoilState(mekaAtom)
+
   const { data, fetch } = useMoralisCloudFunction(
-    'getMintedPieces',
-    { tokenIds: [+id] },
+    'getPieceDetail',
+    { tokenId: +id },
     { autoFetch: false }
   )
+
+  const pieceMarketplace = new web3.eth.Contract(
+    pieceAbi as AbiItem[],
+    process.env.NEXT_PUBLIC_PIECE_ADDRESS
+  )
+
+  const pieceCancelSale = new web3.eth.Contract(
+    pieceMarketplaceAbi as AbiItem[],
+    process.env.NEXT_PUBLIC_PIECE_MARKETPLACE
+  )
+
+  const { fetch: bidPiece } = useWeb3ExecuteFunction({
+    contractAddress: process.env.NEXT_PUBLIC_PIECE_MARKETPLACE,
+    functionName: 'bid',
+    abi: pieceMarketplaceAbi
+  })
+
+  const { fetchMeka: fetchMekaAllowance } = useMeka({
+    functionName: 'allowance',
+    params: {
+      spender: process.env.NEXT_PUBLIC_PIECE_MARKETPLACE,
+      owner: wallet
+    }
+  })
+
+  const { fetchMeka: fetchMekaApprove } = useMeka({
+    functionName: 'approve',
+    params: {
+      spender: process.env.NEXT_PUBLIC_PIECE_MARKETPLACE,
+      amount: Moralis.Units.ETH(amountToApprove)
+    }
+  })
 
   useEffect(() => {
     fetch()
   }, [fetch])
 
   const {
-    title = ' ',
-    owner,
-    rarity,
-    type,
-    piecesStatus = []
-  } = ((data && data[0]) as PiecesProps) || ({ owner: defaultWallet } as PiecesProps)
+    piece: { title = ' ', owner, rarity, type, bonus, price, mode, piecesStatus },
+    isOwner
+  } = (data || { piece: {} }) as PiecesProps
 
   return (
-    <div>
+    <>
+      <ModalPrice
+        callback={async number =>
+          await pieceMarketplace.methods.createSale(+id, Moralis.Units.ETH(number)).send({
+            from: wallet,
+            value: Moralis.Units.ETH(0.005)
+          })
+        }
+      />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">
         <div className="flex">
-          <Link href="/inventory/pieces">
+          <Link href={market ? '/marketplace/pieces' : '/inventory/pieces'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
                 <ChevronLeftIcon className="text-tree-poppy" />
@@ -59,7 +114,7 @@ const PiecesDetail = () => {
           <div className="box">
             <div className="flex items-center justify-center flex-col w-full h-full">
               <div className="text-5xl font-bold">{title}</div>
-              <span className="text-sm font-semibold">{getEllipsisTxt(owner)}</span>
+              <span className="text-sm font-semibold mt-1">{getEllipsisTxt(owner)}</span>
               <div className="w-full aspect-square">
                 {rarity && type && (
                   <Piece
@@ -69,15 +124,6 @@ const PiecesDetail = () => {
                   />
                 )}
               </div>
-              <button
-                type="button"
-                className={classNames(
-                  'w-32 mb-10 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200',
-                  'cursor-not-allowed'
-                )}
-              >
-                Sell
-              </button>
             </div>
           </div>
           <div className="box col-start-2 col-span-2">
@@ -131,10 +177,62 @@ const PiecesDetail = () => {
                 )}
               </div>
             </div>
+            {piecesStatus && (mode === 2 || isOwner) && (
+              <div className="flex flex-col items-center">
+                {price && (
+                  <div className="mb-3 flex justify-center items-center text-3xl font-semibold text-white">
+                    {price}
+                    <img alt="price" className="h-10 w-10 object-contain ml-1" src="/meka.png" />
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className={classNames(
+                    'mb-10 flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200 w-24'
+                  )}
+                  onClick={async () => {
+                    if (mode !== 4) {
+                      if (isOwner) {
+                        if (mode === 2) {
+                          await pieceCancelSale.methods.cancelSale(+id).send({
+                            from: wallet
+                          })
+                        } else {
+                          priceModal(true)
+                        }
+                      } else {
+                        if (mode === 2) {
+                          fetchMekaAllowance({
+                            onSuccess: async (result: string | number) => {
+                              if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                              bidPiece({
+                                params: {
+                                  params: { _amount: Moralis.Units.ETH(price), _tokenId: +id },
+                                  msgValue: Moralis.Units.ETH(0.005)
+                                } as any,
+                                onSuccess: () =>
+                                  fetchBalanceOf({
+                                    onSuccess: result =>
+                                      setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                                    onError: e => console.log(e)
+                                  })
+                              })
+                            }
+                          })
+                        }
+                      }
+                    }
+                  }}
+                >
+                  {!isOwner && 'Buy'}
+                  {isOwner && (mode === 2 ? 'Cancel' : 'Sell')}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
