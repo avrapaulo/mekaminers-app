@@ -185,7 +185,7 @@ export const RobotFilters = () => {
                 <Popover.Button className="group inline-flex items-center justify-center text-sm text-white font-bold hover:text-gray-300">
                   <span>{section.name}</span>
                   {filters?.[section.id].length > 0 ? (
-                    <span className="ml-1.5 rounded py-0.5 px-1.5 bg-gray-200 text-xs font-semibold text-white tabular-nums">
+                    <span className="ml-1.5 rounded py-0.5 px-1.5 bg-gray-200 text-xs font-semibold text-black tabular-nums">
                       {filters?.[section.id].length}
                     </span>
                   ) : null}

@@ -33,7 +33,6 @@ interface MarketplacePiecesProps {
 }
 
 const MarketPlace = () => {
-  const [isLoadingPage, setIsLoadingPage] = useState(true)
   const [selectedPage, setSelectedPage] = useState(1)
   const { robotType, pieceType, rarity, season } = useRecoilValue(pieceFilterAtom)
 
@@ -65,15 +64,11 @@ const MarketPlace = () => {
         <PiecesFilters />
       </div>
       {pieces === null || (pieces as PiecesProps[])?.length === 0 ? (
-        isLoadingPage || pieces === null ? (
+        pieces === null && (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
               <img alt="" src={'/meka.png'} />
             </div>
-          </div>
-        ) : (
-          <div className="uppercase flex justify-center items-center text-white font-bold -z-10">
-            <img alt="" width="500" src="/empty.png" />
           </div>
         )
       ) : (
