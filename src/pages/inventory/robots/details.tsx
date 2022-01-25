@@ -105,7 +105,7 @@ const RobotsDetail = () => {
 
   return (
     <>
-      <Slide fetch={fetch} />
+      <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
         <div className="flex">
           <Link href={market ? '/marketplace' : '/inventory/robots'}>
@@ -370,37 +370,41 @@ const RobotsDetail = () => {
                 'mb-10 flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200 w-24'
               )}
               onClick={async () => {
-                if (isOwner) {
-                  if (mode === 2) {
-                    await robotCancelSale.methods.cancelSale(+robotId).send({
-                      from: wallet
-                    })
-                    // await fetchMeka({
-                    //   params: {
-                    //     params: {
-                    //       _tokenId: robotId
-                    //     }
-                    //   }
-                    // })
-                  } else {
-                    await robotMarketplace.methods
-                      .createSale(+robotId, Moralis.Units.ETH(400))
-                      .send({
-                        from: wallet,
-                        value: Moralis.Units.ETH(0.005)
+                if (mode !== 4) {
+                  if (isOwner) {
+                    if (mode === 2) {
+                      await robotCancelSale.methods.cancelSale(+robotId).send({
+                        from: wallet
                       })
-                  }
-                } else {
-                  if (mode === 2) {
-                    fetchMekaAllowance({
-                      onSuccess: async (result: string | number) => {
-                        if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
-                        await robotCancelSale.methods.bid(+robotId, Moralis.Units.ETH(price)).send({
+                      // await fetchMeka({
+                      //   params: {
+                      //     params: {
+                      //       _tokenId: robotId
+                      //     }
+                      //   }
+                      // })
+                    } else {
+                      await robotMarketplace.methods
+                        .createSale(+robotId, Moralis.Units.ETH(400))
+                        .send({
                           from: wallet,
                           value: Moralis.Units.ETH(0.005)
                         })
-                      }
-                    })
+                    }
+                  } else {
+                    if (mode === 2) {
+                      fetchMekaAllowance({
+                        onSuccess: async (result: string | number) => {
+                          if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                          await robotCancelSale.methods
+                            .bid(+robotId, Moralis.Units.ETH(price))
+                            .send({
+                              from: wallet,
+                              value: Moralis.Units.ETH(0.005)
+                            })
+                        }
+                      })
+                    }
                   }
                 }
               }}

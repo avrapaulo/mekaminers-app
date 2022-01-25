@@ -24,10 +24,11 @@ interface PiecesForRobotProps {
 const amountToApprove = 10000
 
 interface SlideProps {
+  mode: number
   fetch: () => Promise<void>
 }
 
-export const Slide = ({ fetch }: SlideProps) => {
+export const Slide = ({ fetch, mode }: SlideProps) => {
   const { web3, Moralis } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
   const [selected, setSelected] = useState()
@@ -187,11 +188,15 @@ export const Slide = ({ fetch }: SlideProps) => {
                       )}
                     </div>
                   </div>
-                  <div className={classNames(selected && !isLoading ? '' : 'cursor-not-allowed')}>
+                  <div
+                    className={classNames(
+                      selected && !isLoading && mode !== 2 ? '' : 'cursor-not-allowed'
+                    )}
+                  >
                     <div
                       className={classNames(
                         'flex-shrink-0 px-4 py-4 flex justify-end',
-                        selected && !isLoading ? '' : 'pointer-events-none'
+                        selected && !isLoading && mode !== 2 ? '' : 'pointer-events-none'
                       )}
                     >
                       <button

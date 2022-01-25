@@ -34,6 +34,7 @@ interface MarketplaceRobotsProps {
 
 const MarketPlace = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true)
+  const [selectedPage, setSelectedPage] = useState(1)
   const { gen, rarity, type, withPieces } = useRecoilValue(filterAtom)
   console.log(gen, rarity, type, { withPieces })
   const { data, fetch } = useMoralisCloudFunction(
@@ -46,7 +47,7 @@ const MarketPlace = () => {
         rarity,
         gen
       },
-      page: 1
+      page: selectedPage
     },
     { autoFetch: true }
   )
@@ -125,7 +126,7 @@ const MarketPlace = () => {
                 )}
               </div>
             </div>
-            <Pagination pages={totalPages} page={page} />
+            <Pagination pages={totalPages} page={page} selectedPage={num => setSelectedPage(num)} />
           </div>
         </div>
       )}

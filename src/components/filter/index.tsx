@@ -79,10 +79,10 @@ export const Filters = () => {
           >
             <div className="ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-6 flex flex-col overflow-y-auto">
               <div className="px-4 flex items-center justify-between">
-                <h2 className="text-lg font-medium text-gray-300">Filters</h2>
+                <h2 className="text-lg font-medium text-black">Filters</h2>
                 <button
                   type="button"
-                  className="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-zodiac-50"
+                  className="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-zodiac-50"
                   onClick={() => setOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
@@ -101,8 +101,8 @@ export const Filters = () => {
                     {({ open }) => (
                       <>
                         <h3 className="-mx-2 -my-3 flow-root">
-                          <Disclosure.Button className="px-2 py-3 bg-white w-full flex items-center justify-between text-sm text-white">
-                            <span className="font-medium text-gray-300">{section.name}</span>
+                          <Disclosure.Button className="px-2 py-3 bg-white w-full flex items-center justify-between text-sm text-black">
+                            <span className="font-medium text-black">{section.name}</span>
                             <span className="ml-6 flex items-center">
                               <ChevronDownIcon
                                 className={classNames(
@@ -136,7 +136,7 @@ export const Filters = () => {
                                 />
                                 <label
                                   htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-white"
+                                  className="ml-3 text-sm text-black"
                                 >
                                   {label}
                                 </label>
@@ -169,7 +169,7 @@ export const Filters = () => {
           </button>
           <button
             type="button"
-            className="inline-block text-sm font-medium text-black hover:text-gray-300 sm:hidden"
+            className="inline-block text-white font-semibold sm:hidden"
             onClick={() => setOpen(true)}
           >
             Filters
@@ -182,15 +182,15 @@ export const Filters = () => {
                 id="desktop-menu"
                 className="relative inline-block text-left"
               >
-                <Popover.Button className="group inline-flex items-center justify-center text-sm text-black font-bold hover:text-gray-300">
+                <Popover.Button className="group inline-flex items-center justify-center text-sm text-white font-bold hover:text-gray-300">
                   <span>{section.name}</span>
                   {filters?.[section.id].length > 0 ? (
-                    <span className="ml-1.5 rounded py-0.5 px-1.5 bg-gray-200 text-xs font-semibold text-black tabular-nums">
+                    <span className="ml-1.5 rounded py-0.5 px-1.5 bg-gray-200 text-xs font-semibold text-white tabular-nums">
                       {filters?.[section.id].length}
                     </span>
                   ) : null}
                   <ChevronDownIcon
-                    className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-black group-hover:text-black"
+                    className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-white"
                     aria-hidden="true"
                   />
                 </Popover.Button>
