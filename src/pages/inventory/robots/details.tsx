@@ -129,7 +129,7 @@ const RobotsDetail = () => {
             </a>
           </Link>
         </div>
-        <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full h-full">
+        <div className="flex flex-col lg:grid grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">
             <div className="flex items-center justify-center flex-col w-full h-full">
               <div className="text-5xl font-bold flex justify-center items-center text-white">

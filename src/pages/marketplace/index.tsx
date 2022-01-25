@@ -77,7 +77,7 @@ const MarketPlace = () => {
         )
       ) : (
         <div className="max-w-2xl mx-auto pb-5 px-4 sm:pb-10 sm:px-6 lg:max-w-7xl lg:px-8 h-full text-white">
-          <div className="h-full flex flex-col">
+          <div className="flex flex-col">
             <div className="flex-grow">
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-5">
                 {(robots as RobotsProps[])?.map(
