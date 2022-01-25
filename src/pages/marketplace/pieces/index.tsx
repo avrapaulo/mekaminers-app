@@ -98,6 +98,7 @@ const MarketPlace = () => {
                           rarity={rarity}
                           description={title}
                           title={type}
+                          price={price}
                           imageCard={
                             <Piece
                               rarity={rarity}

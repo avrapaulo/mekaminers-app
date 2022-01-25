@@ -40,7 +40,7 @@ const Tools = () => {
       setIsLoadingPage(false)
     }
   }, [web3, isWeb3Enabled, wallet, isAuthenticated, fetch])
-  console.log(data)
+
   return (
     <>
       <MiniHeader menu={inventory} />

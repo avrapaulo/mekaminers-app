@@ -32,11 +32,11 @@ const filtersOptions = [
     id: 'pieceType',
     name: 'Piece',
     options: [
-      { value: 'Capacity', label: 'Right arm' },
-      { value: 'Speed', label: 'Legs' },
-      { value: 'Stealthiness', label: 'Head' },
-      { value: 'OilDecrease', label: 'Body' },
-      { value: 'Efficiency', label: 'Left arm' }
+      { value: 'Right Arm', label: 'Right Arm' },
+      { value: 'Legs', label: 'Legs' },
+      { value: 'Head', label: 'Head' },
+      { value: 'Body', label: 'Body' },
+      { value: 'Left Arm', label: 'Left Arm' }
     ]
   },
   {
