@@ -37,7 +37,7 @@ const navigation = [
     defaultHref: '/junkyard',
     href: '/junkyard/pre-sale',
     icon: ShoppingCartIcon,
-    disable: false,
+    disable: true,
     layoutBig: false
   },
   {
