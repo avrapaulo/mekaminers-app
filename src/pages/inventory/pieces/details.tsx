@@ -88,7 +88,7 @@ const PiecesDetail = () => {
                     <div className="relative rounded-3xl border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-black">
                       <div className="flex-shrink-0 h-10 w-10">
                         <img
-                          alt="Logo Meka Miners"
+                          alt=""
                           className="h-full w-full object-contain"
                           src={`/icons-status/${piecesStatus[0]?.key.toLowerCase()}.png`}
                         />
@@ -106,7 +106,7 @@ const PiecesDetail = () => {
                     <div className="relative rounded-3xl border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-black">
                       <div className="flex-shrink-0 h-10 w-10">
                         <img
-                          alt="Logo Meka Miners"
+                          alt=""
                           className="h-full w-full object-contain"
                           src="/icons-status/season.png"
                         />

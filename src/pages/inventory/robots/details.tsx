@@ -1,8 +1,9 @@
 /* eslint-disable indent */
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { Robot } from 'components/3D'
@@ -13,13 +14,13 @@ import { rarityInfo } from 'constants/rarity'
 import { RobotPiece } from 'components/details/robot-piece'
 import { piecesDefault } from 'constants/robots-pieces'
 import { Slide } from 'components/details/slide'
-import { useEffect } from 'react'
 import { TimerStatus } from 'components/details/timer'
 import { Gen0, Gen1 } from 'icons'
 import { abi as robotAbi } from 'contracts/RobotCore.json'
 import { abi as robotMarketplaceAbi } from 'contracts/RobotMarketplace.json'
-import { walletAtom } from 'recoil/atoms'
-import { useMeka } from 'hooks'
+import { walletAtom, priceModalAtom, mekaAtom } from 'recoil/atoms'
+import { useMeka, UseBalanceOf } from 'hooks'
+import { ModalPrice } from 'components/modal'
 
 interface RobotProps {
   robot: {
@@ -43,14 +44,17 @@ const amountToApprove = 10000
 const RobotsDetail = () => {
   const router = useRouter()
   const { web3, Moralis } = useMoralis()
+  const setMekaAtom = useSetRecoilState(mekaAtom)
+  const { fetchBalanceOf } = UseBalanceOf()
   const wallet = useRecoilValue(walletAtom)
+  const priceModal = useSetRecoilState(priceModalAtom)
   const { id: robotId, market } = router.query
+
   const { data, fetch } = useMoralisCloudFunction(
     'getRobotDetail',
     { tokenId: +robotId },
     { autoFetch: false }
   )
-
   const robotMarketplace = new web3.eth.Contract(
     robotAbi as AbiItem[],
     process.env.NEXT_PUBLIC_ROBOT_ADDRESS
@@ -60,9 +64,9 @@ const RobotsDetail = () => {
     process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE
   )
 
-  const { fetch: fetchMeka } = useWeb3ExecuteFunction({
+  const { fetch: bidRobot } = useWeb3ExecuteFunction({
     contractAddress: process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE,
-    functionName: 'cancelSale',
+    functionName: 'bid',
     abi: robotMarketplaceAbi
   })
 
@@ -105,6 +109,14 @@ const RobotsDetail = () => {
 
   return (
     <>
+      <ModalPrice
+        callback={async number =>
+          await robotMarketplace.methods.createSale(+robotId, Moralis.Units.ETH(number)).send({
+            from: wallet,
+            value: Moralis.Units.ETH(0.005)
+          })
+        }
+      />
       <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
         <div className="flex">
@@ -154,7 +166,7 @@ const RobotsDetail = () => {
                       >
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
-                            alt="Logo Meka Miners"
+                            alt=""
                             className="h-full w-full object-contain"
                             src={`/icons-status/${key.toLowerCase()}.png`}
                           />
@@ -376,32 +388,26 @@ const RobotsDetail = () => {
                       await robotCancelSale.methods.cancelSale(+robotId).send({
                         from: wallet
                       })
-                      // await fetchMeka({
-                      //   params: {
-                      //     params: {
-                      //       _tokenId: robotId
-                      //     }
-                      //   }
-                      // })
                     } else {
-                      await robotMarketplace.methods
-                        .createSale(+robotId, Moralis.Units.ETH(400))
-                        .send({
-                          from: wallet,
-                          value: Moralis.Units.ETH(0.005)
-                        })
+                      priceModal(true)
                     }
                   } else {
                     if (mode === 2) {
                       fetchMekaAllowance({
                         onSuccess: async (result: string | number) => {
                           if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
-                          await robotCancelSale.methods
-                            .bid(+robotId, Moralis.Units.ETH(price))
-                            .send({
-                              from: wallet,
-                              value: Moralis.Units.ETH(0.005)
-                            })
+                          bidRobot({
+                            params: {
+                              params: { _amount: Moralis.Units.ETH(price), _tokenId: +robotId },
+                              msgValue: Moralis.Units.ETH(0.005)
+                            } as any,
+                            onSuccess: () =>
+                              fetchBalanceOf({
+                                onSuccess: result =>
+                                  setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                                onError: e => console.log(e)
+                              })
+                          })
                         }
                       })
                     }

@@ -92,7 +92,7 @@ export const RobotPiece = ({
                 <div className="flex flex-row justify-center items-center space-x-2 text-black border-gray-300 bg-white px-1 py-1 rounded-md">
                   <div className="flex-shrink-0 h-5 w-5 ">
                     <img
-                      alt="Logo Meka Miners"
+                      alt=""
                       className="h-full w-full object-contain"
                       src={`/icons-status/${robotTypeStatus.toLowerCase()}.png`}
                     />
@@ -102,7 +102,7 @@ export const RobotPiece = ({
                 <div className="flex flex-row justify-center items-center space-x-2 text-black border-gray-300 bg-white px-1 py-1 rounded-md">
                   <div className="flex-shrink-0 h-5 w-5 ">
                     <img
-                      alt="Logo Meka Miners"
+                      alt=""
                       className="h-full w-full object-contain"
                       src="/icons-status/season.png"
                     />

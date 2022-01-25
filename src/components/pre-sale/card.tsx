@@ -16,11 +16,7 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
       <img className="absolute" src={`/card-bg-${type}.png`} height="250" alt="card presale" />
       <div className="p-3 pb-6 flex flex-col h-full">
         <div className="relative flex justify-center">
-          <img
-            alt="Logo Meka Miners"
-            className="h-full -mb-10"
-            src={`/gif/boxLvl${id}-${type}.gif`}
-          />
+          <img alt="" className="h-full -mb-10" src={`/gif/boxLvl${id}-${type}.gif`} />
         </div>
         <div className="flex mx-5 items-center justify-between xl:mr-2 2xl:mx-7 z-10">
           <div className="text-right">
@@ -35,13 +31,13 @@ export const Card = ({ total, bought, price, type, href, id }: CardProps) => (
       </div>
     </div>
     <div className="mt-1 2xl:mt-4 flex items-center justify-center">
-      <img alt="Logo Meka Miners" width="256" height="80" src="/button-item.png" />
+      <img alt="" width="256" height="80" src="/button-item.png" />
       <Link href={href}>
         <a
           type="button"
           className="flex justify-center items-center uppercase mt-2 absolute text-3xl font-bold text-white space-x-1 w-64 h-20"
         >
-          <img alt="Logo Meka Miners" width="28" height="28" src="/bnb.png" />
+          <img alt="" width="28" height="28" src="/bnb.png" />
           <div className="mb-1">{price}</div>
           <div className="mb-1">BNB</div>
         </a>

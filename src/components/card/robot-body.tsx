@@ -23,7 +23,7 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
               >
                 <div className="uppercase h-5 w-5">
                   <img
-                    alt="Logo Meka Miners"
+                    alt=""
                     className="h-full w-full object-contain"
                     src={`/icons-status/${key.toLowerCase()}.png`}
                   />
@@ -57,7 +57,7 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
               >
                 <div className="uppercase h-5 w-5">
                   <img
-                    alt="Logo Meka Miners"
+                    alt=""
                     className="h-full w-full object-contain"
                     src={`/icons-status/${key.toLowerCase()}.png`}
                   />
@@ -103,7 +103,7 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
               >
                 <div className="uppercase h-5 w-5">
                   <img
-                    alt="Logo Meka Miners"
+                    alt=""
                     className="h-full w-full object-contain"
                     src={`/icons-status/${key.toLowerCase()}.png`}
                   />
@@ -130,7 +130,7 @@ export const RobotBody = ({ bonus, robotStatus, piecesStatus }: RobotBodyProps) 
               >
                 <div className="uppercase h-5 w-5">
                   <img
-                    alt="Logo Meka Miners"
+                    alt=""
                     className="h-full w-full object-contain"
                     src={`/icons-status/${key.toLowerCase()}.png`}
                   />

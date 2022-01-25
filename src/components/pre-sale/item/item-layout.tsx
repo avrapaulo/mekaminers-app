@@ -56,11 +56,11 @@ export const Item = ({
       <div className=" relative mx-10 rounded-2xl rounded-tl-none mb-10 flex flex-col lg:flex-row pb-10 xl:space-x-20 xl:mx-[200px] 2xl:mx-[350px] desktop:mx-[500px]">
         <div className="flex justify-center items-center flex-col">
           <div className="relative w-72 h-56 mx-auto flex justify-center items-center">
-            <img alt="Logo Meka Miners" className="h-full" src={`/gif/boxLvl${id}-${type}.gif`} />
+            <img alt="" className="h-full" src={`/gif/boxLvl${id}-${type}.gif`} />
           </div>
           <div className="text-3xl justify-center items-center space-x-2 font-extrabold flex text-white">
             <div className="relative w-5 h-5">
-              <img alt="Logo Meka Miners" src="/bnb.png" />
+              <img alt="" src="/bnb.png" />
             </div>
             <div>{price} BNB</div>
           </div>
@@ -72,10 +72,7 @@ export const Item = ({
           </div>
           <div className="flex items-center justify-center">
             <div className="relative w-64 h-20">
-              <img
-                alt="Logo Meka Miners"
-                src={`/button-item${disableButton ? '' : '-disabled'}.png`}
-              />
+              <img alt="" src={`/button-item${disableButton ? '' : '-disabled'}.png`} />
             </div>
             <div
               className={classNames(

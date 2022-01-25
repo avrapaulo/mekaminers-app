@@ -119,7 +119,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
         loading ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-20 w-20 relative">
-              <img alt="Logo Meka Miners" src={'/meka.png'} />
+              <img alt="" src={'/meka.png'} />
             </div>
           </div>
         ) : isOpen && type === 'piece' ? (
@@ -132,7 +132,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
           </Suspense>
         ) : (
           <img
-            alt="Logo Meka Miners"
+            alt=""
             src={
               isOpen
                 ? `/gif/${type}/${output.type}-${output.rarity}.gif`.toLowerCase()

@@ -47,12 +47,12 @@ const Tools = () => {
         isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">
             <div className="h-40 w-40 relative">
-              <img alt="Logo Meka Miners" src={'/meka.png'} />
+              <img alt="" src={'/meka.png'} />
             </div>
           </div>
         ) : (
           <div className="uppercase flex justify-center items-center text-white font-bold -z-10">
-            <img alt="Logo Meka Miners" width="500" src="/empty.png" />
+            <img alt="" width="500" src="/empty.png" />
           </div>
         )
       ) : (
@@ -66,11 +66,7 @@ const Tools = () => {
                     pets[key] ? (
                       pets[key]
                     ) : (
-                      <img
-                        alt="Logo Meka Miners"
-                        className="p-5"
-                        src={`/${key.toLowerCase()}.png`}
-                      />
+                      <img alt="" className="p-5" src={`/${key.toLowerCase()}.png`} />
                     )
                   }
                 >
