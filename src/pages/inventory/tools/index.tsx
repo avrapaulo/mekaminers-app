@@ -6,6 +6,7 @@ import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { Bug, Dog, Frog } from 'components/3D'
+import { inventory } from 'constants/menu'
 
 interface ToolsProps {
   value: number
@@ -42,7 +43,7 @@ const Tools = () => {
   console.log(data)
   return (
     <>
-      <MiniHeader />
+      <MiniHeader menu={inventory} />
       {data === null || (data as ToolsProps[])?.length === 0 ? (
         isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">

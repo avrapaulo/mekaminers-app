@@ -12,6 +12,7 @@ import { RobotBody } from 'components/card/robot-body'
 import { Robot } from 'components/3D'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { Gen0, Gen1 } from 'icons'
+import { inventory } from 'constants/menu'
 
 interface RobotsProps {
   bonus: number
@@ -54,7 +55,7 @@ const RobotsPage = () => {
 
   return (
     <>
-      <MiniHeader />
+      <MiniHeader menu={inventory} />
       {data === null || (data as RobotsProps[])?.length === 0 ? (
         isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">

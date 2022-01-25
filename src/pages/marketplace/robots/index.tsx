@@ -8,8 +8,9 @@ import { RobotBody } from 'components/card/robot-body'
 import { Robot } from 'components/3D'
 import { Gen0, Gen1 } from 'icons'
 import { Pagination } from 'components/pagination'
-import { Filters } from 'components/filter'
+import { RobotFilters } from 'components/filter'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { marketplace } from 'constants/menu'
 
 interface RobotsProps {
   bonus: number
@@ -57,11 +58,12 @@ const MarketPlace = () => {
 
   return (
     <>
+      <MiniHeader menu={marketplace} />
       <div className="max-w-2xl mx-auto lg:max-w-7xl h-40">
         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-5">
           <div className="w-60"></div>
         </div>
-        <Filters />
+        <RobotFilters />
       </div>
       {robots === null || (robots as RobotsProps[])?.length === 0 ? (
         isLoadingPage || robots === null ? (

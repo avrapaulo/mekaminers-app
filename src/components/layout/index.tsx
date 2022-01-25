@@ -43,7 +43,7 @@ const navigation = [
   {
     name: 'Marketplace',
     defaultHref: '/marketplace',
-    href: '/marketplace',
+    href: '/marketplace/robots',
     icon: LibraryIcon,
     disable: false,
     layoutBig: true

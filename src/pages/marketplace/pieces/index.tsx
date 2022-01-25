@@ -6,9 +6,10 @@ import { pieceFilterAtom } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Piece } from 'components/3D'
 import { Pagination } from 'components/pagination'
-import { Filters } from 'components/filter'
+import { PiecesFilters } from 'components/filter'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { PiecesBody } from 'components/card/piece-body'
+import { marketplace } from 'constants/menu'
 
 interface PiecesProps {
   bonus: number
@@ -56,11 +57,12 @@ const MarketPlace = () => {
 
   return (
     <>
+      <MiniHeader menu={marketplace} />
       <div className="max-w-2xl mx-auto lg:max-w-7xl h-40">
         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-5">
           <div className="w-60"></div>
         </div>
-        <Filters />
+        <PiecesFilters />
       </div>
       {pieces === null || (pieces as PiecesProps[])?.length === 0 ? (
         isLoadingPage || pieces === null ? (

@@ -11,6 +11,7 @@ import { abi as abiRobot } from 'contracts/RobotPackage.json'
 import { abi as abiRobotGen1 } from 'contracts/RobotPackageGen1.json'
 import { addressType } from 'helpers/address'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { inventory } from 'constants/menu'
 
 interface MyPackages {
   type: 'robot' | 'piece'
@@ -143,7 +144,7 @@ const Boxes = () => {
 
   return (
     <>
-      <MiniHeader />
+      <MiniHeader menu={inventory} />
       {myRobotsPieces.length === 0 ? (
         isLoadingPage ? (
           <div className="flex h-full justify-center items-center animation-y">

@@ -11,6 +11,7 @@ import { Mode } from 'components/card/mode'
 import { PiecesBody } from 'components/card/piece-body'
 import { Piece } from 'components/3D'
 import { MiniHeader } from 'components/inventory/header-mini'
+import { inventory } from 'constants/menu'
 
 interface PiecesProps {
   bonus: number
@@ -48,7 +49,7 @@ const PiecesPage = () => {
 
   return (
     <>
-      <MiniHeader />
+      <MiniHeader menu={inventory} />
       {data === null || (data as PiecesProps[])?.length === 0 ? (
         isLoadingPage || data === null ? (
           <div className="flex h-full justify-center items-center animation-y">

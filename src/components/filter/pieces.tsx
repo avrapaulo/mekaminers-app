@@ -1,9 +1,9 @@
 import { Fragment, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { Dialog, Disclosure, Menu, Popover, Transition } from '@headlessui/react'
+import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { filterAtom } from 'recoil/atoms'
+import { pieceFilterAtom, defaultPieceFilters } from 'recoil/atoms'
 import { classNames } from 'helpers/class-names'
 
 const filtersOptions = [
@@ -20,8 +20,8 @@ const filtersOptions = [
     ]
   },
   {
-    id: 'type',
-    name: 'Robots',
+    id: 'robotType',
+    name: 'Robot',
     options: [
       { value: 'Tank', label: 'Tank' },
       { value: 'Basic', label: 'Basic' },
@@ -29,27 +29,26 @@ const filtersOptions = [
     ]
   },
   {
-    id: 'gen',
-    name: 'Generation',
+    id: 'pieceType',
+    name: 'Piece',
     options: [
-      { value: 0, label: 'Gen 0' },
-      { value: 1, label: 'Gen 1' },
-      { value: 2, label: 'Normal' }
+      { value: 'Capacity', label: 'Right arm' },
+      { value: 'Speed', label: 'Legs' },
+      { value: 'Stealthiness', label: 'Head' },
+      { value: 'OilDecrease', label: 'Body' },
+      { value: 'Efficiency', label: 'Left arm' }
     ]
   },
   {
-    id: 'withPieces',
-    name: 'Attach',
-    options: [
-      { value: '1', label: 'With pieces' },
-      { value: '2', label: 'Without pieces' }
-    ]
+    id: 'season',
+    name: 'Season',
+    options: [{ value: 'Presale', label: 'Presale' }]
   }
 ]
 
-export const Filters = () => {
+export const PiecesFilters = () => {
   const [open, setOpen] = useState(false)
-  const [filters, setFilters] = useRecoilState(filterAtom)
+  const [filters, setFilters] = useRecoilState(pieceFilterAtom)
 
   return (
     <div>
@@ -163,7 +162,7 @@ export const Filters = () => {
           <button
             type="button"
             className="text-white font-semibold"
-            onClick={() => setFilters({ gen: [], rarity: [], type: [], withPieces: [] })}
+            onClick={() => setFilters(defaultPieceFilters)}
           >
             Clear all
           </button>

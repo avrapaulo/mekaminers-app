@@ -1,26 +1,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const menu = [
-  {
-    name: 'Robots',
-    url: '/inventory/robots'
-  },
-  {
-    name: 'Pieces',
-    url: '/inventory/pieces'
-  },
-  {
-    name: 'Tools',
-    url: '/inventory/tools'
-  },
-  {
-    name: 'Boxes',
-    url: '/inventory/boxes'
-  }
-]
+interface MiniHeaderProps {
+  menu: { name: string; url: string }[]
+}
 
-export const MiniHeader = () => {
+export const MiniHeader = ({ menu }: MiniHeaderProps) => {
   const router = useRouter()
 
   return (
