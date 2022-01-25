@@ -120,7 +120,7 @@ const RobotsDetail = () => {
       <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
         <div className="flex">
-          <Link href={market ? '/marketplace' : '/inventory/robots'}>
+          <Link href={market ? '/marketplace/robots' : '/inventory/robots'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
                 <ChevronLeftIcon className="text-tree-poppy" />
