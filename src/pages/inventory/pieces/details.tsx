@@ -16,6 +16,7 @@ import { ModalPrice } from 'components/modal'
 import { abi as pieceMarketplaceAbi } from 'contracts/PieceMarketplace.json'
 import { abi as pieceAbi } from 'contracts/PieceCore.json'
 import { useMeka, UseBalanceOf } from 'hooks'
+import { PiecesDetails } from 'constants/robots-pieces'
 
 interface PiecesProps {
   piece: {
@@ -110,7 +111,7 @@ const PiecesDetail = () => {
             </a>
           </Link>
         </div>
-        <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full h-full">
+        <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">
             <div className="flex items-center justify-center flex-col w-full h-full">
               <div className="text-5xl font-bold">{title}</div>
@@ -171,6 +172,26 @@ const PiecesDetail = () => {
                     >
                       <div className="flex-1 min-w-0 text-center">
                         <p className="text-3xl font-extrabold text-white">{rarity}</p>
+                      </div>
+                    </div>
+                    <div
+                      className={classNames(
+                        'relative rounded-3xl border-2 px-6 py-5 shadow-sm flex items-center space-x-3 bg-white hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2'
+                      )}
+                    >
+                      <div className="flex-1 min-w-0 text-center">
+                        <p className="text-3xl font-extrabold text-black">{type}</p>
+                      </div>
+                    </div>
+                    <div
+                      className={classNames(
+                        'relative col-span-2 rounded-3xl border-2 px-6 py-5 shadow-sm flex items-center space-x-3 bg-white hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2'
+                      )}
+                    >
+                      <div className="flex-1 min-w-0 text-center">
+                        <p className="text-xl font-extrabold text-black">
+                          {PiecesDetails[piecesStatus[0].key]}
+                        </p>
                       </div>
                     </div>
                   </>

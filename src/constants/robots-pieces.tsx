@@ -68,3 +68,14 @@ export const piecesDefault = [
     }
   }
 ]
+
+export const PiecesDetails = {
+  // eslint-disable-next-line quotes
+  Capacity: "Increases your robot's base capacity",
+  Efficiency: 'Increases mining speed.',
+  OilDecrease: 'Decreases the chance of the robot getting stuck.',
+  Stealthiness:
+    'Increases the chance of a successful attack. Add a 10% chance when finishing a cycle to receive a bonus equal to the % of your piece.',
+  Speed:
+    'Decreases your troop time to target. Add a chance to find a Piece Fragment at the end of each cycle based on the % of your piece.'
+}

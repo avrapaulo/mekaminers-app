@@ -57,7 +57,7 @@ const MarketPlace = () => {
   return (
     <>
       <MiniHeader menu={marketplace} />
-      <div className="max-w-2xl mx-auto lg:max-w-7xl h-40">
+      <div className="max-w-2xl mx-auto lg:max-w-7xl h-40 px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-5">
           <div className="w-60"></div>
         </div>
