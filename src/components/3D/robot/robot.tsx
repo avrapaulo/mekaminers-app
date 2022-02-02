@@ -1,7 +1,12 @@
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
-import { useGLTF, useAnimations, useTexture } from '@react-three/drei'
+import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+
+type ActionName = 'Greeting1' | 'Greeting2' | 'Greeting3' | 'Idle' | 'Tank_Collect' | 'Tank_Stuck'
+interface GLTFAction extends THREE.AnimationClip {
+  name: ActionName
+}
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -11,10 +16,12 @@ type GLTFResult = GLTF & {
   materials: {
     ['E-1']: THREE.MeshStandardMaterial
   }
+  animations: GLTFAction[]
 }
 
 export interface RobotObjectProps {
   autoRotate?: boolean
+  state?: boolean
   piecesStatus?: { id: number; key: string; rarity: string }[]
   rarity: string
   robotType: string
@@ -44,11 +51,8 @@ const robotDefault = {
   }
 }
 
-type ActionName = 'Click'
-type GLTFActions = Record<ActionName, THREE.AnimationAction>
-
 export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElements['group']) => {
-  const { robotType, rarity, piecesStatus = [] } = props
+  const { robotType, rarity, piecesStatus = [], state } = props
 
   const stealthinessStatus = piecesStatus?.find(({ key }) => key === 'Stealthiness')
   const oilDecreaseStatus = piecesStatus?.find(({ key }) => key === 'OilDecrease')
@@ -72,16 +76,27 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
   const { nodes: nodeArmL, materials: materialsArmL } = useGLTF(
     `/3d/${robotType}/${efficiencyStatus?.rarity || rarity}-${efficiency}.glb`
   ) as GLTFResult
-  const { nodes: nodeArmR, materials: materialsArmR } = useGLTF(
-    `/3d/${robotType}/${capacityStatus?.rarity || rarity}-${capacity}.glb`
-  ) as GLTFResult
+  const {
+    nodes: nodeArmR,
+    materials: materialsArmR,
+    animations
+  } = useGLTF(`/3d/${robotType}/${capacityStatus?.rarity || rarity}-${capacity}.glb`) as GLTFResult
   const { nodes: nodeLegs, materials: materialsLegs } = useGLTF(
     `/3d/${robotType}/${speedStatus?.rarity || rarity}-${speed}.glb`
   ) as GLTFResult
-  // const { actions } = useAnimations<GLTFActions>(animations, group)
+
+  const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    if (state) {
+      // eslint-disable-next-line dot-notation
+      actions['Tank_Collect'].play()
+    }
+  }, [actions, state])
+
   return (
-    <group ref={group} {...props} dispose={null} position={[0, -1.35, 0]}>
-      <primitive object={nodeArmR.Main} />
+    <group ref={group} {...props} dispose={null}>
+      <primitive object={nodeArmR.Main} dispose={null} />
       <skinnedMesh
         geometry={nodeHead[`${stealthinessStatus?.rarity || rarity}-${stealthiness}`].geometry}
         material={materialsHead[`${stealthinessStatus?.rarity || rarity}-${stealthiness}`]}

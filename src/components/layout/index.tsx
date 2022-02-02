@@ -11,7 +11,7 @@ import { defaultWallet, walletAtom, disconnectAtom, mekaAtom } from 'recoil/atom
 import {
   ShoppingCartIcon,
   MenuAlt1Icon,
-  TrendingUpIcon,
+  GlobeAltIcon,
   XIcon,
   LibraryIcon,
   BriefcaseIcon
@@ -25,11 +25,11 @@ import { UseBalanceOf } from 'hooks'
 
 const navigation = [
   {
-    name: 'Activity',
-    defaultHref: '/',
-    href: '/',
-    icon: TrendingUpIcon,
-    disable: true,
+    name: 'Farm',
+    defaultHref: '/farm',
+    href: '/farm',
+    icon: GlobeAltIcon,
+    disable: false,
     layoutBig: false
   },
   {

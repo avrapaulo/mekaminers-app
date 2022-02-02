@@ -4,18 +4,19 @@ import { Environment, OrbitControls } from '@react-three/drei'
 
 interface CanvasContainerProps {
   autoRotate?: boolean
-  camera?: number
+  camera?: any
   children: JSX.Element
 }
 
 export const CanvasContainer = ({
   children,
-  camera = 50,
+  camera = [0, 0, 0],
   autoRotate = true
 }: CanvasContainerProps) => {
   const ref = useRef()
+
   return (
-    <Canvas resize={{ scroll: false }} shadows dpr={[1, 2]} camera={{ fov: camera }}>
+    <Canvas resize={{ scroll: false }} shadows dpr={[1, 2]} camera={{ ...camera }}>
       <OrbitControls
         enableZoom={false}
         ref={ref}
