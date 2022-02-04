@@ -14,7 +14,7 @@ import { MiniHeader } from 'components/inventory/header-mini'
 import { Gen0, Gen1 } from 'icons'
 import { inventory } from 'constants/menu'
 
-interface RobotsProps {
+export interface RobotsProps {
   bonus: number
   mode: number
   token: number
