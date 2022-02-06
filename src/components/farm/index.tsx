@@ -47,7 +47,7 @@ export const FarmCard = ({
   return (
     <div className="col-span-1">
       <div className="flex flex-row space-x-1 mt-4 items-center justify-center">
-        <CounterTotal time={mineralTotalTime} startedAt={startedAt} />
+        {!isPaused && <CounterTotal time={mineralTotalTime} startedAt={startedAt} />}
         <button
           type="button"
           className={classNames(
