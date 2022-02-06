@@ -7,8 +7,9 @@ import { RobotsProps } from '../inventory/robots/index'
 interface FarmProps {
   hasDrop: boolean
   isPaused: boolean
-  startedAt: string
   mineralTotalTime: number
+  pet: string
+  startedAt: string
   mineralStatus: {
     rarity: string
     capacity: number
@@ -27,29 +28,27 @@ const FarmPage = () => {
       <div className="grid grid-cols-3">
         {(data as FarmProps[])?.map(
           ({
-            robot: { token, piecesStatus, rarity, type },
-            mineralStatus: {
-              rarity: mineralRarity,
-              bonus: mineralBonus,
-              capacity: mineralCapacity
-            },
-            startedAt,
+            isPaused,
             mineralTotalTime,
-            isPaused
+            pet,
+            startedAt,
+            robot: { token, piecesStatus, rarity, type },
+            mineralStatus: { rarity: mineralRarity, bonus: mineralBonus, capacity: mineralCapacity }
           }) => (
             <FarmCard
               isPaused={isPaused}
-              startedAt={startedAt}
-              mineralTotalTime={mineralTotalTime}
-              key={token}
               id={token}
-              piecesStatus={piecesStatus}
-              rarity={rarity}
-              mineralRarity={mineralRarity}
-              type={type?.toLowerCase()}
               mineralBonus={mineralBonus}
               mineralCapacity={mineralCapacity}
+              mineralTotalTime={mineralTotalTime}
+              key={token}
+              pet={pet}
+              type={type?.toLowerCase()}
+              rarity={rarity}
+              startedAt={startedAt}
+              mineralRarity={mineralRarity}
               fetchFarm={() => fetch()}
+              piecesStatus={piecesStatus}
             />
           )
         )}

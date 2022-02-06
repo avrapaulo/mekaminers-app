@@ -11,6 +11,7 @@ export interface FarmCardProps {
   mineralBonus: number
   mineralCapacity: number
   mineralTotalTime: number
+  pet: string
   type: string
   rarity: string
   startedAt: string
@@ -25,6 +26,7 @@ export const FarmCard = ({
   mineralBonus,
   mineralCapacity,
   mineralTotalTime,
+  pet,
   type,
   rarity,
   startedAt,
@@ -42,7 +44,11 @@ export const FarmCard = ({
     date.getUTCSeconds()
   )
   const { fetch } = useMoralisCloudFunction('collectFarm', { robotId: id }, { autoFetch: false })
-  const { fetch: fetchOil } = useMoralisCloudFunction('oil', { robotId: id }, { autoFetch: false })
+  const { fetch: fetchOil } = useMoralisCloudFunction(
+    'useOil',
+    { robotId: id },
+    { autoFetch: false }
+  )
 
   return (
     <div className="col-span-1">
@@ -65,10 +71,10 @@ export const FarmCard = ({
           type="button"
           className={classNames(
             'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white',
-            +new Date(startedAt) + mineralTotalTime * 59999 - nowUtc < 0 ? '' : 'cursor-not-allowed'
+            +new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0 ? '' : 'cursor-not-allowed'
           )}
           onClick={() => {
-            if (+new Date(startedAt) + mineralTotalTime * 59999 - nowUtc < 0) {
+            if (+new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0) {
               fetch({
                 onSuccess: result => {
                   if (result) fetchFarm()
@@ -80,7 +86,7 @@ export const FarmCard = ({
           <DownloadIcon
             className={classNames(
               'w-6 h-6',
-              +new Date(startedAt) + mineralTotalTime * 59999 - nowUtc < 0
+              +new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0
                 ? 'text-tree-poppy'
                 : 'text-gray-500'
             )}
@@ -98,6 +104,7 @@ export const FarmCard = ({
         ) : (
           <LandRobot
             id={id}
+            petName={pet}
             rarity={rarity}
             robotType={type}
             piecesStatus={piecesStatus}
