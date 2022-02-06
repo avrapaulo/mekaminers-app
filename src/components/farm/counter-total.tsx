@@ -45,7 +45,8 @@ export const CounterTotal = ({ time, startedAt }: CounterProps) => {
         </>
       ) : (
         <>
-          <ClockIcon className="text-tree-poppy w-6 h-6" />0
+          <ClockIcon className="text-tree-poppy w-6 h-6" />
+          00:00
         </>
       )}
     </button>

@@ -63,7 +63,7 @@ export const FarmCard = ({
           <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
           {mineralCapacity}
           {mineralBonus > 0 && (
-            <span className="ml-px text-xs text-green-500"> +{mineralBonus}%</span>
+            <span className="ml-px text-xs text-green-500"> +{mineralBonus * 100}%</span>
           )}
         </button>
         <CounterReroll time={startedAt} fetchFarm={fetchFarm} id={id} />
