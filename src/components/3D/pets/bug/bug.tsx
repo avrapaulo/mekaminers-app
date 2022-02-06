@@ -24,7 +24,7 @@ export const BugObject = ({ ...props }: JSX.IntrinsicElements['group']) => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/3d/pets/Bug.glb') as GLTFResult
   return (
-    <group ref={group} {...props} dispose={null} position={[0, -0.45, 0]}>
+    <group ref={group} {...props} dispose={null}>
       <primitive object={nodes.Main} />
       <primitive object={nodes.HeadAim} />
       <skinnedMesh geometry={nodes.H.geometry} material={materials.H} skeleton={nodes.H.skeleton} />

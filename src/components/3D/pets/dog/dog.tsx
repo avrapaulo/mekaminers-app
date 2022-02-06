@@ -23,7 +23,7 @@ export const DogObject = ({ ...props }: JSX.IntrinsicElements['group']) => {
   const group = useRef<THREE.Group>()
   const { nodes, materials } = useGLTF('/3d/pets/Dog.glb') as GLTFResult
   return (
-    <group ref={group} {...props} dispose={null} position={[0, -0.45, 0]}>
+    <group ref={group} {...props} dispose={null}>
       <primitive object={nodes.Main} />
       <skinnedMesh geometry={nodes.A.geometry} material={materials.a} skeleton={nodes.A.skeleton} />
       <skinnedMesh geometry={nodes.B.geometry} material={materials.b} skeleton={nodes.B.skeleton} />
