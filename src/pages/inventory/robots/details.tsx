@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
@@ -49,6 +49,7 @@ const RobotsDetail = () => {
   const wallet = useRecoilValue(walletAtom)
   const priceModal = useSetRecoilState(priceModalAtom)
   const { id: robotId, market } = router.query
+  const [randomGreeting, setRandomGreeting] = useState<string>()
 
   const { data, fetch } = useMoralisCloudFunction(
     'getRobotDetail',
@@ -142,13 +143,17 @@ const RobotsDetail = () => {
                 )}
               </div>
               <span className="text-sm font-semibold text-white">{getEllipsisTxt(owner)}</span>
-              <div className="w-full aspect-square">
+              <div
+                className="w-full aspect-square"
+                onClick={() => setRandomGreeting(`Greeting${Math.floor(Math.random() * 3) + 1}`)}
+              >
                 {rarity && type && (
                   <Robot
                     rarity={rarity}
                     robotType={type.toLowerCase()}
                     autoRotate={false}
                     piecesStatus={piecesStatus}
+                    animation={randomGreeting}
                   />
                 )}
               </div>

@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { Transition, Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@heroicons/react/solid'
+import { useMoralisCloudFunction } from 'react-moralis'
 import { classNames } from 'helpers/class-names'
 import { statusDescription } from 'constants/status'
 import { rarityInfo } from 'constants/rarity'
@@ -15,6 +16,8 @@ interface SliderRowProps {
   piecesStatus: { key: string; value: number; id: number; rarity: string }[]
   utilities: { key: string; value: number }[]
   keyDisclosure: number
+  setOpen: () => void
+  fetchFarm: () => void
   setKeyDisclosure: (token: number | undefined) => void
 }
 
@@ -29,9 +32,17 @@ export const SliderRowNFT = ({
   token,
   utilities,
   keyDisclosure,
+  setOpen,
+  fetchFarm,
   setKeyDisclosure
 }: SliderRowProps) => {
   const [mem, setMem] = useState<string>()
+  const { fetch } = useMoralisCloudFunction(
+    'startFarming',
+    { robotId: token, pet: mem },
+    { autoFetch: false }
+  )
+
   return (
     <div className="w-full max-w-md p-2 mx-auto bg-white rounded-2xl" key={token}>
       <Disclosure>
@@ -280,7 +291,13 @@ export const SliderRowNFT = ({
               <button
                 type="button"
                 className="px-2 border-gray-200 py-2 text-lg text-white font-bold rounded-tr rounded-tl"
-                onClick={() => console.log(mem)}
+                onClick={() => {
+                  fetch()
+                  setOpen()
+                  setTimeout(() => {
+                    fetchFarm()
+                  }, 500)
+                }}
               >
                 Select
               </button>

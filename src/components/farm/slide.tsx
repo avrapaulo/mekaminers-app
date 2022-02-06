@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { Dialog, Transition } from '@headlessui/react'
@@ -9,13 +9,18 @@ import { SliderRowNonNFTProps, SliderRowNonNFT } from './slider-row-non-nft'
 
 const tabs = [{ name: 'MekaBots' }, { name: 'MinigBots' }]
 
-export const SlideFarm = () => {
-  const [open, setOpen] = useState(true)
+interface SlideFarmProps {
+  open: boolean
+  fetchFarm: () => void
+  setOpen: Dispatch<SetStateAction<boolean>>
+}
+
+export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const [activeTab, setActiveTab] = useState(tabs[0].name)
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
 
-  const { fetch, data } = useMoralisCloudFunction('getRobotToFarm')
-  const { fetch: fetchUtilities, data: dataUtilities } = useMoralisCloudFunction('getUtilities')
+  const { data } = useMoralisCloudFunction('getRobotToFarm')
+  const { data: dataUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
   return (
@@ -79,7 +84,6 @@ export const SlideFarm = () => {
                         (robots as RobotsProps[])?.map(
                           ({ bonus, rarity, title, piecesStatus, robotStatus, token }) => (
                             <SliderRowNFT
-                              utilities={(dataUtilities as { key: string; value: number }[]) || []}
                               key={token}
                               bonus={bonus}
                               rarity={rarity}
@@ -88,21 +92,26 @@ export const SlideFarm = () => {
                               robotStatus={robotStatus}
                               token={token}
                               keyDisclosure={keyDisclosure}
+                              fetchFarm={() => fetchFarm()}
+                              setOpen={() => setOpen(false)}
                               setKeyDisclosure={setKeyDisclosure}
+                              utilities={(dataUtilities as { key: string; value: number }[]) || []}
                             />
                           )
                         )}
                       {tabs[1].name === activeTab &&
                         (nonNFTRobots as SliderRowNonNFTProps[])?.map(
-                          ({ capacity, name, token }) => (
+                          ({ capacity, name, nonNFT }) => (
                             <SliderRowNonNFT
-                              key={token}
-                              utilities={(dataUtilities as { key: string; value: number }[]) || []}
+                              key={nonNFT}
                               capacity={capacity}
                               name={name}
-                              token={token}
+                              nonNFT={nonNFT}
                               keyDisclosure={keyDisclosure}
+                              setOpen={() => setOpen(false)}
+                              fetchFarm={() => fetchFarm()}
                               setKeyDisclosure={setKeyDisclosure}
+                              utilities={(dataUtilities as { key: string; value: number }[]) || []}
                             />
                           )
                         )}
