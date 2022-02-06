@@ -21,7 +21,8 @@ type GLTFResult = GLTF & {
 
 export interface RobotObjectProps {
   autoRotate?: boolean
-  state?: boolean
+  animation?: string
+  animationCollect?: string
   piecesStatus?: { id: number; key: string; rarity: string }[]
   rarity: string
   robotType: string
@@ -52,7 +53,7 @@ const robotDefault = {
 }
 
 export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElements['group']) => {
-  const { robotType, rarity, piecesStatus = [], state } = props
+  const { robotType, rarity, piecesStatus = [], animation, animationCollect } = props
 
   const stealthinessStatus = piecesStatus?.find(({ key }) => key === 'Stealthiness')
   const oilDecreaseStatus = piecesStatus?.find(({ key }) => key === 'OilDecrease')
@@ -88,11 +89,20 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
   const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
-    if (state) {
-      // eslint-disable-next-line dot-notation
-      actions['Tank_Collect'].play()
+    if (animation) {
+      actions[animation].play()
+
+      setTimeout(() => {
+        actions[animation].stop()
+      }, 1400)
     }
-  }, [actions, state])
+  }, [actions, animation])
+
+  useEffect(() => {
+    if (animationCollect) {
+      actions[animationCollect].play()
+    }
+  }, [actions, animationCollect])
 
   return (
     <group ref={group} {...props} dispose={null}>

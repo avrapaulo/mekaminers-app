@@ -12,9 +12,14 @@ type GLTFResult = GLTF & {
   }
 }
 
-export const LandObject = (props: JSX.IntrinsicElements['group']) => {
+interface LandObjectProps {
+  rarity: string
+}
+
+export const LandObject = (props: LandObjectProps & JSX.IntrinsicElements['group']) => {
+  const { rarity } = props
   const group = useRef<THREE.Group>()
-  const { nodes, materials } = useGLTF('/3d/land/land-blue.glb') as GLTFResult
+  const { nodes, materials } = useGLTF(`/3d/land/land-${rarity}.glb`) as GLTFResult
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh castShadow receiveShadow geometry={nodes.Land.geometry} material={materials.Land} />
