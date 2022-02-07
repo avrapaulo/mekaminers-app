@@ -80,7 +80,9 @@ export const SliderRowNonNFT = ({
           leaveTo="transform scale-95 opacity-0"
         >
           <Disclosure.Panel
-            className={classNames('px-4 pt-4 pb-2 text-sm text-gray-500 rounded-b-lg')}
+            className={classNames(
+              'px-4 py-2 text-sm text-gray-500 rounded-b-lg border-black border-2 border-t-0'
+            )}
           >
             <div className="flex flex-row justify-between">
               <div className="flex flex-row space-x-2 font-bold text-black justify-between w-full">
