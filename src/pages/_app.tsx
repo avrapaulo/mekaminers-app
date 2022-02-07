@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { GA_ID, pageview } from 'lib/ga'
 import { Layout } from 'components/layout'
 import 'styles/index.css'
+import { Toaster } from 'react-hot-toast'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
@@ -45,6 +46,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         serverUrl={process.env.NEXT_PUBLIC_SERVER_URL}
       >
         <RecoilRoot>
+          <Toaster position="top-right" reverseOrder={false} />
           <Layout>
             <Component {...pageProps} />
             {/* <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">

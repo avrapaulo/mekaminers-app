@@ -9,7 +9,6 @@ import { ClassProps } from 'models/class'
 import { classBonusPieces } from 'constants/class-bonus'
 import { abi } from 'contracts/PiecePackage.json'
 import { usePackagePiece } from 'hooks'
-import { Notification } from 'components/notification'
 import { addressType } from 'helpers/address'
 
 interface PiecesProps {
@@ -128,7 +127,6 @@ const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
 
   return (
     <>
-      <Notification isShow={show} setShow={setShow} message={message} />
       <Item
         isAuthenticated={isAuthenticated}
         isLoading={isLoading}
