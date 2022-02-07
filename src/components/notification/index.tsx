@@ -1,21 +1,14 @@
 import { XCircleIcon } from '@heroicons/react/outline'
-import { XIcon, CheckCircleIcon } from '@heroicons/react/solid'
+import { CheckCircleIcon } from '@heroicons/react/solid'
 
 interface NotificationProps {
   isShow: boolean
   title: string
-  description?: string
+  description?: JSX.Element
   icon: 'success' | 'error'
-  setShow: (show: boolean) => void
 }
 
-export const Notification = ({
-  isShow = true,
-  setShow,
-  description,
-  title,
-  icon
-}: NotificationProps) => (
+export const Notification = ({ isShow = true, description, title, icon }: NotificationProps) => (
   <div
     className={`${
       isShow ? 'animate-enter' : 'animate-leave'
@@ -31,7 +24,9 @@ export const Notification = ({
         </div>
         <div className="ml-3 flex-1">
           <p className="text-sm font-bold text-gray-900">{title}</p>
-          {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
+          {description && (
+            <div className="mt-1 text-sm text-gray-500 font-semibold">{description}</div>
+          )}
         </div>
       </div>
     </div>
