@@ -9,7 +9,6 @@ import { Item, RobotItem } from 'components/pre-sale'
 import { ClassProps } from 'models/class'
 import { classBonusRobots } from 'constants/class-bonus'
 import { abi } from 'contracts/RobotPackageGen1.json'
-import { Notification } from 'components/notification'
 import { addressType } from 'helpers/address'
 
 interface RobotsProps {
@@ -135,7 +134,6 @@ const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
 
   return (
     <>
-      <Notification isShow={show} setShow={setShow} message={message} />
       <Item
         isAuthenticated={isAuthenticated}
         isLoading={isLoading}

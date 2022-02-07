@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { RefreshIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { classNames } from 'helpers/class-names'
+import toast from 'react-hot-toast'
+import { Notification } from 'components/notification'
 
 interface CounterProps {
   time: string
@@ -44,6 +46,18 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
           fetch({
             onSuccess: () => {
               fetchFarm()
+              toast.custom(
+                t => (
+                  <Notification
+                    isShow={t.visible}
+                    icon="success"
+                    title={'Reroll'}
+                    description={'-25 ores'}
+                    setShow={() => toast.dismiss(t.id)}
+                  />
+                ),
+                { duration: 3000 }
+              )
             }
           })
         }
