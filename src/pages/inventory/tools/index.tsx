@@ -7,6 +7,7 @@ import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { Bug, Dog, Frog } from 'components/3D'
 import { inventory } from 'constants/menu'
+import { shard } from 'constants/shards'
 
 interface ToolsProps {
   value: number
@@ -62,7 +63,7 @@ const Tools = () => {
             {(data as ToolsProps[])?.map(({ key, value }) => (
               <div key={key} className="flex justify-center">
                 <Card
-                  description={key}
+                  description={shard[key] || key}
                   imageCard={
                     pets[key] ? (
                       pets[key]

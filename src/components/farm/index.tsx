@@ -5,11 +5,12 @@ import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { LandRobot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
-import { CounterReroll } from './counter-reroll'
-import { CounterTotal } from './counter-total'
 import { Bag } from 'components/3D/bag'
 import { Notification } from 'components/notification'
 import { LandEmpty } from 'components/3D/land-empty'
+import { shard } from 'constants/shards'
+import { CounterReroll } from './counter-reroll'
+import { CounterTotal } from './counter-total'
 
 export interface FarmCardProps {
   isPaused: boolean
@@ -106,7 +107,8 @@ export const FarmCard = ({
                               {result?.drop?.shards > 0 && (
                                 <div className="flex flex-row items-center">
                                   <PuzzleIcon className="w-6 h-6" />
-                                  {result.drop.shards} {result.drop.pieceType}
+                                  {result.drop.shards}{' '}
+                                  {shard[result.drop.pieceType] || result.drop.pieceType}
                                 </div>
                               )}
                             </div>
