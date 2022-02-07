@@ -19,7 +19,7 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const [activeTab, setActiveTab] = useState(tabs[0].name)
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
 
-  const { data } = useMoralisCloudFunction('getRobotToFarm')
+  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm')
   const { data: dataUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
@@ -92,7 +92,10 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
                               robotStatus={robotStatus}
                               token={token}
                               keyDisclosure={keyDisclosure}
-                              fetchFarm={() => fetchFarm()}
+                              fetchFarm={() => {
+                                fetch()
+                                fetchFarm()
+                              }}
                               setOpen={() => setOpen(false)}
                               setKeyDisclosure={setKeyDisclosure}
                               utilities={(dataUtilities as { key: string; value: number }[]) || []}
