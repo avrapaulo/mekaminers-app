@@ -9,6 +9,7 @@ import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
 import { Bag } from 'components/3D/bag'
 import { Notification } from 'components/notification'
+import { LandEmpty } from 'components/3D/land-empty'
 
 export interface FarmCardProps {
   isPaused: boolean
@@ -92,18 +93,17 @@ export const FarmCard = ({
                         <Notification
                           isShow={t.visible}
                           icon="success"
-                          title={'Reroll'}
+                          title={'Collected'}
                           description={
                             <div className="flex flex-row items-center">
                               <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
                               <div className="text-green-500">{result.ores}</div>
                               {result.hasBonus && (
                                 <div className="flex flex-row items-center">
-                                  <StarIcon className="w-6 h-6 text-yellow-500" />
-                                  {result.bonus}
+                                  <StarIcon className="w-6 h-6 text-yellow-500" />+{result.bonus}%
                                 </div>
                               )}
-                              {result.drop && (
+                              {result?.drop?.shards > 0 && (
                                 <div className="flex flex-row items-center">
                                   <PuzzleIcon className="w-6 h-6" />
                                   {result.drop.shards} {result.drop.pieceType}
@@ -126,14 +126,17 @@ export const FarmCard = ({
           />
         </button>
       </div>
-      <div className="h-60">
+      <div className="h-72 relative">
         {isPaused ? (
-          <img
-            onClick={() => fetchOil({ onSuccess: () => fetchFarm() })}
-            alt=""
-            className="h-full w-full object-contain"
-            src="/icons-status/oildecrease.png"
-          />
+          <>
+            <img
+              onClick={() => fetchOil({ onSuccess: () => fetchFarm() })}
+              alt=""
+              className="p-5 h-full w-full object-contain z-10 absolute"
+              src="/oil-land.png"
+            />
+            <LandEmpty />
+          </>
         ) : farmEnd ? (
           <Bag />
         ) : (

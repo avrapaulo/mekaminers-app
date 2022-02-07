@@ -12,9 +12,9 @@ interface LandRobotProps extends RobotObjectProps {
 }
 
 const robotPosition = {
-  tank: [0, 0, 1.25],
-  basic: [0, 0, 1],
-  stealth: [0, 0, 0]
+  tank: [0, 1, 1.25],
+  basic: [0, 1, 1],
+  stealth: [0, 1, 1]
 }
 
 export const LandRobot = ({
@@ -26,7 +26,7 @@ export const LandRobot = ({
   petName
 }: LandRobotProps) => {
   return (
-    <CanvasContainer autoRotate={false} camera={{ position: [2, 3, 8] }}>
+    <CanvasContainer autoRotate={false} camera={{ position: [3, 5, 7.5] }}>
       <>
         <RobotObject
           key={id}
@@ -36,10 +36,10 @@ export const LandRobot = ({
           piecesStatus={piecesStatus}
           position={robotPosition[robotType]}
         />
-        <LandObject rarity={mineralRarity} />
-        {petName === 'Frog' && <FrogObject position={[1.5, 0, 2]} />}
-        {petName === 'Dog' && <DogObject position={[1.5, 0, 2]} />}
-        {petName === 'Bug' && <BugObject position={[1.5, 0, 2]} />}
+        <LandObject rarity={mineralRarity} position={[0, 1, 0]} />
+        {petName === 'Frog' && <FrogObject position={[1.5, 1, 2]} />}
+        {petName === 'Dog' && <DogObject position={[1.5, 1, 2]} />}
+        {petName === 'Bug' && <BugObject position={[1.5, 1, 2]} />}
       </>
     </CanvasContainer>
   )
