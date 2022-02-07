@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { DownloadIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { LandRobot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
 import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
+import { Bag } from 'components/3D/bag'
 
 export interface FarmCardProps {
   isPaused: boolean
@@ -34,6 +36,7 @@ export const FarmCard = ({
   mineralRarity,
   fetchFarm
 }: FarmCardProps) => {
+  const [farmEnd, setFarmEnd] = useState(false)
   const date = new Date()
   const nowUtc = Date.UTC(
     date.getUTCFullYear(),
@@ -53,7 +56,13 @@ export const FarmCard = ({
   return (
     <div className="col-span-1">
       <div className="flex flex-row space-x-1 mt-4 items-center justify-center">
-        {!isPaused && <CounterTotal time={mineralTotalTime} startedAt={startedAt} />}
+        {!isPaused && (
+          <CounterTotal
+            time={mineralTotalTime}
+            startedAt={startedAt}
+            setFarmEnd={() => setFarmEnd(true)}
+          />
+        )}
         <button
           type="button"
           className={classNames(
@@ -71,10 +80,10 @@ export const FarmCard = ({
           type="button"
           className={classNames(
             'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white',
-            +new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0 ? '' : 'cursor-not-allowed'
+            farmEnd ? '' : 'cursor-not-allowed'
           )}
           onClick={() => {
-            if (+new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0) {
+            if (farmEnd) {
               fetch({
                 onSuccess: result => {
                   if (result) fetchFarm()
@@ -84,12 +93,7 @@ export const FarmCard = ({
           }}
         >
           <DownloadIcon
-            className={classNames(
-              'w-6 h-6',
-              +new Date(startedAt) + mineralTotalTime * 1000 - nowUtc < 0
-                ? 'text-tree-poppy'
-                : 'text-gray-500'
-            )}
+            className={classNames('w-6 h-6', farmEnd ? 'text-tree-poppy' : 'text-gray-500')}
           />
         </button>
       </div>
@@ -101,6 +105,8 @@ export const FarmCard = ({
             className="h-full w-full object-contain"
             src="/icons-status/oildecrease.png"
           />
+        ) : farmEnd ? (
+          <Bag />
         ) : (
           <LandRobot
             id={id}

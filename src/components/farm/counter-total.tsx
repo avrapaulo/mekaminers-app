@@ -5,8 +5,9 @@ import { classNames } from 'helpers/class-names'
 interface CounterProps {
   time: number
   startedAt: string
+  setFarmEnd: () => void
 }
-export const CounterTotal = ({ time, startedAt }: CounterProps) => {
+export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
   const date = new Date()
   const nowUtc = Date.UTC(
     date.getUTCFullYear(),
@@ -22,8 +23,9 @@ export const CounterTotal = ({ time, startedAt }: CounterProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(+new Date(startedAt) + time * 1000 - nowUtc)
-    }, 10000)
+    }, 1000)
 
+    if (timeLeft < 0) setFarmEnd()
     return () => clearTimeout(timer)
   })
 
