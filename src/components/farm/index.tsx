@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { DownloadIcon } from '@heroicons/react/outline'
+import { PuzzleIcon, StarIcon } from '@heroicons/react/solid'
 import { useMoralisCloudFunction } from 'react-moralis'
+import toast from 'react-hot-toast'
 import { LandRobot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
 import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
 import { Bag } from 'components/3D/bag'
+import { Notification } from 'components/notification'
 
 export interface FarmCardProps {
   isPaused: boolean
@@ -37,15 +40,6 @@ export const FarmCard = ({
   fetchFarm
 }: FarmCardProps) => {
   const [farmEnd, setFarmEnd] = useState(false)
-  const date = new Date()
-  const nowUtc = Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds()
-  )
   const { fetch } = useMoralisCloudFunction('collectFarm', { robotId: id }, { autoFetch: false })
   const { fetch: fetchOil } = useMoralisCloudFunction(
     'useOil',
@@ -85,8 +79,43 @@ export const FarmCard = ({
           onClick={() => {
             if (farmEnd) {
               fetch({
-                onSuccess: result => {
-                  if (result) fetchFarm()
+                onSuccess: (result: {
+                  ores: number
+                  bonus: number
+                  hasBonus: boolean
+                  drop: { shards: number; pieceType: string }
+                }) => {
+                  if (result) {
+                    fetchFarm()
+                    toast.custom(
+                      t => (
+                        <Notification
+                          isShow={t.visible}
+                          icon="success"
+                          title={'Reroll'}
+                          description={
+                            <div className="flex flex-row items-center">
+                              <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
+                              <div className="text-green-500">{result.ores}</div>
+                              {result.hasBonus && (
+                                <div className="flex flex-row items-center">
+                                  <StarIcon className="w-6 h-6 text-yellow-500" />
+                                  {result.bonus}
+                                </div>
+                              )}
+                              {result.drop && (
+                                <div className="flex flex-row items-center">
+                                  <PuzzleIcon className="w-6 h-6" />
+                                  {result.drop.shards} {result.drop.pieceType}
+                                </div>
+                              )}
+                            </div>
+                          }
+                        />
+                      ),
+                      { duration: 3000 }
+                    )
+                  }
                 }
               })
             }
