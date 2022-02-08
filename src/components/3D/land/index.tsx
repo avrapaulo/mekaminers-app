@@ -12,9 +12,9 @@ interface LandRobotProps extends RobotObjectProps {
 }
 
 const robotPosition = {
-  tank: [0, 1, 1.25],
+  tank: [0, 1, 1.4],
   basic: [0, 1, 1],
-  stealth: [0, 1, 1]
+  stealth: [0, 1, 1.5]
 }
 
 export const LandRobot = ({
