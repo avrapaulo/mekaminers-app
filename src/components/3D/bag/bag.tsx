@@ -28,4 +28,4 @@ export const BagObject = (props: JSX.IntrinsicElements['group']) => {
   )
 }
 
-useGLTF.preload('/bag.glb')
+useGLTF.preload('/3d/bag.glb')
