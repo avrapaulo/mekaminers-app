@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { RefreshIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { classNames } from 'helpers/class-names'
 import { Notification } from 'components/notification'
 import { oreAtom } from 'recoil/atoms'
+import { Reroll } from 'icons'
 
 interface CounterProps {
   time: string
@@ -72,11 +72,11 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
     >
       {timeLeft > 0 ? (
         <>
-          <RefreshIcon className="text-tree-poppy w-6 h-6" />
+          <Reroll className="text-tree-poppy w-6 h-6" />
           {minutes}:{seconds}
         </>
       ) : (
-        <RefreshIcon className="text-gray-500 w-6 h-6 cursor-not-allowed" />
+        <Reroll className="text-gray-500 w-6 h-6 cursor-not-allowed" />
       )}
     </button>
   )

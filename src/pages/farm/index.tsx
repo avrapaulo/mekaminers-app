@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useMoralisCloudFunction } from 'react-moralis'
-import { ClockIcon, RefreshIcon, DownloadIcon } from '@heroicons/react/outline'
 import { useRecoilValue } from 'recoil'
 import { FarmCard } from 'components/farm'
 import { SlideFarm } from 'components/farm/slide'
 import { LandEmpty } from 'components/3D/land-empty'
 import { userLandAtom } from 'recoil/atoms'
 import { RobotsProps } from 'pages/inventory/robots'
+import { Collect, Reroll, Timer } from 'icons'
 
 interface FarmProps {
   hasDrop: boolean
@@ -61,16 +61,16 @@ const FarmPage = () => {
           [...Array(7 - (data as FarmProps[])?.length).keys()].map(id => (
             <div key={id}>
               <div className="flex flex-row space-x-1 mt-4 items-center justify-center cursor-not-allowed">
-                <ClockIcon className="text-gray-500 w-6 h-6" />
+                <Timer className="text-gray-500 w-6 h-6" />
                 <div
                   className="
                     flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white cursor-not-allowed"
                 >
                   <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />0
                 </div>
-                <RefreshIcon className="text-gray-500 w-6 h-6 cursor-not-allowed" />
+                <Reroll className="text-gray-500 w-6 h-6 cursor-not-allowed" />
                 <button className="flex justify-center items-center border border-transparent text-lg font-semibold rounded-full shadow-sm text-white cursor-not-allowed">
-                  <DownloadIcon className="w-6 h-6 text-gray-500" />
+                  <Collect className="w-6 h-6 text-gray-500" />
                 </button>
               </div>
               <div
