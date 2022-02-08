@@ -128,7 +128,7 @@ export const FarmCard = ({
           }}
         >
           <Collect
-            className={classNames('w-6 h-6', farmEnd ? 'text-tree-poppy' : 'text-gray-500')}
+            className={classNames('w-5 h-5', farmEnd ? 'text-tree-poppy' : 'text-gray-500')}
           />
         </button>
       </div>

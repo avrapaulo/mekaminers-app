@@ -40,16 +40,13 @@ export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
         'flex justify-center items-center border border-transparent text-lg font-semibold rounded-full shadow-sm text-white'
       )}
     >
+      <Timer className="text-tree-poppy w-7 h-7" />
       {timeLeft > 0 ? (
         <>
-          <Timer className="text-tree-poppy w-6 h-6" />
           {hours}:{minutes}
         </>
       ) : (
-        <>
-          <Timer className="text-tree-poppy w-6 h-6" />
-          00:00
-        </>
+        <>00:00</>
       )}
     </button>
   )
