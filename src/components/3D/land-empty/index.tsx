@@ -8,7 +8,7 @@ interface LandEmptyProps {
 export const LandEmpty = ({ rarity = 'S' }: LandEmptyProps) => {
   return (
     <CanvasContainer autoRotate={false} camera={{ position: [3, 5, 7.5] }}>
-      <LandObject rarity={rarity} position={[0, 1, 0]} />
+      <LandObject rarity={rarity} position={[0, 0, 0]} />
     </CanvasContainer>
   )
 }
