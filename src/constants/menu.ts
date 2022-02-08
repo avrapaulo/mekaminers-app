@@ -27,3 +27,14 @@ export const marketplace = [
     url: '/marketplace/pieces'
   }
 ]
+
+export const junkyard = [
+  {
+    name: 'Robots',
+    url: '/junkyard/robots'
+  },
+  {
+    name: 'Utilities',
+    url: '/junkyard/utilities'
+  }
+]

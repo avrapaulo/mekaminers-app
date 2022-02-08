@@ -11,12 +11,6 @@ interface LandRobotProps extends RobotObjectProps {
   petName: string
 }
 
-const robotPosition = {
-  tank: [0, 0, 0],
-  basic: [0, 0, 0],
-  stealth: [0, 0, 0]
-}
-
 export const LandRobot = ({
   id,
   rarity,

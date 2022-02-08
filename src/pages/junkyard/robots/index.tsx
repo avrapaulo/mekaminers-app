@@ -1,8 +1,9 @@
-import { Header } from 'components/tab-header'
+import { MiniHeader } from 'components/inventory/header-mini'
+import { junkyard } from 'constants/menu'
 
 const Robots = () => (
   <>
-    {/* <Header type="junkyard" /> */}
+    <MiniHeader menu={junkyard} />
     <div>Robots</div>
   </>
 )
