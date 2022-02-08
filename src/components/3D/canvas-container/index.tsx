@@ -8,11 +8,7 @@ interface CanvasContainerProps {
   children: JSX.Element
 }
 
-export const CanvasContainer = ({
-  children,
-  camera = [0, 0, 0],
-  autoRotate = true
-}: CanvasContainerProps) => {
+export const CanvasContainer = ({ children, camera, autoRotate = true }: CanvasContainerProps) => {
   const ref = useRef()
 
   return (
