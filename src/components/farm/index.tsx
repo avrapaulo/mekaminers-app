@@ -59,7 +59,9 @@ export const FarmCard = ({
           <CounterTotal
             time={mineralTotalTime}
             startedAt={startedAt}
-            setFarmEnd={() => setFarmEnd(true)}
+            setFarmEnd={() => {
+              if (!isPaused) setFarmEnd(true)
+            }}
           />
         )}
         <button
@@ -79,7 +81,7 @@ export const FarmCard = ({
           type="button"
           className={classNames(
             'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white',
-            farmEnd ? '' : 'cursor-not-allowed'
+            farmEnd && !isPaused ? '' : 'cursor-not-allowed'
           )}
           onClick={() => {
             if (farmEnd) {
@@ -128,7 +130,10 @@ export const FarmCard = ({
           }}
         >
           <Collect
-            className={classNames('w-5 h-5', farmEnd ? 'text-tree-poppy' : 'text-gray-500')}
+            className={classNames(
+              'w-5 h-5',
+              farmEnd && !isPaused ? 'text-tree-poppy' : 'text-gray-500'
+            )}
           />
         </button>
       </div>
@@ -141,7 +146,7 @@ export const FarmCard = ({
               className="p-5 h-full w-full object-contain z-10 absolute"
               src="/oil-land.png"
             />
-            <LandEmpty />
+            <LandEmpty rarity={mineralRarity} />
           </>
         ) : farmEnd ? (
           <Bag />
