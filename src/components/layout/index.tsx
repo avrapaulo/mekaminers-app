@@ -42,9 +42,9 @@ const navigation = [
   {
     name: 'Junkyard',
     defaultHref: '/junkyard',
-    href: '/junkyard/pre-sale',
+    href: '/junkyard/utilities',
     icon: ShoppingCartIcon,
-    disable: true,
+    disable: false,
     layoutBig: false
   },
   {
