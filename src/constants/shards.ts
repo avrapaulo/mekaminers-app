@@ -1,6 +1,6 @@
 export const shard = {
   HeadShards: 'Head shards',
-  LegsShard: 'Legs shard',
+  LegsShards: 'Legs shards',
   LeftArmShards: 'Left Arm shards',
   RightArmShards: 'Right Arm shards',
   ChestShards: 'Chest shards'

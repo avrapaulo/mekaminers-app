@@ -1,13 +1,20 @@
 import { useEffect, Fragment, useState } from 'react'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { Dialog, Transition } from '@headlessui/react'
 import { walletCoins } from 'recoil/selector'
-import { defaultWallet, walletAtom, disconnectAtom, mekaAtom } from 'recoil/atoms'
+import {
+  defaultWallet,
+  walletAtom,
+  disconnectAtom,
+  mekaAtom,
+  oreAtom,
+  userLandAtom
+} from 'recoil/atoms'
 import {
   ShoppingCartIcon,
   MenuAlt1Icon,
@@ -69,10 +76,13 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const { web3, user, isAuthenticated, authenticate, enableWeb3, Moralis, isWeb3Enabled } =
     useMoralis()
+  const { fetch } = useMoralisCloudFunction('getUserDetails', {}, { autoFetch: false })
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [walletAddress, setWalletAddress] = useRecoilState(walletAtom)
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
+  const setOresAtom = useSetRecoilState(oreAtom)
+  const setUserAtom = useSetRecoilState(userLandAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
@@ -83,12 +93,30 @@ export const Layout = ({ children }: LayoutProps) => {
       web3.givenProvider?.selectedAddress || user?.get('ethAddress') || defaultWallet
     )
 
+    fetch({
+      onSuccess: ({ ores, totalLands }) => {
+        setOresAtom(ores)
+        setUserAtom(totalLands)
+      }
+    })
+
     isWeb3Enabled &&
       fetchBalanceOf({
         onSuccess: result => setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
         onError: e => console.log(e)
       })
-  }, [web3, setWalletAddress, user, setMekaAtom, fetchBalanceOf, Moralis, isWeb3Enabled])
+  }, [
+    web3,
+    setWalletAddress,
+    user,
+    setMekaAtom,
+    fetchBalanceOf,
+    Moralis,
+    isWeb3Enabled,
+    fetch,
+    setOresAtom,
+    setUserAtom
+  ])
 
   useEffect(() => {
     enableWeb3()

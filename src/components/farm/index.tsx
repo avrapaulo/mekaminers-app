@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useSetRecoilState } from 'recoil'
 import { DownloadIcon } from '@heroicons/react/outline'
 import { PuzzleIcon, StarIcon } from '@heroicons/react/solid'
 import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
+import { oreAtom } from 'recoil/atoms'
 import { LandRobot } from 'components/3D'
 import { classNames } from 'helpers/class-names'
 import { Bag } from 'components/3D/bag'
@@ -42,6 +44,7 @@ export const FarmCard = ({
   fetchFarm
 }: FarmCardProps) => {
   const [farmEnd, setFarmEnd] = useState(false)
+  const setOresAtom = useSetRecoilState(oreAtom)
   const { fetch } = useMoralisCloudFunction('collectFarm', { robotId: id }, { autoFetch: false })
   const { fetch: fetchOil } = useMoralisCloudFunction(
     'useOil',
@@ -89,6 +92,7 @@ export const FarmCard = ({
                 }) => {
                   if (result) {
                     fetchFarm()
+                    setOresAtom(i => i + result.ores)
                     toast.custom(
                       t => (
                         <Notification
