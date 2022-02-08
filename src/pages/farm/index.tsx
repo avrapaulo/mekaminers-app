@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { ClockIcon, RefreshIcon, DownloadIcon } from '@heroicons/react/outline'
+import { useRecoilValue } from 'recoil'
 import { FarmCard } from 'components/farm'
 import { SlideFarm } from 'components/farm/slide'
-import { RobotsProps } from '../inventory/robots/index'
 import { LandEmpty } from 'components/3D/land-empty'
+import { userLandAtom } from 'recoil/atoms'
+import { RobotsProps } from 'pages/inventory/robots'
 
 interface FarmProps {
   hasDrop: boolean
@@ -23,7 +25,7 @@ interface FarmProps {
 const FarmPage = () => {
   const { fetch, data } = useMoralisCloudFunction('getFarmingRobots')
   const [openSlideFarm, setOpenSlideFarm] = useState(false)
-  const lockLand = 3
+  const totalLandAtom = useRecoilValue(userLandAtom)
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -71,8 +73,15 @@ const FarmPage = () => {
                   <DownloadIcon className="w-6 h-6 text-gray-500" />
                 </button>
               </div>
-              <div className="h-72 relative" onClick={() => setOpenSlideFarm(true)}>
-                {7 - lockLand - (data as FarmProps[])?.length >= id + 1 ? (
+              <div
+                className="h-72 relative"
+                onClick={() => {
+                  if (totalLandAtom >= (data as FarmProps[])?.length + id + 1) {
+                    setOpenSlideFarm(true)
+                  }
+                }}
+              >
+                {totalLandAtom >= (data as FarmProps[])?.length + id + 1 ? (
                   <img
                     alt=""
                     className="p-5 h-full w-full object-contain z-10 absolute"

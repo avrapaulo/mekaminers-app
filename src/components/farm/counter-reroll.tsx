@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useSetRecoilState } from 'recoil'
 import { RefreshIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { classNames } from 'helpers/class-names'
 import { Notification } from 'components/notification'
+import { oreAtom } from 'recoil/atoms'
 
 interface CounterProps {
   time: string
@@ -21,7 +23,7 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
     date.getUTCMinutes(),
     date.getUTCSeconds()
   )
-
+  const setOresAtom = useSetRecoilState(oreAtom)
   const [timeLeft, setTimeLeft] = useState(+new Date(time) + 1 * 59999 - nowUtc)
 
   useEffect(() => {
@@ -46,6 +48,7 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
           fetch({
             onSuccess: () => {
               fetchFarm()
+              setOresAtom(i => i - 25)
               toast.custom(
                 t => (
                   <Notification
