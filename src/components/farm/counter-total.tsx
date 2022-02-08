@@ -7,6 +7,7 @@ interface CounterProps {
   startedAt: string
   setFarmEnd: () => void
 }
+
 export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
   const date = new Date()
   const nowUtc = Date.UTC(

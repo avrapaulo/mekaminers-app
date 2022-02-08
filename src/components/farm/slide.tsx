@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, SetStateAction, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useState, useEffect } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import { useMoralisCloudFunction } from 'react-moralis'
 import { Dialog, Transition } from '@headlessui/react'
@@ -19,9 +19,13 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const [activeTab, setActiveTab] = useState(tabs[0].name)
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
 
-  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm')
+  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm', {}, { autoFetch: false })
   const { data: dataUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
+
+  useEffect(() => {
+    if (open) fetch()
+  }, [fetch, open])
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -93,7 +97,6 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
                               token={token}
                               keyDisclosure={keyDisclosure}
                               fetchFarm={() => {
-                                fetch()
                                 fetchFarm()
                               }}
                               setOpen={() => setOpen(false)}
