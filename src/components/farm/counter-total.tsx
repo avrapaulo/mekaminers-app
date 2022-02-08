@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ClockIcon } from '@heroicons/react/outline'
 import { classNames } from 'helpers/class-names'
+import { Timer } from 'icons'
 
 interface CounterProps {
   time: number
@@ -42,12 +42,12 @@ export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
     >
       {timeLeft > 0 ? (
         <>
-          <ClockIcon className="text-tree-poppy w-6 h-6" />
+          <Timer className="text-tree-poppy w-6 h-6" />
           {hours}:{minutes}
         </>
       ) : (
         <>
-          <ClockIcon className="text-tree-poppy w-6 h-6" />
+          <Timer className="text-tree-poppy w-6 h-6" />
           00:00
         </>
       )}

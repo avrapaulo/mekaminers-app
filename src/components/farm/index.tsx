@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { DownloadIcon } from '@heroicons/react/outline'
 import { PuzzleIcon, StarIcon } from '@heroicons/react/solid'
 import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
@@ -13,6 +12,7 @@ import { LandEmpty } from 'components/3D/land-empty'
 import { shard } from 'constants/shards'
 import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
+import { Collect } from 'icons'
 
 export interface FarmCardProps {
   isPaused: boolean
@@ -127,7 +127,7 @@ export const FarmCard = ({
             }
           }}
         >
-          <DownloadIcon
+          <Collect
             className={classNames('w-6 h-6', farmEnd ? 'text-tree-poppy' : 'text-gray-500')}
           />
         </button>
