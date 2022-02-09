@@ -20,7 +20,7 @@ export const LandRobot = ({
   petName
 }: LandRobotProps) => {
   return (
-    <CanvasContainer autoRotate={false} camera={{ position: [-15, 10, 0], zoom: 2.2 }}>
+    <CanvasContainer autoRotate={true} camera={{ position: [-15, 10, 0], zoom: 2.2 }}>
       <>
         <RobotObject
           key={id}
