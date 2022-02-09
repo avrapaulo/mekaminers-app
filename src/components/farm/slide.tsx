@@ -7,7 +7,7 @@ import { RobotsProps } from 'pages/inventory/robots'
 import { SliderRowNFT } from './slider-row-nft'
 import { SliderRowNonNFTProps, SliderRowNonNFT } from './slider-row-non-nft'
 
-const tabs = [{ name: 'MekaBots' }, { name: 'MinigBots' }]
+const tabs = [{ name: 'MekaBots' }, { name: 'MiningBots' }]
 
 interface SlideFarmProps {
   open: boolean

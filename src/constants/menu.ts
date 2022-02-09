@@ -30,8 +30,8 @@ export const marketplace = [
 
 export const junkyard = [
   {
-    name: 'Robots',
-    url: '/junkyard/robots'
+    name: 'MiningBots',
+    url: '/junkyard/mining-bots'
   },
   {
     name: 'Utilities',

@@ -64,13 +64,7 @@ const Tools = () => {
               <div key={key} className="flex justify-center">
                 <Card
                   description={shard[key] || key}
-                  imageCard={
-                    pets[key] ? (
-                      pets[key]
-                    ) : (
-                      <img alt="" className="p-5" src={`/${key.toLowerCase()}.png`} />
-                    )
-                  }
+                  imageCard={<img alt="" className="p-5" src={`/${key.toLowerCase()}.png`} />}
                 >
                   <div className="flex-1 p-4 flex flex-col mt-5">
                     <div className="h-full flex justify-between flex-col">
