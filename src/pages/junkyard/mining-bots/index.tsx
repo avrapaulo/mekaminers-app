@@ -87,14 +87,14 @@ const MiningBots = () => {
               </button>
             </div>
           </Card>
-          <Card description="Functional" imageCard={<Functional />}>
+          <Card description="Rusty" imageCard={<Rusty />}>
             <div className="flex items-center justify-center my-5">
               <button
                 type="button"
                 className="flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-black bg-white hover:bg-gray-200 w-28"
                 onClick={() =>
                   fetch({
-                    params: { item: 'functional' },
+                    params: { item: 'rusty' },
                     onSuccess: result => {
                       if (oresAtom < 150) {
                         return toast.custom(
@@ -102,7 +102,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="error"
-                              title="Functional"
+                              title="Rusty"
                               description={
                                 <div className="flex flex-row items-center">
                                   You need more
@@ -122,7 +122,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="success"
-                              title="Functional"
+                              title="Rusty"
                               description={
                                 <div className="flex flex-row items-center">
                                   <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
@@ -139,7 +139,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="error"
-                              title="Functional"
+                              title="Rusty"
                               description={
                                 <div className="flex flex-row items-center">Limit reached</div>
                               }
@@ -156,14 +156,14 @@ const MiningBots = () => {
               </button>
             </div>
           </Card>
-          <Card description="Rusty" imageCard={<Rusty />}>
+          <Card description="Functional" imageCard={<Functional />}>
             <div className="flex items-center justify-center my-5">
               <button
                 type="button"
                 className="flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-black bg-white hover:bg-gray-200 w-28"
                 onClick={() =>
                   fetch({
-                    params: { item: 'rusty' },
+                    params: { item: 'functional' },
                     onSuccess: result => {
                       if (oresAtom < 250) {
                         return toast.custom(
@@ -171,7 +171,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="error"
-                              title="Rusty"
+                              title="Functional"
                               description={
                                 <div className="flex flex-row items-center">
                                   You need more
@@ -191,7 +191,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="success"
-                              title="Rusty"
+                              title="Functional"
                               description={
                                 <div className="flex flex-row items-center">
                                   <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
@@ -208,7 +208,7 @@ const MiningBots = () => {
                             <Notification
                               isShow={t.visible}
                               icon="error"
-                              title="Rusty"
+                              title="Functional"
                               description={
                                 <div className="flex flex-row items-center">Limit reached</div>
                               }
