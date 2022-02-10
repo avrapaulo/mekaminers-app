@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
+import toast from 'react-hot-toast'
 import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { Robot } from 'components/3D'
@@ -21,6 +22,7 @@ import { abi as robotMarketplaceAbi } from 'contracts/RobotMarketplace.json'
 import { walletAtom, priceModalAtom, mekaAtom } from 'recoil/atoms'
 import { useMeka, UseBalanceOf } from 'hooks'
 import { ModalPrice } from 'components/modal'
+import { Notification } from 'components/notification'
 
 interface RobotProps {
   robot: {
@@ -387,7 +389,7 @@ const RobotsDetail = () => {
                 'mb-10 flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-full shadow-sm text-black bg-white hover:bg-gray-200 w-24'
               )}
               onClick={async () => {
-                if (mode !== 4) {
+                if (mode !== 4 && mode !== 3) {
                   if (isOwner) {
                     if (mode === 2) {
                       await robotCancelSale.methods.cancelSale(+robotId).send({
@@ -419,6 +421,21 @@ const RobotsDetail = () => {
                       })
                     }
                   }
+                }
+                if (mode === 3) {
+                  toast.custom(
+                    t => (
+                      <Notification
+                        isShow={t.visible}
+                        icon="error"
+                        title={'Sell'}
+                        description={
+                          <div className="flex flex-row items-center">Your robot is farming</div>
+                        }
+                      />
+                    ),
+                    { duration: 3000 }
+                  )
                 }
               }}
             >
