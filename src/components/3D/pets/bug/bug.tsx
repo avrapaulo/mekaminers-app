@@ -1,6 +1,6 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
@@ -22,7 +22,13 @@ type GLTFResult = GLTF & {
 
 export const BugObject = ({ ...props }: JSX.IntrinsicElements['group']) => {
   const group = useRef<THREE.Group>()
-  const { nodes, materials } = useGLTF('/3d/pets/Bug.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF('/3d/pets/Bug.glb') as GLTFResult
+  const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    actions.Dig.play()
+  }, [actions])
+
   return (
     <group ref={group} {...props} dispose={null}>
       <primitive object={nodes.Main} />
