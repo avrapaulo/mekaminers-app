@@ -137,7 +137,7 @@ export const FarmCard = ({
           />
         </button>
       </div>
-      <div className="h-72 relative">
+      <div className="h-80 lg:h-96 relative w-full aspect-square">
         {isPaused ? (
           <>
             <img

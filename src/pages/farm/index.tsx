@@ -74,7 +74,7 @@ const FarmPage = () => {
                 </button>
               </div>
               <div
-                className="h-72 relative cursor-pointer"
+                className="h-80 lg:h-96 relative w-full aspect-square cursor-pointer"
                 onClick={() => {
                   if (totalLandAtom >= (data as FarmProps[])?.length + id + 1) {
                     setOpenSlideFarm(true)
@@ -84,13 +84,13 @@ const FarmPage = () => {
                 {totalLandAtom >= (data as FarmProps[])?.length + id + 1 ? (
                   <img
                     alt=""
-                    className="p-5 h-full w-full object-contain z-10 absolute"
+                    className="p-2 lg:p-12 h-full w-full object-contain z-10 absolute"
                     src="/unknown-land.png"
                   />
                 ) : (
                   <img
                     alt=""
-                    className="p-5 h-full w-full object-contain z-10 absolute"
+                    className="p-2 lg:p-10 h-full w-full object-contain z-10 absolute"
                     src="/lock-land.png"
                   />
                 )}
