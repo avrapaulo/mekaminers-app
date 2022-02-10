@@ -13,7 +13,9 @@ import {
   disconnectAtom,
   mekaAtom,
   oreAtom,
-  userLandAtom
+  userLandAtom,
+  swapAtom,
+  isOresAtom
 } from 'recoil/atoms'
 import {
   ShoppingCartIcon,
@@ -26,9 +28,10 @@ import {
 import CountUp from 'react-countup'
 import { getEllipsisTxt } from 'helpers/formatters'
 import { Wallet } from 'icons/wallet'
-import { DisconnectModel } from 'components/modal'
+import { DisconnectModel, SwapModal } from 'components/modal'
 import { classNames } from 'helpers/class-names'
 import { UseBalanceOf } from 'hooks'
+import { currentFeeAtom } from 'recoil/atoms/user'
 
 const navigation = [
   {
@@ -82,7 +85,10 @@ export const Layout = ({ children }: LayoutProps) => {
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
   const setOresAtom = useSetRecoilState(oreAtom)
+  const setSwapAtom = useSetRecoilState(swapAtom)
+  const setIsOresAtom = useSetRecoilState(isOresAtom)
   const setUserAtom = useSetRecoilState(userLandAtom)
+  const setCurrentFee = useSetRecoilState(currentFeeAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
@@ -94,9 +100,10 @@ export const Layout = ({ children }: LayoutProps) => {
     )
 
     fetch({
-      onSuccess: ({ ores, totalLands }) => {
+      onSuccess: ({ ores, totalLands, currentFee }) => {
         setOresAtom(ores)
         setUserAtom(totalLands)
+        setCurrentFee(currentFee)
       }
     })
 
@@ -115,7 +122,8 @@ export const Layout = ({ children }: LayoutProps) => {
     isWeb3Enabled,
     fetch,
     setOresAtom,
-    setUserAtom
+    setUserAtom,
+    setCurrentFee
   ])
 
   useEffect(() => {
@@ -142,6 +150,7 @@ export const Layout = ({ children }: LayoutProps) => {
         }}
       />
       <DisconnectModel />
+      <SwapModal />
       <div className="h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -242,6 +251,10 @@ export const Layout = ({ children }: LayoutProps) => {
                   <button
                     type="button"
                     className="mt-20 ml-10 my-3 bg-white min-w-24 pl-6 mr-3 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                    onClick={() => {
+                      setSwapAtom(true)
+                      setIsOresAtom(true)
+                    }}
                   >
                     <div className="h-16 w-16 -left-8 absolute">
                       <img alt="Logo" src="/ore.png" />
@@ -254,6 +267,10 @@ export const Layout = ({ children }: LayoutProps) => {
                   <button
                     type="button"
                     className="mx-6 my-3 bg-white min-w-28 mr-3 pl-10 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                    onClick={() => {
+                      setSwapAtom(true)
+                      setIsOresAtom(false)
+                    }}
                   >
                     <div className="h-12 w-12 -left-2 -top-3 absolute">
                       <img alt="Logo" src="/favicon.ico" />
@@ -339,6 +356,10 @@ export const Layout = ({ children }: LayoutProps) => {
                 <button
                   type="button"
                   className="bg-white min-w-24 pl-6 mr-3 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                  onClick={() => {
+                    setSwapAtom(true)
+                    setIsOresAtom(true)
+                  }}
                 >
                   <div className="h-16 w-16 -left-8 absolute">
                     <img alt="Logo" src="/ore.png" />
@@ -351,6 +372,10 @@ export const Layout = ({ children }: LayoutProps) => {
                 <button
                   type="button"
                   className="bg-white min-w-28 mr-3 pl-10 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
+                  onClick={() => {
+                    setSwapAtom(true)
+                    setIsOresAtom(false)
+                  }}
                 >
                   <div className="h-12 w-12 -left-2 -top-3 absolute">
                     <img alt="Logo" src="/favicon.ico" />

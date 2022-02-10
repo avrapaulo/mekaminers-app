@@ -74,7 +74,7 @@ const Utilities = () => {
                               icon="error"
                               title="Oil"
                               description={
-                                <div className="flex flex-row items-center">Limit reached</div>
+                                <div className="flex flex-row items-center">Try later!</div>
                               }
                             />
                           ),
@@ -146,7 +146,7 @@ const Utilities = () => {
                               icon="error"
                               title="Toolkit"
                               description={
-                                <div className="flex flex-row items-center">Limit reached</div>
+                                <div className="flex flex-row items-center">Try later!</div>
                               }
                             />
                           ),
@@ -215,7 +215,7 @@ const Utilities = () => {
                               icon="error"
                               title="Bug"
                               description={
-                                <div className="flex flex-row items-center">Limit reached</div>
+                                <div className="flex flex-row items-center">Try later!</div>
                               }
                             />
                           ),
@@ -284,7 +284,7 @@ const Utilities = () => {
                               icon="error"
                               title="Frog"
                               description={
-                                <div className="flex flex-row items-center">Limit reached</div>
+                                <div className="flex flex-row items-center">Try later!</div>
                               }
                             />
                           ),
@@ -353,7 +353,7 @@ const Utilities = () => {
                               icon="error"
                               title="Dog"
                               description={
-                                <div className="flex flex-row items-center">Limit reached</div>
+                                <div className="flex flex-row items-center">Try later!</div>
                               }
                             />
                           ),
