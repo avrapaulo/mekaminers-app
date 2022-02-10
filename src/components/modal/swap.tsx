@@ -19,8 +19,8 @@ export const SwapModal = () => {
   const wallet = useRecoilValue(walletAtom)
   const [open, setOpen] = useRecoilState(swapAtom)
   const [isOres, setIsOres] = useRecoilState(isOresAtom)
-  const [first, setFirst] = useState<number>(0)
-  const [second, setSecond] = useState<number>(0)
+  const [first, setFirst] = useState<number>()
+  const [second, setSecond] = useState<number>()
   const { meka, ore } = useRecoilValue(walletCoins)
   const feeAtom = useRecoilValue(currentFeeAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
@@ -62,7 +62,7 @@ export const SwapModal = () => {
   useEffect(() => {
     setFirst(0)
     setSecond(0)
-  }, [isOres])
+  }, [open])
 
   const calcTrade = ({
     isOres,
@@ -73,7 +73,6 @@ export const SwapModal = () => {
     type: 'ore' | 'meka'
     value: number
   }) => {
-    console.log(feeAtom)
     const conversionFeeWithPercentage = isOres ? 1 - 300 / (300 * (1 + feeAtom)) : 0
     const conversionFeeWithoutPercentage = isOres ? feeAtom : 0
     const conversionRate = isOres ? 300 : 60
@@ -159,15 +158,17 @@ export const SwapModal = () => {
                         )}
                       </div>
                       <input
-                        type="number"
+                        type="text"
                         className="block w-full font-semibold pl-10 text-md text-right border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                         placeholder="0.0"
                         value={first}
                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-                          setFirst(+value)
-                          setSecond(
-                            calcTrade({ isOres, type: isOres ? 'ore' : 'meka', value: +value })
-                          )
+                          if (/^(\d*\.)?\d+$/.test(value)) {
+                            setFirst(+value)
+                            setSecond(
+                              calcTrade({ isOres, type: isOres ? 'ore' : 'meka', value: +value })
+                            )
+                          }
                         }}
                       />
                     </div>
@@ -204,19 +205,21 @@ export const SwapModal = () => {
                         )}
                       </div>
                       <input
-                        type="number"
+                        type="text"
                         className="block w-full pl-10 font-semibold text-md text-right border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                         placeholder="0.0"
                         value={second}
                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-                          setFirst(
-                            calcTrade({
-                              isOres,
-                              type: !isOres ? 'ore' : 'meka',
-                              value: +value
-                            })
-                          )
-                          setSecond(+value)
+                          if (/^(\d*\.)?\d+$/.test(value)) {
+                            setFirst(
+                              calcTrade({
+                                isOres,
+                                type: !isOres ? 'ore' : 'meka',
+                                value: +value
+                              })
+                            )
+                            setSecond(+value)
+                          }
                         }}
                       />
                     </div>
@@ -302,6 +305,28 @@ export const SwapModal = () => {
                             }
                           })
                         } else {
+                          if (first <= 0) {
+                            return toast.custom(
+                              t => (
+                                <Notification
+                                  isShow={t.visible}
+                                  icon="error"
+                                  title="Swap"
+                                  description={
+                                    <div className="flex flex-row items-center">
+                                      Increase your
+                                      <img
+                                        alt=""
+                                        className="h-6 w-6 object-contain"
+                                        src="/ore.png"
+                                      />
+                                    </div>
+                                  }
+                                />
+                              ),
+                              { duration: 3000 }
+                            )
+                          }
                           fetchSignatureToMeka({
                             params: { amount: first },
                             onSuccess: (result: any) => {
