@@ -64,8 +64,8 @@ export const FarmCard = ({
             }}
           />
         )}
-        <button
-          type="button"
+        <div
+          title="Mineral supply"
           className={classNames(
             'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white'
           )}
@@ -75,10 +75,11 @@ export const FarmCard = ({
           {mineralBonus > 0 && (
             <span className="ml-px text-xs text-green-500"> +{mineralBonus * 100}%</span>
           )}
-        </button>
+        </div>
         <CounterReroll time={startedAt} fetchFarm={fetchFarm} id={id} />
         <button
           type="button"
+          title="Collect"
           className={classNames(
             'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white',
             farmEnd && !isPaused ? '' : 'cursor-not-allowed'

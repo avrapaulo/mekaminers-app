@@ -37,6 +37,7 @@ export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
   return (
     <button
       type="button"
+      title="Remaining time"
       className={classNames(
         'flex justify-center items-center border border-transparent text-lg font-semibold rounded-full shadow-sm text-white'
       )}
