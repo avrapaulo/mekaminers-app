@@ -7,6 +7,7 @@ import { LandEmpty } from 'components/3D/land-empty'
 import { userLandAtom } from 'recoil/atoms'
 import { RobotsProps } from 'pages/inventory/robots'
 import { Collect, Reroll, Timer } from 'icons'
+import { SpendModel } from 'components/modal'
 
 interface FarmProps {
   hasDrop: boolean
@@ -25,11 +26,13 @@ interface FarmProps {
 const FarmPage = () => {
   const { fetch, data } = useMoralisCloudFunction('getFarmingRobots')
   const [openSlideFarm, setOpenSlideFarm] = useState(false)
+  const [openSpendLand, setOpenSpendLand] = useState(false)
   const totalLandAtom = useRecoilValue(userLandAtom)
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <SlideFarm fetchFarm={() => fetch()} open={openSlideFarm} setOpen={setOpenSlideFarm} />
+      <SpendModel open={openSpendLand} setOpen={setOpenSpendLand} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-5">
         {(data as FarmProps[])?.map(
           ({
@@ -87,7 +90,7 @@ const FarmPage = () => {
                   if (totalLandAtom >= (data as FarmProps[])?.length + id + 1) {
                     setOpenSlideFarm(true)
                   } else {
-                    console.log(123)
+                    setOpenSpendLand(true)
                   }
                 }}
               >
