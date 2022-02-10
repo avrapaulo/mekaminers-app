@@ -288,7 +288,7 @@ export const SwapModal = () => {
                                                   className="h-6 w-6 object-contain"
                                                   src="/ore.png"
                                                 />
-                                                It make take some time!!
+                                                It may take some time!!
                                               </div>
                                             }
                                           />
@@ -329,7 +329,7 @@ export const SwapModal = () => {
                                                 className="h-6 w-6 object-contain"
                                                 src="/meka.png"
                                               />
-                                              It make take some time!!
+                                              It may take some time!!
                                             </div>
                                           }
                                         />
