@@ -1,8 +1,12 @@
 import { CanvasContainer } from 'components/3D/canvas-container'
 import { FunctionalObject } from './functional'
 
-export const Functional = () => (
-  <CanvasContainer camera={{ fov: 13 }}>
-    <FunctionalObject />
+interface FunctionalProps {
+  animation?: boolean
+}
+
+export const Functional = ({ animation }: FunctionalProps) => (
+  <CanvasContainer camera={{ fov: 45 }}>
+    <FunctionalObject animation={animation} position={[0, -1.35, 0]} />
   </CanvasContainer>
 )

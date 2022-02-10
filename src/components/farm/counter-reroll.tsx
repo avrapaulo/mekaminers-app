@@ -8,11 +8,12 @@ import { oreAtom } from 'recoil/atoms'
 import { Reroll } from 'icons'
 
 interface CounterProps {
+  canReroll: boolean
   time: string
-  id: number
+  id: string | number
   fetchFarm: () => void
 }
-export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
+export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) => {
   const { fetch } = useMoralisCloudFunction('rerollFarm', { robotId: id }, { autoFetch: false })
   const date = new Date()
   const nowUtc = Date.UTC(
@@ -71,7 +72,7 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
         }
       }}
     >
-      {timeLeft > 0 ? (
+      {timeLeft > 0 && canReroll ? (
         <>
           <Reroll className="text-tree-poppy w-6 h-6" />
           {minutes}:{seconds}

@@ -1,107 +1,79 @@
 /* eslint-disable camelcase */
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
-    corpo_brutamonte: THREE.Mesh
-    mochila: THREE.Mesh
-    perna: THREE.Mesh
-    braco: THREE.Mesh
-    comandante: THREE.Mesh
-    corpo_brutamonte001: THREE.Mesh
-    braco001: THREE.Mesh
-    braco002: THREE.Mesh
-    corpo_brutamonte002: THREE.Mesh
+    braco: THREE.SkinnedMesh
+    comandante: THREE.SkinnedMesh
+    corpo_brutamonte: THREE.SkinnedMesh
+    mochila: THREE.SkinnedMesh
+    perna: THREE.SkinnedMesh
+    smoke_1: THREE.SkinnedMesh
+    Main: THREE.Bone
+    smoke: THREE.Bone
+    smoke001: THREE.Bone
+    smoke002: THREE.Bone
+    smoke003: THREE.Bone
   }
   materials: {
-    Material: THREE.MeshStandardMaterial
+    H1: THREE.MeshStandardMaterial
   }
 }
 
-export const HeavyObject = (props: JSX.IntrinsicElements['group']) => {
+interface HeavyObjectProps {
+  animation: boolean
+}
+
+export const HeavyObject = (props: HeavyObjectProps & JSX.IntrinsicElements['group']) => {
   const group = useRef<THREE.Group>()
-  const { nodes, materials } = useGLTF('/3d/mining-bots/heavy.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF('/3d/mining-bots/heavy.glb') as GLTFResult
+  const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    if (props.animation) {
+      actions.Dig.play()
+    }
+  }, [actions, props])
+
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.corpo_brutamonte.geometry}
-        material={nodes.corpo_brutamonte.material}
-        position={[1.03, 3.49, 0.17]}
-        scale={[0.39, 0.39, 0.39]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
+      <primitive object={nodes.Main} />
+      <primitive object={nodes.smoke} />
+      <primitive object={nodes.smoke001} />
+      <primitive object={nodes.smoke002} />
+      <primitive object={nodes.smoke003} />
+      <skinnedMesh
         geometry={nodes.mochila.geometry}
         material={nodes.mochila.material}
-        position={[0, 3.88, -2.63]}
-        rotation={[-0.01, 0, 0]}
-        scale={[0.39, 0.39, 0.39]}
+        skeleton={nodes.mochila.skeleton}
       />
-      <mesh
-        castShadow
-        receiveShadow
+      <skinnedMesh
         geometry={nodes.perna.geometry}
         material={nodes.perna.material}
-        position={[1.43, 0.86, 0.83]}
-        rotation={[0.11, 0.26, 0]}
-        scale={[0.39, 0.39, 0.39]}
+        skeleton={nodes.perna.skeleton}
       />
-      <mesh
-        castShadow
-        receiveShadow
+      <skinnedMesh
+        geometry={nodes.smoke_1.geometry}
+        material={nodes.smoke_1.material}
+        skeleton={nodes.smoke_1.skeleton}
+      />
+      <skinnedMesh
         geometry={nodes.comandante.geometry}
         material={nodes.comandante.material}
-        position={[-0.02, 7.17, 0.68]}
-        scale={[0.39, 0.39, 0.39]}
+        skeleton={nodes.comandante.skeleton}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.braco002.geometry}
-        material={nodes.braco002.material}
-        position={[-0.02, 3.93, 2.41]}
-        rotation={[2.19, 1.29, -0.89]}
-        scale={[0.39, 0.39, 0.39]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.corpo_brutamonte002.geometry}
-        material={nodes.corpo_brutamonte002.material}
-        position={[1.03, 3.49, 0.17]}
-        scale={[0.39, 0.39, 0.39]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.corpo_brutamonte001.geometry}
-        material={nodes.corpo_brutamonte001.material}
-        position={[1.03, 3.49, 0.17]}
-        scale={[0.39, 0.39, 0.39]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
+      <skinnedMesh
         geometry={nodes.braco.geometry}
         material={nodes.braco.material}
-        position={[3.58, 4.82, 0.62]}
-        rotation={[-2.82, 1.39, 2.95]}
-        scale={[0.39, 0.39, 0.39]}
+        skeleton={nodes.braco.skeleton}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.braco001.geometry}
-        material={nodes.braco001.material}
-        position={[3.58, 4.82, 0.62]}
-        rotation={[-2.82, 1.39, 2.95]}
-        scale={[0.39, 0.39, 0.39]}
+      <skinnedMesh
+        geometry={nodes.corpo_brutamonte.geometry}
+        material={nodes.corpo_brutamonte.material}
+        skeleton={nodes.corpo_brutamonte.skeleton}
       />
     </group>
   )

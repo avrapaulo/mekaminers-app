@@ -1,8 +1,11 @@
 /* eslint-disable indent */
+import { useState } from 'react'
+import { useMoralisCloudFunction } from 'react-moralis'
 import { Transition, Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@heroicons/react/solid'
+import toast from 'react-hot-toast'
 import { classNames } from 'helpers/class-names'
-import { useState } from 'react'
+import { Notification } from 'components/notification'
 
 export interface SliderRowNonNFTProps {
   capacity: number
@@ -15,7 +18,7 @@ export interface SliderRowNonNFTProps {
   setKeyDisclosure: (token: number | undefined) => void
 }
 
-const pets = { Dog: 'Dog', Frog: 'Frog', Bug: 'Bug' }
+const pets = { Bug: 'Bug', Frog: 'Frog', Dog: 'Dog' }
 
 export const SliderRowNonNFT = ({
   capacity,
@@ -24,9 +27,16 @@ export const SliderRowNonNFT = ({
   keyDisclosure,
   utilities,
   fetchFarm,
+  setOpen,
   setKeyDisclosure
 }: SliderRowNonNFTProps) => {
   const [mem, setMem] = useState<string>()
+  const { fetch } = useMoralisCloudFunction(
+    'startFarming',
+    { nonNftRobot: nonNFT, pet: mem },
+    { autoFetch: false }
+  )
+
   return (
     <div className="w-full max-w-md p-2 mx-auto bg-white rounded-2xl" key={nonNFT}>
       <Disclosure>
@@ -119,7 +129,30 @@ export const SliderRowNonNFT = ({
                   type="button"
                   className="px-2 border-gray-200 py-2 text-lg text-black font-bold rounded-tr rounded-tl"
                   onClick={() => {
-                    fetchFarm()
+                    fetch({
+                      onSuccess: result => {
+                        if (result) {
+                          setOpen()
+                          setTimeout(() => {
+                            fetchFarm()
+                          }, 500)
+                        } else {
+                          toast.custom(
+                            t => (
+                              <Notification
+                                isShow={t.visible}
+                                icon="error"
+                                title="Farm"
+                                description={
+                                  <div className="flex flex-row items-center">Try later!</div>
+                                }
+                              />
+                            ),
+                            { duration: 3000 }
+                          )
+                        }
+                      }
+                    })
                   }}
                 >
                   Select

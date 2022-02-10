@@ -2,10 +2,12 @@
 import { Transition, Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@heroicons/react/solid'
 import { useMoralisCloudFunction } from 'react-moralis'
+import toast from 'react-hot-toast'
 import { classNames } from 'helpers/class-names'
 import { statusDescription } from 'constants/status'
 import { rarityInfo } from 'constants/rarity'
 import { useState } from 'react'
+import { Notification } from 'components/notification'
 
 interface SliderRowProps {
   bonus: number
@@ -21,7 +23,7 @@ interface SliderRowProps {
   setKeyDisclosure: (token: number | undefined) => void
 }
 
-const pets = { Dog: 'Dog', Frog: 'Frog', Bug: 'Bug' }
+const pets = { Bug: 'Bug', Frog: 'Frog', Dog: 'Dog' }
 
 export const SliderRowNFT = ({
   bonus,
@@ -184,6 +186,37 @@ export const SliderRowNFT = ({
             )}
           >
             <div className="flex flex-row justify-between">
+              <div className="flex flex-row space-x-2 font-bold text-black">
+                <div className="flex">
+                  {utilities
+                    .filter(({ key }) => pets[key])
+                    .map(({ key, value }) => (
+                      <button
+                        onClick={() => {
+                          if (mem !== key) {
+                            setMem(key)
+                          } else {
+                            setMem(undefined)
+                          }
+                        }}
+                        key={key}
+                        value={key}
+                        className={classNames(
+                          value > 0
+                            ? 'cursor-pointer focus:outline-none'
+                            : 'opacity-25 cursor-not-allowed',
+                          mem !== key
+                            ? `border-transparent text-white ${rarityInfo[rarity].bgLight}`
+                            : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
+                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
+                        )}
+                        disabled={value < 0}
+                      >
+                        {key}
+                      </button>
+                    ))}
+                </div>
+              </div>
               <div className="flex flex-row space-x-1">
                 {robotStatus.map(({ key, value }) => {
                   switch (key) {
@@ -255,48 +288,36 @@ export const SliderRowNFT = ({
                   }
                 })}
               </div>
-              <div className="flex flex-row space-x-2 font-bold text-black">
-                <div className="flex">
-                  {utilities
-                    .filter(({ key }) => pets[key])
-                    .map(({ key, value }) => (
-                      <button
-                        onClick={() => {
-                          if (mem !== key) {
-                            setMem(key)
-                          } else {
-                            setMem(undefined)
-                          }
-                        }}
-                        key={key}
-                        value={key}
-                        className={classNames(
-                          value > 0
-                            ? 'cursor-pointer focus:outline-none'
-                            : 'opacity-25 cursor-not-allowed',
-                          mem !== key
-                            ? `border-transparent text-white ${rarityInfo[rarity].bgLight}`
-                            : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
-                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
-                        )}
-                        disabled={value < 0}
-                      >
-                        {key}
-                      </button>
-                    ))}
-                </div>
-              </div>
             </div>
             <div className="flex justify-center">
               <button
                 type="button"
                 className="px-2 border-gray-200 py-2 text-lg text-white font-bold rounded-tr rounded-tl"
                 onClick={() => {
-                  fetch()
-                  setOpen()
-                  setTimeout(() => {
-                    fetchFarm()
-                  }, 500)
+                  fetch({
+                    onSuccess: result => {
+                      if (result) {
+                        setOpen()
+                        setTimeout(() => {
+                          fetchFarm()
+                        }, 500)
+                      } else {
+                        toast.custom(
+                          t => (
+                            <Notification
+                              isShow={t.visible}
+                              icon="error"
+                              title="Farm"
+                              description={
+                                <div className="flex flex-row items-center">Try later!</div>
+                              }
+                            />
+                          ),
+                          { duration: 3000 }
+                        )
+                      }
+                    }
+                  })
                 }}
               >
                 Select

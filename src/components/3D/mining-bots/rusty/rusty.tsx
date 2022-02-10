@@ -1,63 +1,66 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
-    corpo: THREE.Mesh
-    cabeca: THREE.Mesh
-    mochila: THREE.Mesh
-    pernas: THREE.Mesh
-    bracos: THREE.Mesh
+    bracos: THREE.SkinnedMesh
+    bracos001: THREE.SkinnedMesh
+    bracos002: THREE.SkinnedMesh
+    cabeca: THREE.SkinnedMesh
+    corpo: THREE.SkinnedMesh
+    mochila: THREE.SkinnedMesh
+    pernas: THREE.SkinnedMesh
+    Main: THREE.Bone
   }
   materials: {
     Material: THREE.MeshStandardMaterial
   }
 }
 
-export const RustyObject = (props: JSX.IntrinsicElements['group']) => {
+interface RustyObjectProps {
+  animation: boolean
+}
+
+export const RustyObject = (props: RustyObjectProps & JSX.IntrinsicElements['group']) => {
   const group = useRef<THREE.Group>()
-  const { nodes, materials } = useGLTF('/3d/mining-bots/rusty.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF('/3d/mining-bots/rusty.glb') as GLTFResult
+  const { actions } = useAnimations(animations, group)
+
+  useEffect(() => {
+    if (props.animation) {
+      actions.Dig.play()
+    }
+  }, [actions, props])
+
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.corpo.geometry}
-        material={nodes.corpo.material}
-        position={[0, 1.82, -0.01]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.cabeca.geometry}
-        material={nodes.cabeca.material}
-        position={[1.54, 4.47, 0.58]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
+      <primitive object={nodes.Main} />
+      <skinnedMesh
         geometry={nodes.mochila.geometry}
         material={nodes.mochila.material}
-        position={[-0.72, 1.05, -3.7]}
-        rotation={[-0.13, 0.19, 0.02]}
+        skeleton={nodes.mochila.skeleton}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.bracos.geometry}
-        material={nodes.bracos.material}
-        position={[4.63, 2.14, 4.42]}
-        rotation={[0, 0, 1.84]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
+      <skinnedMesh
         geometry={nodes.pernas.geometry}
         material={nodes.pernas.material}
-        position={[2.11, -0.01, 1.77]}
-        rotation={[-Math.PI, 0.72, -Math.PI]}
+        skeleton={nodes.pernas.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.bracos.geometry}
+        material={nodes.bracos.material}
+        skeleton={nodes.bracos.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.cabeca.geometry}
+        material={nodes.cabeca.material}
+        skeleton={nodes.cabeca.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.corpo.geometry}
+        material={nodes.corpo.material}
+        skeleton={nodes.corpo.skeleton}
       />
     </group>
   )
