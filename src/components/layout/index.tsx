@@ -43,10 +43,10 @@ const navigation = [
     layoutBig: false
   },
   {
-    name: 'Junkyard',
-    defaultHref: '/junkyard',
-    href: '/junkyard/utilities',
-    icon: ShoppingCartIcon,
+    name: 'Inventory',
+    defaultHref: '/inventory',
+    href: '/inventory/robots',
+    icon: BriefcaseIcon,
     disable: false,
     layoutBig: false
   },
@@ -59,10 +59,10 @@ const navigation = [
     layoutBig: true
   },
   {
-    name: 'Inventory',
-    defaultHref: '/inventory',
-    href: '/inventory/robots',
-    icon: BriefcaseIcon,
+    name: 'Junkyard',
+    defaultHref: '/junkyard',
+    href: '/junkyard/utilities',
+    icon: ShoppingCartIcon,
     disable: false,
     layoutBig: false
   }

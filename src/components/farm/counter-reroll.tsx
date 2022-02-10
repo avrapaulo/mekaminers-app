@@ -40,6 +40,7 @@ export const CounterReroll = ({ time, fetchFarm, id }: CounterProps) => {
   return (
     <button
       type="button"
+      title="Reroll"
       className={classNames(
         'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white'
       )}
