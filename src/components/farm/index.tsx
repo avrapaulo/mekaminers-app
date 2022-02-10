@@ -13,39 +13,48 @@ import { shard } from 'constants/shards'
 import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
 import { Collect } from 'icons'
+import { LandNonNFTRobot } from 'components/3D/land-non-nft'
 
 export interface FarmCardProps {
+  rarity?: string
+  piecesStatus?: { key: string; value: number; id: number; rarity: string }[]
+  isNFT: boolean
   isPaused: boolean
-  id: number
+  canReroll: boolean
+  id: number | string
   mineralBonus: number
   mineralCapacity: number
   mineralTotalTime: number
   pet: string
   type: string
-  rarity: string
   startedAt: string
   mineralRarity: string
   fetchFarm: () => void
-  piecesStatus: { key: string; value: number; id: number; rarity: string }[]
 }
 
 export const FarmCard = ({
+  rarity,
+  piecesStatus,
+  isNFT,
   isPaused,
+  canReroll,
   id,
   mineralBonus,
   mineralCapacity,
   mineralTotalTime,
   pet,
   type,
-  rarity,
   startedAt,
-  piecesStatus,
   mineralRarity,
   fetchFarm
 }: FarmCardProps) => {
   const [farmEnd, setFarmEnd] = useState(false)
   const setOresAtom = useSetRecoilState(oreAtom)
-  const { fetch } = useMoralisCloudFunction('collectFarm', { robotId: id }, { autoFetch: false })
+  const { fetch } = useMoralisCloudFunction(
+    'collectFarm',
+    { robotId: isNFT ? id : null, nonNftRobot: isNFT ? null : id },
+    { autoFetch: false }
+  )
   const { fetch: fetchOil } = useMoralisCloudFunction(
     'useOil',
     { robotId: id },
@@ -76,7 +85,7 @@ export const FarmCard = ({
             <span className="ml-px text-xs text-green-500"> +{mineralBonus * 100}%</span>
           )}
         </div>
-        <CounterReroll time={startedAt} fetchFarm={fetchFarm} id={id} />
+        <CounterReroll time={startedAt} fetchFarm={fetchFarm} id={id} canReroll={canReroll} />
         <button
           type="button"
           title="Collect"
@@ -151,7 +160,7 @@ export const FarmCard = ({
           </>
         ) : farmEnd ? (
           <Bag />
-        ) : (
+        ) : isNFT ? (
           <LandRobot
             id={id}
             petName={pet}
@@ -160,6 +169,8 @@ export const FarmCard = ({
             piecesStatus={piecesStatus}
             mineralRarity={mineralRarity}
           />
+        ) : (
+          <LandNonNFTRobot mineralRarity={mineralRarity} id={id} name={type} petName={pet} />
         )}
       </div>
     </div>

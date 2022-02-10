@@ -12,6 +12,7 @@ import { SpendModel } from 'components/modal'
 interface FarmProps {
   hasDrop: boolean
   isPaused: boolean
+  canReroll: boolean
   mineralTotalTime: number
   pet: string
   startedAt: string
@@ -21,6 +22,10 @@ interface FarmProps {
     bonus: number
   }
   robot: RobotsProps
+  nonNFTRobot: {
+    name: string
+    nonNFT: string
+  }
 }
 
 const FarmPage = () => {
@@ -40,23 +45,27 @@ const FarmPage = () => {
             mineralTotalTime,
             pet,
             startedAt,
-            robot: { token, piecesStatus, rarity, type },
+            nonNFTRobot,
+            robot,
+            canReroll,
             mineralStatus: { rarity: mineralRarity, bonus: mineralBonus, capacity: mineralCapacity }
           }) => (
             <FarmCard
+              rarity={robot?.rarity}
+              piecesStatus={robot?.piecesStatus}
+              isNFT={!nonNFTRobot}
               isPaused={isPaused}
-              id={token}
+              canReroll={canReroll}
+              id={robot?.token || nonNFTRobot?.nonNFT}
               mineralBonus={mineralBonus}
               mineralCapacity={mineralCapacity}
               mineralTotalTime={mineralTotalTime}
-              key={token}
+              key={robot?.token || nonNFTRobot?.nonNFT}
               pet={pet}
-              type={type?.toLowerCase()}
-              rarity={rarity}
+              type={robot?.type?.toLowerCase() || nonNFTRobot.name}
               startedAt={startedAt}
               mineralRarity={mineralRarity}
               fetchFarm={() => fetch()}
-              piecesStatus={piecesStatus}
             />
           )
         )}
