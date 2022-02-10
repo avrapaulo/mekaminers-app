@@ -48,25 +48,39 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
       onClick={() => {
         if (timeLeft > 0) {
           fetch({
-            onSuccess: () => {
-              fetchFarm()
-              setOresAtom(i => i - 25)
-              toast.custom(
-                t => (
-                  <Notification
-                    isShow={t.visible}
-                    icon="success"
-                    title={'Reroll'}
-                    description={
-                      <div className="flex flex-row items-center">
-                        <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
-                        <div className="text-red-500">-25</div>
-                      </div>
-                    }
-                  />
-                ),
-                { duration: 3000 }
-              )
+            onSuccess: result => {
+              if (result) {
+                fetchFarm()
+                setOresAtom(i => i - 25)
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="success"
+                      title={'Reroll'}
+                      description={
+                        <div className="flex flex-row items-center">
+                          <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
+                          <div className="text-red-500">-25</div>
+                        </div>
+                      }
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              } else {
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="error"
+                      title="Reroll"
+                      description={<div className="flex flex-row items-center">Try later!</div>}
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              }
             }
           })
         }

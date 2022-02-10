@@ -253,7 +253,7 @@ export const Layout = ({ children }: LayoutProps) => {
                     className="mt-20 ml-10 my-3 bg-white min-w-24 pl-6 mr-3 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                     onClick={() => {
                       setSwapAtom(true)
-                      setIsOresAtom(true)
+                      setIsOresAtom(false)
                     }}
                   >
                     <div className="h-16 w-16 -left-8 absolute">
@@ -269,7 +269,7 @@ export const Layout = ({ children }: LayoutProps) => {
                     className="mx-6 my-3 bg-white min-w-28 mr-3 pl-10 inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                     onClick={() => {
                       setSwapAtom(true)
-                      setIsOresAtom(false)
+                      setIsOresAtom(true)
                     }}
                   >
                     <div className="h-12 w-12 -left-2 -top-3 absolute">
@@ -358,7 +358,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   className="bg-white min-w-24 pl-6 mr-3 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                   onClick={() => {
                     setSwapAtom(true)
-                    setIsOresAtom(true)
+                    setIsOresAtom(false)
                   }}
                 >
                   <div className="h-16 w-16 -left-8 absolute">
@@ -374,7 +374,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   className="bg-white min-w-28 mr-3 pl-10 hidden lg:inline-flex relative items-center text-sm font-medium rounded-xl text-black shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-tundora-100"
                   onClick={() => {
                     setSwapAtom(true)
-                    setIsOresAtom(false)
+                    setIsOresAtom(true)
                   }}
                 >
                   <div className="h-12 w-12 -left-2 -top-3 absolute">
