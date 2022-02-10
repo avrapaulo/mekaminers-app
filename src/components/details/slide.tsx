@@ -190,13 +190,15 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                   </div>
                   <div
                     className={classNames(
-                      selected && !isLoading && mode !== 2 ? '' : 'cursor-not-allowed'
+                      selected && !isLoading && mode !== 2 && mode !== 3 ? '' : 'cursor-not-allowed'
                     )}
                   >
                     <div
                       className={classNames(
                         'flex-shrink-0 px-4 py-4 flex justify-end',
-                        selected && !isLoading && mode !== 2 ? '' : 'pointer-events-none'
+                        selected && !isLoading && mode !== 2 && mode !== 3
+                          ? ''
+                          : 'pointer-events-none'
                       )}
                     >
                       <button
