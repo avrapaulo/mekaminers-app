@@ -25,6 +25,7 @@ export const SwapModal = () => {
   const feeAtom = useRecoilValue(currentFeeAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
   const { fetchBalanceOf } = UseBalanceOf()
+  const [isLoading, setIsLoading] = useState(false)
 
   const { fetch: fetchSignatureFromMeka } = useMoralisCloudFunction(
     'convertFromMeka',
@@ -228,9 +229,11 @@ export const SwapModal = () => {
                     <button
                       type="button"
                       className={classNames(
-                        'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-white bg-black hover:bg-gray-800 w-24'
+                        'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-white bg-black hover:bg-gray-800 w-24',
+                        isLoading ? 'animate-pulse bg-gray-100 pointer-events-none' : ''
                       )}
                       onClick={() => {
+                        setIsLoading(true)
                         if (!isOres) {
                           if (first < 10) {
                             return toast.custom(
@@ -255,12 +258,14 @@ export const SwapModal = () => {
                             )
                           }
                           fetchMekaAllowance({
+                            onError: () => setIsLoading(false),
                             onSuccess: async (result: string | number) => {
                               if (Moralis.Units.FromWei(result, 18) < first) {
                                 await fetchMekaApprove()
                               }
                               fetchSignatureFromMeka({
                                 params: { amount: Moralis.Units.ETH(first) },
+                                onError: () => setIsLoading(false),
                                 onSuccess: async (result: any) => {
                                   await fetchConvert({
                                     params: {
@@ -270,6 +275,7 @@ export const SwapModal = () => {
                                         _signature: result.signature
                                       }
                                     },
+                                    onError: () => setIsLoading(false),
                                     onSuccess: () => {
                                       fetchBalanceOf({
                                         onSuccess: result =>
@@ -298,6 +304,7 @@ export const SwapModal = () => {
                                         ),
                                         { duration: 3000 }
                                       )
+                                      setOpen(false)
                                     }
                                   })
                                 }
@@ -329,6 +336,7 @@ export const SwapModal = () => {
                           }
                           fetchSignatureToMeka({
                             params: { amount: first },
+                            onError: () => setIsLoading(false),
                             onSuccess: (result: any) => {
                               if (result) {
                                 fetchConvert({
@@ -340,7 +348,8 @@ export const SwapModal = () => {
                                       _receiver: wallet
                                     }
                                   },
-                                  onSuccess: () =>
+                                  onError: () => setIsLoading(false),
+                                  onSuccess: () => {
                                     toast.custom(
                                       t => (
                                         <Notification
@@ -361,8 +370,11 @@ export const SwapModal = () => {
                                       ),
                                       { duration: 3000 }
                                     )
+                                    setOpen(false)
+                                  }
                                 })
                               } else {
+                                setIsLoading(false)
                                 toast.custom(
                                   t => (
                                     <Notification
@@ -382,7 +394,7 @@ export const SwapModal = () => {
                         }
                       }}
                     >
-                      Swap
+                      {isLoading ? '\u00A0' : 'Swap'}
                     </button>
                   </div>
                 </div>
