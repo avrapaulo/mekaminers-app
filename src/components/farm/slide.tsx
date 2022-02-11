@@ -24,7 +24,7 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
   useEffect(() => {
-    if (!open) fetch()
+    fetch()
   }, [fetch, open])
 
   return (
