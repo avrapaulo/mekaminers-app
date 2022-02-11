@@ -79,7 +79,11 @@ const FarmPage = () => {
             )
           )}
           {data &&
-            [...Array(7 - (data as FarmProps[])?.length).keys()].map(id => (
+            [
+              ...Array(
+                7 - (data as FarmProps[])?.length <= 0 ? 0 : 7 - (data as FarmProps[])?.length
+              ).keys()
+            ].map(id => (
               <div key={id}>
                 <div className="flex flex-row space-x-1 mt-4 items-center justify-center cursor-not-allowed">
                   <div title="Remaining time">
