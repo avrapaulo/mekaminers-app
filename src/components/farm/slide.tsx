@@ -20,12 +20,13 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
 
   const { data, fetch } = useMoralisCloudFunction('getRobotToFarm')
-  const { data: dataUtilities } = useMoralisCloudFunction('getUtilities')
+  const { data: dataUtilities, fetch: fetchUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
   useEffect(() => {
     fetch()
-  }, [fetch, open])
+    fetchUtilities()
+  }, [fetch, fetchUtilities, open])
 
   return (
     <Transition.Root show={open} as={Fragment}>
