@@ -87,7 +87,7 @@ const MarketPlace = () => {
                     bonus,
                     type
                   }) => (
-                    <Link key={token} href={`/inventory/pieces/details?id=${token}&market=true`}>
+                    <Link key={token} href={`/marketplace/pieces/details?id=${token}&market=true`}>
                       <a className="relative flex justify-center">
                         <Card
                           rarity={rarity}
