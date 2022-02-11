@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useWeb3ExecuteFunction, useMoralis } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import { XIcon, ArrowNarrowRightIcon, ArrowNarrowLeftIcon } from '@heroicons/react/outline'
 import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/solid'
 import { walletCoins } from 'recoil/selector'
 import { currentFeeAtom, walletAtom, mekaAtom, swapAtom, isOresAtom } from 'recoil/atoms'
@@ -22,7 +22,7 @@ export const SwapModal = () => {
   const [first, setFirst] = useState<number>()
   const [second, setSecond] = useState<number>()
   const { meka, ore } = useRecoilValue(walletCoins)
-  const feeAtom = useRecoilValue(currentFeeAtom)
+  const { fee: feeAtom, lastWithdraw } = useRecoilValue(currentFeeAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
   const { fetchBalanceOf } = UseBalanceOf()
   const [isLoading, setIsLoading] = useState(false)
@@ -65,6 +65,10 @@ export const SwapModal = () => {
     setSecond(0)
   }, [open])
 
+  const conversionFeeWithPercentage = isOres ? 1 - 300 / (300 * (1 + feeAtom)) : 0
+  const conversionFeeWithoutPercentage = isOres ? feeAtom : 0
+  const conversionRate = isOres ? 300 : 60
+
   const calcTrade = ({
     isOres,
     type,
@@ -74,10 +78,6 @@ export const SwapModal = () => {
     type: 'ore' | 'meka'
     value: number
   }) => {
-    const conversionFeeWithPercentage = isOres ? 1 - 300 / (300 * (1 + feeAtom)) : 0
-    const conversionFeeWithoutPercentage = isOres ? feeAtom : 0
-    const conversionRate = isOres ? 300 : 60
-
     if (type === 'ore') {
       return +((+value * (1 - conversionFeeWithPercentage)) / conversionRate).toFixed(5)
     }
@@ -119,7 +119,7 @@ export const SwapModal = () => {
             leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
           >
             <div className="flex text-base text-left transform transition w-full md:inline-block md:max-w-xl md:px-4 md:my-8 md:align-middle lg:max-w-2xl">
-              <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+              <div className="w-full relative flex flex-col items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 lg:pb-2">
                 <button
                   type="button"
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8 focus:outline-none focus:ring-black focus:border-black"
@@ -398,6 +398,32 @@ export const SwapModal = () => {
                       {isLoading ? '\u00A0' : 'Swap'}
                     </button>
                   </div>
+                </div>
+                <div className="mt-8 text-sm text-gray-500 flex justify-between w-full">
+                  <div className="flex flex-row">
+                    <div className="text-black font-bold mr-1">Conversion:</div>
+                    <div>{isOres ? conversionRate * (1 + conversionFeeWithoutPercentage) : 1}</div>
+                    {isOres ? (
+                      <ArrowNarrowRightIcon className="h-5 w-6" aria-hidden="true" />
+                    ) : (
+                      <ArrowNarrowLeftIcon className="h-5 w-6" aria-hidden="true" />
+                    )}
+                    <div>{!isOres ? conversionRate * (1 + conversionFeeWithoutPercentage) : 1}</div>
+                  </div>
+                  {isOres && (
+                    <>
+                      {lastWithdraw && (
+                        <div className="flex space-x-1">
+                          <div className="text-black font-bold"> Last withdraw:</div>
+                          <div> {lastWithdraw?.toLocaleString()}</div>
+                        </div>
+                      )}
+                      <div className="flex space-x-1">
+                        <div className="text-black font-bold">Fee:</div>
+                        <div>{feeAtom * 100}%</div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

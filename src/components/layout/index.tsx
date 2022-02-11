@@ -100,10 +100,10 @@ export const Layout = ({ children }: LayoutProps) => {
     )
 
     fetch({
-      onSuccess: ({ ores, totalLands, currentFee }) => {
+      onSuccess: ({ ores, totalLands, currentFee, lastWithdraw }) => {
         setOresAtom(ores)
         setUserAtom(totalLands)
-        setCurrentFee(currentFee)
+        setCurrentFee({ fee: currentFee, lastWithdraw })
       }
     })
 
