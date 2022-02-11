@@ -49,6 +49,7 @@ export const FarmCard = ({
   fetchFarm
 }: FarmCardProps) => {
   const [farmEnd, setFarmEnd] = useState(false)
+  const [isCollectLoading, setIsCollectLoading] = useState(false)
   const setOresAtom = useSetRecoilState(oreAtom)
   const { fetch } = useMoralisCloudFunction(
     'collectFarm',
@@ -94,8 +95,10 @@ export const FarmCard = ({
             farmEnd && !isPaused ? '' : 'cursor-not-allowed'
           )}
           onClick={() => {
-            if (farmEnd) {
+            if (farmEnd && !isCollectLoading) {
+              setIsCollectLoading(true)
               fetch({
+                onError: () => setIsCollectLoading(false),
                 onSuccess: (result: {
                   ores: number
                   bonus: number

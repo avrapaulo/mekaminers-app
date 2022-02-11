@@ -19,12 +19,12 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
   const [activeTab, setActiveTab] = useState(tabs[0].name)
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
 
-  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm', {}, { autoFetch: false })
+  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm')
   const { data: dataUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
   useEffect(() => {
-    if (open) fetch()
+    if (!open) fetch()
   }, [fetch, open])
 
   return (
