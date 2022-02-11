@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { useMoralisCloudFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { classNames } from 'helpers/class-names'
@@ -24,7 +24,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
     date.getUTCMinutes(),
     date.getUTCSeconds()
   )
-  const setOresAtom = useSetRecoilState(oreAtom)
+  const [oresAtom, setOresAtom] = useRecoilState(oreAtom)
   const [timeLeft, setTimeLeft] = useState(+new Date(time) + 1 * 59999 - nowUtc)
 
   useEffect(() => {
@@ -47,6 +47,24 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
       )}
       onClick={() => {
         if (timeLeft > 0) {
+          if (oresAtom <= 25) {
+            return toast.custom(
+              t => (
+                <Notification
+                  isShow={t.visible}
+                  icon="error"
+                  title={'Reroll'}
+                  description={
+                    <div className="flex flex-row items-center">
+                      You need more
+                      <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
+                    </div>
+                  }
+                />
+              ),
+              { duration: 3000 }
+            )
+          }
           fetch({
             onSuccess: result => {
               if (result) {
