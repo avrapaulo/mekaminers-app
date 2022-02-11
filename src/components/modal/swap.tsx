@@ -236,6 +236,7 @@ export const SwapModal = () => {
                         setIsLoading(true)
                         if (!isOres) {
                           if (first < 10) {
+                            setIsLoading(false)
                             return toast.custom(
                               t => (
                                 <Notification
