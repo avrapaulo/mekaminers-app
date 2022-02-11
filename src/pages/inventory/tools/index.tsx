@@ -5,7 +5,6 @@ import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
-import { Bug, Dog, Frog } from 'components/3D'
 import { inventory } from 'constants/menu'
 import { shard } from 'constants/shards'
 
@@ -21,8 +20,6 @@ const toolDescription = {
   Frog: 'Automates oil application and 3% chance of finding 30 Shards of a NFT Piece',
   Dog: 'Automates oil application and 5% chance of finding 30 Shards of a NFT Piece'
 }
-
-const pets = { Bug: <Bug />, Frog: <Frog />, Dog: <Dog /> }
 
 const Tools = () => {
   const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()

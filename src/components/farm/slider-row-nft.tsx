@@ -187,7 +187,7 @@ export const SliderRowNFT = ({
           >
             <div className="flex flex-row justify-between">
               <div className="flex flex-row space-x-2 font-bold text-black">
-                <div className="flex">
+                <div className="flex space-x-1">
                   {utilities
                     .filter(({ key }) => pets[key])
                     .map(({ key, value }) => (
@@ -208,11 +208,18 @@ export const SliderRowNFT = ({
                           mem !== key
                             ? `border-transparent text-white ${rarityInfo[rarity].bgLight}`
                             : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
-                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
+                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 border-black'
                         )}
                         disabled={value < 0}
                       >
-                        {key}
+                        {
+                          <img
+                            alt=""
+                            title={key}
+                            className="h-6 w-6"
+                            src={`/${key.toLowerCase()}.png`}
+                          />
+                        }
                       </button>
                     ))}
                 </div>
@@ -292,7 +299,7 @@ export const SliderRowNFT = ({
             <div className="flex justify-center">
               <button
                 type="button"
-                className="px-2 border-gray-200 py-2 text-lg text-white font-bold rounded-tr rounded-tl"
+                className="px-2 border-black border py-2 text-lg text-white font-bold rounded-lg hover:bg-white hover:text-black"
                 onClick={() => {
                   fetch({
                     onSuccess: result => {
