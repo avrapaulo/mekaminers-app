@@ -45,10 +45,10 @@ export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
       <Timer className="text-tree-poppy w-7 h-7" />
       {timeLeft > 0 ? (
         <>
-          {hours}:{minutes}
+          {hours}:{minutes}:{seconds}
         </>
       ) : (
-        <>00:00</>
+        <>00:00:00</>
       )}
     </button>
   )
