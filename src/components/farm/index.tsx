@@ -58,7 +58,7 @@ export const FarmCard = ({
   )
   const { fetch: fetchOil } = useMoralisCloudFunction(
     'useOil',
-    { robotId: id },
+    { robotId: isNFT ? id : null, nonNftRobot: isNFT ? null : id },
     { autoFetch: false }
   )
 
