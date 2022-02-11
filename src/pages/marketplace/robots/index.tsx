@@ -90,7 +90,7 @@ const MarketPlace = () => {
                     type,
                     gen
                   }) => (
-                    <Link key={token} href={`/inventory/robots/details?id=${token}&market=true`}>
+                    <Link key={token} href={`/marketplace/robots/details?id=${token}&market=true`}>
                       <a className="relative flex justify-center">
                         {gen !== undefined && (
                           <div className="font-bold absolute z-10 -left-5">
