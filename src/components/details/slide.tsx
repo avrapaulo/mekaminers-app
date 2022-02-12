@@ -21,7 +21,7 @@ interface PiecesForRobotProps {
   title: string
 }
 
-const amountToApprove = 10000
+const amountToApprove = 1000000
 
 interface SlideProps {
   mode: number
@@ -204,7 +204,9 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                           setIsLoading(true)
                           fetchMekaAllowance({
                             onSuccess: async (result: string | number) => {
-                              if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                              if (Moralis.Units.FromWei(result, 18) < 5) {
+                                await fetchMekaApprove()
+                              }
                               fetchSign({
                                 onSuccess: async (result: any) => {
                                   await fetchMeka({

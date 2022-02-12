@@ -39,7 +39,7 @@ interface RobotProps {
   isOwner: boolean
 }
 
-const amountToApprove = 10000
+const amountToApprove = 1000000
 
 const RobotsDetail = () => {
   const router = useRouter()
@@ -395,7 +395,9 @@ const RobotsDetail = () => {
                     if (mode === 2) {
                       fetchMekaAllowance({
                         onSuccess: async (result: string | number) => {
-                          if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                          if (Moralis.Units.FromWei(result, 18) < price) {
+                            await fetchMekaApprove()
+                          }
                           bidRobot({
                             params: {
                               params: { _amount: Moralis.Units.ETH(price), _tokenId: +robotId },

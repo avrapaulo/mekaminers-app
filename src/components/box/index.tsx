@@ -39,7 +39,7 @@ const config = {
 }
 
 const animationDelay = 4000
-const amountToApprove = 10000
+const amountToApprove = 1000000
 
 const robotTest = [{ key: 'd' }, { key: 'e' }]
 
