@@ -66,8 +66,8 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
             )
           }
           fetch({
-            onSuccess: result => {
-              if (result) {
+            onSuccess: ({ status, message }) => {
+              if (status) {
                 fetchFarm()
                 setOresAtom(i => i - 25)
                 toast.custom(
@@ -93,7 +93,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
                       isShow={t.visible}
                       icon="error"
                       title="Reroll"
-                      description={<div className="flex flex-row items-center">Try later!</div>}
+                      description={<div className="flex flex-row items-center">{message}</div>}
                     />
                   ),
                   { duration: 3000 }

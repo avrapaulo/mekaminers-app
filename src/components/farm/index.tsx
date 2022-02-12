@@ -100,12 +100,14 @@ export const FarmCard = ({
               fetch({
                 onError: () => setIsCollectLoading(false),
                 onSuccess: (result: {
+                  status: boolean
+                  message: string
                   ores: number
                   bonus: number
                   hasBonus: boolean
                   drop: { shards: number; pieceType: string }
                 }) => {
-                  if (result) {
+                  if (result?.status) {
                     fetchFarm()
                     setOresAtom(i => i + result.ores)
                     toast.custom(
@@ -113,7 +115,7 @@ export const FarmCard = ({
                         <Notification
                           isShow={t.visible}
                           icon="success"
-                          title={'Collected'}
+                          title={'Collect'}
                           description={
                             <div className="flex flex-row items-center">
                               <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />
@@ -131,6 +133,20 @@ export const FarmCard = ({
                                 </div>
                               )}
                             </div>
+                          }
+                        />
+                      ),
+                      { duration: 3000 }
+                    )
+                  } else {
+                    toast.custom(
+                      t => (
+                        <Notification
+                          isShow={t.visible}
+                          icon="error"
+                          title="Collect"
+                          description={
+                            <div className="flex flex-row items-center">{result.message}</div>
                           }
                         />
                       ),
@@ -154,7 +170,42 @@ export const FarmCard = ({
         {isPaused ? (
           <>
             <img
-              onClick={() => fetchOil({ onSuccess: () => fetchFarm() })}
+              onClick={() =>
+                fetchOil({
+                  onSuccess: ({ status, message }) => {
+                    if (status) {
+                      fetchFarm()
+                      toast.custom(
+                        t => (
+                          <Notification
+                            isShow={t.visible}
+                            icon="success"
+                            title="Oil"
+                            description={
+                              <div className="flex flex-row items-center">You can farm again!</div>
+                            }
+                          />
+                        ),
+                        { duration: 3000 }
+                      )
+                    } else {
+                      toast.custom(
+                        t => (
+                          <Notification
+                            isShow={t.visible}
+                            icon="error"
+                            title="Oil"
+                            description={
+                              <div className="flex flex-row items-center">{message}</div>
+                            }
+                          />
+                        ),
+                        { duration: 3000 }
+                      )
+                    }
+                  }
+                })
+              }
               alt=""
               className="p-5 h-full w-full object-contain z-10 absolute"
               src="/oil-land.png"
