@@ -5,7 +5,7 @@ import { Timer } from 'icons'
 interface CounterProps {
   time: number
   startedAt: string
-  setFarmEnd: () => void
+  setFarmEnd: (farm: boolean) => void
 }
 
 export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
@@ -26,7 +26,8 @@ export const CounterTotal = ({ time, startedAt, setFarmEnd }: CounterProps) => {
       setTimeLeft(+new Date(startedAt) + time * 1000 - nowUtc)
     }, 1000)
 
-    if (timeLeft < 0) setFarmEnd()
+    if (timeLeft <= 0) setFarmEnd(true)
+    if (timeLeft >= 0) setFarmEnd(false)
     return () => clearTimeout(timer)
   })
 
