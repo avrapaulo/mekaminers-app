@@ -69,8 +69,8 @@ export const FarmCard = ({
           <CounterTotal
             time={mineralTotalTime}
             startedAt={startedAt}
-            setFarmEnd={() => {
-              if (!isPaused) setFarmEnd(true)
+            setFarmEnd={farm => {
+              if (!isPaused) setFarmEnd(farm)
             }}
           />
         )}
@@ -139,6 +139,7 @@ export const FarmCard = ({
                       { duration: 3000 }
                     )
                   } else {
+                    setFarmEnd(false)
                     toast.custom(
                       t => (
                         <Notification
@@ -166,7 +167,7 @@ export const FarmCard = ({
           />
         </button>
       </div>
-      <div className="h-80 lg:h-96 relative w-full aspect-square">
+      <div className="h-80 lg:h-96 relative w-full aspect-square  cursor-pointer">
         {isPaused ? (
           <>
             <img
