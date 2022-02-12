@@ -314,6 +314,7 @@ export const SwapModal = () => {
                           })
                         } else {
                           if (first <= 0) {
+                            setIsLoading(false)
                             return toast.custom(
                               t => (
                                 <Notification
