@@ -137,8 +137,8 @@ export const SliderRowNonNFT = ({
                   className="px-2 border-black border py-2 text-lg text-black font-bold rounded-lg hover:bg-black hover:text-white"
                   onClick={() => {
                     fetch({
-                      onSuccess: result => {
-                        if (result) {
+                      onSuccess: ({ status, message }) => {
+                        if (status) {
                           setOpen()
                           setTimeout(() => {
                             fetchFarm()
@@ -151,7 +151,7 @@ export const SliderRowNonNFT = ({
                                 icon="error"
                                 title="Farm"
                                 description={
-                                  <div className="flex flex-row items-center">Try later!</div>
+                                  <div className="flex flex-row items-center">{message}</div>
                                 }
                               />
                             ),
