@@ -39,11 +39,11 @@ const FarmPage = () => {
   }, [fetch, totalLandAtom])
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 h-full">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-full lg:px-8 h-full">
       <SlideFarm fetchFarm={() => fetch()} open={openSlideFarm} setOpen={setOpenSlideFarm} />
       <SpendModel open={openSpendLand} setOpen={setOpenSpendLand} />
       {data && (Object.keys(data).length !== 0 || (data as FarmProps[]).length <= 0) ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mb-5">
           {(data as FarmProps[])?.map(
             ({
               isPaused,
