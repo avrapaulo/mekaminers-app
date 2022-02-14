@@ -1,14 +1,16 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction, useWeb3ExecuteFunction } from 'react-moralis'
+import toast from 'react-hot-toast'
 import { AbiItem } from 'web3-utils'
 import { Dialog, Transition, RadioGroup } from '@headlessui/react'
-import { slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
 import { XIcon } from '@heroicons/react/outline'
+import { slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
+import { abi } from 'contracts/MekaDeployer.json'
 import { typeDescription } from 'constants/status'
+import { Notification } from 'components/notification'
 import { classNames } from 'helpers/class-names'
 import { rarityInfo } from 'constants/rarity'
-import { abi } from 'contracts/MekaDeployer.json'
 import { useMeka } from 'hooks'
 
 interface PiecesForRobotProps {
@@ -190,19 +192,35 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                   </div>
                   <div
                     className={classNames(
-                      selected && !isLoading && mode !== 2 && mode !== 3 ? '' : 'cursor-not-allowed'
+                      selected && !isLoading && mode !== 2 ? '' : 'cursor-not-allowed'
                     )}
                   >
                     <div
                       className={classNames(
                         'flex-shrink-0 px-4 py-4 flex justify-end',
-                        selected && !isLoading && mode !== 2 && mode !== 3
-                          ? ''
-                          : 'pointer-events-none'
+                        selected && !isLoading && mode !== 2 ? '' : 'pointer-events-none'
                       )}
                     >
                       <button
                         onClick={async () => {
+                          if (mode === 3) {
+                            return toast.custom(
+                              t => (
+                                <Notification
+                                  isShow={t.visible}
+                                  icon="error"
+                                  title="Attach"
+                                  description={
+                                    <div className="flex flex-row items-center">
+                                      Your robot is farming
+                                    </div>
+                                  }
+                                />
+                              ),
+                              { duration: 3000 }
+                            )
+                          }
+
                           setIsLoading(true)
                           fetchMekaAllowance({
                             onSuccess: async (result: string | number) => {
