@@ -23,7 +23,7 @@ export const FrogObject = ({ ...props }: JSX.IntrinsicElements['group']) => {
   const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
-    actions.Dig.play()
+    actions?.Dig.play()
   }, [actions])
 
   return (

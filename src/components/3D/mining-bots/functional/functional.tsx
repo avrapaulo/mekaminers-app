@@ -25,7 +25,7 @@ export const FunctionalObject = (props: FunctionalObjectProps & JSX.IntrinsicEle
 
   useEffect(() => {
     if (props.animation) {
-      actions.Mining.play()
+      actions?.Mining.play()
     }
   }, [actions, props])
 

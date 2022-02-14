@@ -30,7 +30,7 @@ export const RustyObject = (props: RustyObjectProps & JSX.IntrinsicElements['gro
 
   useEffect(() => {
     if (props.animation) {
-      actions.Dig.play()
+      actions?.Dig.play()
     }
   }, [actions, props])
 
