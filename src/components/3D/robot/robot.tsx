@@ -93,7 +93,7 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
       actions[animation].play()
 
       setTimeout(() => {
-        actions[animation].stop()
+        actions[animation]?.stop()
       }, 1500)
     }
   }, [actions, animation])
