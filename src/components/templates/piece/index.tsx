@@ -19,6 +19,7 @@ import { abi as pieceAbi } from 'contracts/PieceCore.json'
 import { useMeka, UseBalanceOf } from 'hooks'
 import { PiecesDetails } from 'constants/robots-pieces'
 import { Notification } from 'components/notification'
+import { Mode } from 'components/card/mode'
 
 interface PiecesProps {
   piece: {
@@ -108,7 +109,7 @@ export const PieceDetail = () => {
                 title="Sell"
                 description={
                   <div className="flex flex-row items-center">
-                    Robot listed for {number}
+                    Piece listed for {number}
                     <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
                   </div>
                 }
@@ -119,7 +120,7 @@ export const PieceDetail = () => {
         }}
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">
-        <div className="flex">
+        <div className="flex relative">
           <Link href={market ? '/marketplace/pieces' : '/inventory/pieces'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
@@ -128,6 +129,7 @@ export const PieceDetail = () => {
               Go back
             </a>
           </Link>
+          <Mode modeId={mode} />
         </div>
         <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">

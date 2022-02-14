@@ -23,6 +23,7 @@ import { walletAtom, priceModalAtom, mekaAtom } from 'recoil/atoms'
 import { useMeka, UseBalanceOf } from 'hooks'
 import { ModalPrice } from 'components/modal'
 import { Notification } from 'components/notification'
+import { Mode } from 'components/card/mode'
 
 interface RobotProps {
   robot: {
@@ -138,7 +139,7 @@ export const RobotDetail = () => {
       />
       <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
-        <div className="flex">
+        <div className="flex relative">
           <Link href={market ? '/marketplace/robots' : '/inventory/robots'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
@@ -147,6 +148,7 @@ export const RobotDetail = () => {
               Go back
             </a>
           </Link>
+          <Mode modeId={mode} />
         </div>
         <div className="flex flex-col lg:grid grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">
@@ -352,7 +354,7 @@ export const RobotDetail = () => {
                   </div>
                 </div>
               )}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 gap-x-0 sm:grid-cols-3">
                 {type &&
                   piecesDefault
                     .map(item =>
@@ -376,20 +378,28 @@ export const RobotDetail = () => {
                       ) => (
                         <>
                           {(index === 0 || index === 4) && <div></div>}
-                          <RobotPiece
-                            canAttach={isOwner}
-                            robotId={+robotId}
-                            robotTypeStatus={key}
-                            robotType={type}
-                            key={key}
-                            value={value}
-                            season={season}
-                            name={title}
-                            isDefault={isDefault}
-                            rarity={rarityPiece}
-                            pieceId={id}
-                            IconPiece={icons[type?.toLowerCase()]}
-                          />
+                          <div
+                            className={classNames(
+                              'flex',
+                              index === 1 || index === 3 ? '' : 'justify-center',
+                              index === 1 ? 'justify-end' : ''
+                            )}
+                          >
+                            <RobotPiece
+                              canAttach={isOwner}
+                              robotId={+robotId}
+                              robotTypeStatus={key}
+                              robotType={type}
+                              key={key}
+                              value={value}
+                              season={season}
+                              name={title}
+                              isDefault={isDefault}
+                              rarity={rarityPiece}
+                              pieceId={id}
+                              IconPiece={icons[type?.toLowerCase()]}
+                            />
+                          </div>
                           {(index === 0 || index === 4) && <div></div>}
                         </>
                       )
