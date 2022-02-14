@@ -11,7 +11,6 @@ type GLTFResult = GLTF & {
     corpo_brutamonte: THREE.SkinnedMesh
     mochila: THREE.SkinnedMesh
     perna: THREE.SkinnedMesh
-    smoke_1: THREE.SkinnedMesh
     Main: THREE.Bone
     smoke: THREE.Bone
     smoke001: THREE.Bone
@@ -46,6 +45,21 @@ export const HeavyObject = (props: HeavyObjectProps & JSX.IntrinsicElements['gro
       <primitive object={nodes.smoke002} />
       <primitive object={nodes.smoke003} />
       <skinnedMesh
+        geometry={nodes.braco.geometry}
+        material={nodes.braco.material}
+        skeleton={nodes.braco.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.comandante.geometry}
+        material={nodes.comandante.material}
+        skeleton={nodes.comandante.skeleton}
+      />
+      <skinnedMesh
+        geometry={nodes.corpo_brutamonte.geometry}
+        material={nodes.corpo_brutamonte.material}
+        skeleton={nodes.corpo_brutamonte.skeleton}
+      />
+      <skinnedMesh
         geometry={nodes.mochila.geometry}
         material={nodes.mochila.material}
         skeleton={nodes.mochila.skeleton}
@@ -54,26 +68,6 @@ export const HeavyObject = (props: HeavyObjectProps & JSX.IntrinsicElements['gro
         geometry={nodes.perna.geometry}
         material={nodes.perna.material}
         skeleton={nodes.perna.skeleton}
-      />
-      <skinnedMesh
-        geometry={nodes.smoke_1.geometry}
-        material={nodes.smoke_1.material}
-        skeleton={nodes.smoke_1.skeleton}
-      />
-      <skinnedMesh
-        geometry={nodes.comandante.geometry}
-        material={nodes.comandante.material}
-        skeleton={nodes.comandante.skeleton}
-      />
-      <skinnedMesh
-        geometry={nodes.braco.geometry}
-        material={nodes.braco.material}
-        skeleton={nodes.braco.skeleton}
-      />
-      <skinnedMesh
-        geometry={nodes.corpo_brutamonte.geometry}
-        material={nodes.corpo_brutamonte.material}
-        skeleton={nodes.corpo_brutamonte.skeleton}
       />
     </group>
   )
