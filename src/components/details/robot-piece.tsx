@@ -37,7 +37,7 @@ export const RobotPiece = ({
 
   return (
     <motion.div
-      className="flex-shrink-0 h-40 w-40 relative bg-gray-700 bg-opacity-70 rounded-md cursor-pointer"
+      className="flex-shrink-0 h-36 w-36 relative bg-gray-700 bg-opacity-70 rounded-md cursor-pointer"
       // onHoverStart={() => setVisible(false)}
       // onHoverEnd={() => setVisible(true)}
       onTap={() => setVisible(!isVisible)}

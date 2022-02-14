@@ -345,30 +345,37 @@ export const RobotDetail = () => {
                         : item
                     )
                     .map(
-                      ({
-                        key,
-                        value,
-                        title,
-                        season,
-                        isDefault,
-                        icons = [],
-                        id,
-                        rarity: rarityPiece
-                      }) => (
-                        <RobotPiece
-                          canAttach={isOwner}
-                          robotId={+robotId}
-                          robotTypeStatus={key}
-                          robotType={type}
-                          key={key}
-                          value={value}
-                          season={season}
-                          name={title}
-                          isDefault={isDefault}
-                          rarity={rarityPiece}
-                          pieceId={id}
-                          IconPiece={icons[type?.toLowerCase()]}
-                        />
+                      (
+                        {
+                          key,
+                          value,
+                          title,
+                          season,
+                          isDefault,
+                          icons = [],
+                          id,
+                          rarity: rarityPiece
+                        },
+                        index
+                      ) => (
+                        <>
+                          {(index === 0 || index === 4) && <div></div>}
+                          <RobotPiece
+                            canAttach={isOwner}
+                            robotId={+robotId}
+                            robotTypeStatus={key}
+                            robotType={type}
+                            key={key}
+                            value={value}
+                            season={season}
+                            name={title}
+                            isDefault={isDefault}
+                            rarity={rarityPiece}
+                            pieceId={id}
+                            IconPiece={icons[type?.toLowerCase()]}
+                          />
+                          {(index === 0 || index === 4) && <div></div>}
+                        </>
                       )
                     )}
               </div>

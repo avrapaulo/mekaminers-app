@@ -18,26 +18,6 @@ import {
 
 export const piecesDefault = [
   {
-    // RIGHT ARM
-    key: 'Capacity',
-    isDefault: true,
-    icons: {
-      tank: props => <TankRArm {...props} />,
-      basic: props => <BasicRArm {...props} />,
-      stealth: props => <StealthRArm {...props} />
-    }
-  },
-  {
-    // LEGS
-    key: 'Speed',
-    isDefault: true,
-    icons: {
-      tank: props => <TankLegs {...props} />,
-      basic: props => <BasicLegs {...props} />,
-      stealth: props => <StealthLegs {...props} />
-    }
-  },
-  {
     // HEAD
     key: 'Stealthiness',
     isDefault: true,
@@ -47,6 +27,17 @@ export const piecesDefault = [
       stealth: props => <StealthHead {...props} />
     }
   },
+  {
+    // RIGHT ARM
+    key: 'Capacity',
+    isDefault: true,
+    icons: {
+      tank: props => <TankRArm {...props} />,
+      basic: props => <BasicRArm {...props} />,
+      stealth: props => <StealthRArm {...props} />
+    }
+  },
+
   {
     // BODY
     key: 'OilDecrease',
@@ -65,6 +56,16 @@ export const piecesDefault = [
       tank: props => <TankLArm {...props} />,
       basic: props => <BasicLArm {...props} />,
       stealth: props => <StealthLArm {...props} />
+    }
+  },
+  {
+    // LEGS
+    key: 'Speed',
+    isDefault: true,
+    icons: {
+      tank: props => <TankLegs {...props} />,
+      basic: props => <BasicLegs {...props} />,
+      stealth: props => <StealthLegs {...props} />
     }
   }
 ]
