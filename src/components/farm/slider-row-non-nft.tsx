@@ -37,6 +37,8 @@ export const SliderRowNonNFT = ({
     { autoFetch: false }
   )
 
+  const toolkit = utilities.filter(({ key }) => key === 'Toolkit')
+
   return (
     <div className="w-full max-w-md p-2 mx-auto bg-white rounded-2xl" key={nonNFT}>
       <Disclosure>
@@ -121,16 +123,29 @@ export const SliderRowNonNFT = ({
                         )}
                         disabled={value < 0}
                       >
-                        {
+                        <div className="flex flex-col">
+                          <div className="text-xs text-black">{value}</div>
                           <img
                             alt=""
                             title={key}
                             className="h-6 w-6"
                             src={`/${key.toLowerCase()}.png`}
                           />
-                        }
+                        </div>
                       </button>
                     ))}
+                  <div
+                    className={classNames(
+                      toolkit?.length > 0 ? 'focus:outline-none' : 'opacity-25 cursor-not-allowed',
+                      'border-gray-200 text-white bg-gray-200',
+                      'border rounded-md px-2 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 border-black'
+                    )}
+                  >
+                    <div className="flex flex-col justify-center items-center">
+                      <div className="text-xs text-black -mb-1">{toolkit[0]?.value}</div>
+                      <img alt="" className="h-8 w-6 -mb-1" src="/toolkit.png" />
+                    </div>
+                  </div>
                 </div>
                 <button
                   type="button"

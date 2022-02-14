@@ -208,18 +208,17 @@ export const SliderRowNFT = ({
                           mem !== key
                             ? `border-transparent text-white ${rarityInfo[rarity].bgLight}`
                             : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
-                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 border-black'
+                          'border rounded-md p-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 border-black relative'
                         )}
                         disabled={value < 0}
                       >
-                        {
-                          <img
-                            alt=""
-                            title={key}
-                            className="h-6 w-6"
-                            src={`/${key.toLowerCase()}.png`}
-                          />
-                        }
+                        <img
+                          alt=""
+                          title={key}
+                          className="h-6 w-6"
+                          src={`/${key.toLowerCase()}.png`}
+                        />
+                        <div className="text-xs absolute -top-4">{value}</div>
                       </button>
                     ))}
                 </div>
