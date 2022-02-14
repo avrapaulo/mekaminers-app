@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
@@ -17,6 +18,7 @@ import { abi as pieceMarketplaceAbi } from 'contracts/PieceMarketplace.json'
 import { abi as pieceAbi } from 'contracts/PieceCore.json'
 import { useMeka, UseBalanceOf } from 'hooks'
 import { PiecesDetails } from 'constants/robots-pieces'
+import { Notification } from 'components/notification'
 
 interface PiecesProps {
   piece: {
@@ -93,12 +95,28 @@ export const PieceDetail = () => {
   return (
     <>
       <ModalPrice
-        callback={async number =>
+        callback={async number => {
           await pieceMarketplace.methods.createSale(+id, Moralis.Units.ETH(number)).send({
             from: wallet,
             value: Moralis.Units.ETH(0.005)
           })
-        }
+          toast.custom(
+            t => (
+              <Notification
+                isShow={t.visible}
+                icon="success"
+                title="Sell"
+                description={
+                  <div className="flex flex-row items-center">
+                    Robot listed for {number}
+                    <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
+                  </div>
+                }
+              />
+            ),
+            { duration: 3000 }
+          )
+        }}
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">
         <div className="flex">
@@ -218,6 +236,21 @@ export const PieceDetail = () => {
                           await pieceCancelSale.methods.cancelSale(+id).send({
                             from: wallet
                           })
+                          toast.custom(
+                            t => (
+                              <Notification
+                                isShow={t.visible}
+                                icon="success"
+                                title="Sell"
+                                description={
+                                  <div className="flex flex-row items-center">
+                                    You remove your piece from market
+                                  </div>
+                                }
+                              />
+                            ),
+                            { duration: 3000 }
+                          )
                         } else {
                           priceModal(true)
                         }
@@ -233,12 +266,28 @@ export const PieceDetail = () => {
                                   params: { _amount: Moralis.Units.ETH(price), _tokenId: +id },
                                   msgValue: Moralis.Units.ETH(0.005)
                                 } as any,
-                                onSuccess: () =>
+                                onSuccess: () => {
                                   fetchBalanceOf({
                                     onSuccess: result =>
                                       setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
                                     onError: e => console.log(e)
                                   })
+                                  toast.custom(
+                                    t => (
+                                      <Notification
+                                        isShow={t.visible}
+                                        icon="success"
+                                        title="Bought"
+                                        description={
+                                          <div className="flex flex-row items-center">
+                                            Piece will be ready in few minutes
+                                          </div>
+                                        }
+                                      />
+                                    ),
+                                    { duration: 3000 }
+                                  )
+                                }
                               })
                             }
                           })

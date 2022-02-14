@@ -113,12 +113,28 @@ export const RobotDetail = () => {
   return (
     <>
       <ModalPrice
-        callback={async number =>
+        callback={async number => {
           await robotMarketplace.methods.createSale(+robotId, Moralis.Units.ETH(number)).send({
             from: wallet,
             value: Moralis.Units.ETH(0.005)
           })
-        }
+          toast.custom(
+            t => (
+              <Notification
+                isShow={t.visible}
+                icon="success"
+                title="Sell"
+                description={
+                  <div className="flex flex-row items-center">
+                    Robot listed for {number}
+                    <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
+                  </div>
+                }
+              />
+            ),
+            { duration: 3000 }
+          )
+        }}
       />
       <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
@@ -331,7 +347,7 @@ export const RobotDetail = () => {
             <div className="flex-1 p-4 flex flex-col relative">
               {mode === 4 && (
                 <div className="bg-black absolute h-full w-full inset-0 z-10 bg-opacity-50">
-                  <div className="flex justify-center items-center h-full w-full text-8xl">
+                  <div className="flex justify-center items-center h-full w-full text-8xl text-white">
                     <TimerStatus key="timerStatus" time={lastAttachDate} fetch={fetch} />
                   </div>
                 </div>
@@ -383,7 +399,7 @@ export const RobotDetail = () => {
           </div>
         </div>
         {robotStatus && (mode === 2 || isOwner) && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mt-5">
             {price && (
               <div className="mb-3 flex justify-center items-center text-3xl font-semibold text-white">
                 {price}
@@ -402,6 +418,21 @@ export const RobotDetail = () => {
                       await robotCancelSale.methods.cancelSale(+robotId).send({
                         from: wallet
                       })
+                      toast.custom(
+                        t => (
+                          <Notification
+                            isShow={t.visible}
+                            icon="success"
+                            title="Sell"
+                            description={
+                              <div className="flex flex-row items-center">
+                                You remove your robot from market
+                              </div>
+                            }
+                          />
+                        ),
+                        { duration: 3000 }
+                      )
                     } else {
                       priceModal(true)
                     }
@@ -417,12 +448,28 @@ export const RobotDetail = () => {
                               params: { _amount: Moralis.Units.ETH(price), _tokenId: +robotId },
                               msgValue: Moralis.Units.ETH(0.005)
                             } as any,
-                            onSuccess: () =>
+                            onSuccess: () => {
                               fetchBalanceOf({
                                 onSuccess: result =>
                                   setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
                                 onError: e => console.log(e)
                               })
+                              toast.custom(
+                                t => (
+                                  <Notification
+                                    isShow={t.visible}
+                                    icon="success"
+                                    title="Bought"
+                                    description={
+                                      <div className="flex flex-row items-center">
+                                        Robot will be ready in few minutes
+                                      </div>
+                                    }
+                                  />
+                                ),
+                                { duration: 3000 }
+                              )
+                            }
                           })
                         }
                       })

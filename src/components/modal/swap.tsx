@@ -404,11 +404,7 @@ export const SwapModal = () => {
                   <div className="flex flex-row">
                     <div className="text-black font-bold mr-1">Conversion:</div>
                     <div>{isOres ? conversionRate * (1 + conversionFeeWithoutPercentage) : 1}</div>
-                    {isOres ? (
-                      <ArrowNarrowRightIcon className="h-5 w-6" aria-hidden="true" />
-                    ) : (
-                      <ArrowNarrowLeftIcon className="h-5 w-6" aria-hidden="true" />
-                    )}
+                    <ArrowNarrowRightIcon className="h-5 w-6" aria-hidden="true" />
                     <div>{!isOres ? conversionRate * (1 + conversionFeeWithoutPercentage) : 1}</div>
                   </div>
                   {isOres && (

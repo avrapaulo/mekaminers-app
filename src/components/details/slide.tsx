@@ -246,6 +246,21 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                       fetch()
                                       setOpen(false)
                                       setIsLoading(false)
+                                      toast.custom(
+                                        t => (
+                                          <Notification
+                                            isShow={t.visible}
+                                            icon="success"
+                                            title="Attach"
+                                            description={
+                                              <div className="flex flex-row items-center">
+                                                In Progress
+                                              </div>
+                                            }
+                                          />
+                                        ),
+                                        { duration: 3000 }
+                                      )
                                     },
                                     onError: e => {
                                       setIsLoading(false)
