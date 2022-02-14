@@ -34,7 +34,7 @@ export const HeavyObject = (props: HeavyObjectProps & JSX.IntrinsicElements['gro
 
   useEffect(() => {
     if (props.animation) {
-      actions.Dig.play()
+      actions?.Dig.play()
     }
   }, [actions, props])
 
