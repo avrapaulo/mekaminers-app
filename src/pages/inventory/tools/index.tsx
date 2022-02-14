@@ -7,18 +7,11 @@ import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { inventory } from 'constants/menu'
 import { shard } from 'constants/shards'
+import { toolDescription } from 'constants/tools'
 
 interface ToolsProps {
   value: number
   key: string
-}
-
-const toolDescription = {
-  Toolkit: 'Used to activate mining bot operational systems',
-  Oil: 'Used to ensure robots gears do not become stuck, causing impact in the farm efficiency.',
-  Bug: 'Automates oil application and 1% chance of finding 30 Shards of a NFT Piece',
-  Frog: 'Automates oil application and 3% chance of finding 30 Shards of a NFT Piece',
-  Dog: 'Automates oil application and 5% chance of finding 30 Shards of a NFT Piece'
 }
 
 const Tools = () => {
