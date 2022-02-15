@@ -1,7 +1,6 @@
-import { Suspense, useRef } from 'react'
+import { Suspense, useRef, Component, ErrorInfo, ReactNode } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
-import { ErrorBoundary } from 'react-error-boundary'
 
 interface CanvasContainerProps {
   autoRotate?: boolean
@@ -9,19 +8,42 @@ interface CanvasContainerProps {
   children: JSX.Element
 }
 
-const ErrorFallback = () => {
-  return (
-    <div className="text-center text-white">
-      <p>Something went wrong</p>
-    </div>
-  )
+interface Props {
+  children: ReactNode
+}
+
+interface State {
+  hasError: boolean
+}
+
+class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false
+  }
+
+  public static getDerivedStateFromError(_: Error): State {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true }
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Uncaught error:', error, errorInfo)
+  }
+
+  public render() {
+    if (this.state.hasError) {
+      return <h1 className="text-white text-center">Sorry.. there was an error</h1>
+    }
+
+    return this.props.children
+  }
 }
 
 export const CanvasContainer = ({ children, camera, autoRotate = true }: CanvasContainerProps) => {
   const ref = useRef()
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary>
       <Canvas resize={{ scroll: false }} shadows dpr={[1, 2]} camera={{ ...camera }}>
         <OrbitControls
           enableZoom={false}
