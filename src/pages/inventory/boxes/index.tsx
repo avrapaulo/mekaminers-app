@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
+import Web3 from 'web3'
+import Moralis from 'moralis'
 import { useMoralis } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
 import { walletAtom, defaultWallet } from 'recoil/atoms'
@@ -28,14 +30,15 @@ const Boxes = () => {
 
   useEffect(() => {
     const result = async () => {
-      const robotPackage = new web3.eth.Contract(abiRobot as AbiItem[], addressType('robot', 0))
-      const piecesPackage = new web3.eth.Contract(abiPiece as AbiItem[], addressType('piece', 0))
+      const newWeb3 = new Web3(Moralis.provider as any)
+      const robotPackage = new newWeb3.eth.Contract(abiRobot as AbiItem[], addressType('robot', 0))
+      const piecesPackage = new newWeb3.eth.Contract(abiPiece as AbiItem[], addressType('piece', 0))
 
-      const robotPackageGen1 = new web3.eth.Contract(
+      const robotPackageGen1 = new newWeb3.eth.Contract(
         abiRobotGen1 as AbiItem[],
         addressType('robot', 1)
       )
-      const piecesPackageGen1 = new web3.eth.Contract(
+      const piecesPackageGen1 = new newWeb3.eth.Contract(
         abiPieceGen1 as AbiItem[],
         addressType('piece', 1)
       )

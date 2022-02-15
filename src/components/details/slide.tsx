@@ -26,7 +26,7 @@ const amountToApprove = 1000000
 
 interface SlideProps {
   mode: number
-  fetch: () => Promise<void>
+  fetch: () => any
 }
 
 export const Slide = ({ fetch, mode }: SlideProps) => {
@@ -222,7 +222,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                           setIsLoading(true)
                           fetchMekaAllowance({
                             onSuccess: async (result: string | number) => {
-                              if (Moralis.Units.FromWei(result, 18) < 5) {
+                              if (+Moralis.Units.FromWei(result, 18) < 5) {
                                 await fetchMekaApprove()
                               }
                               fetchSign({
@@ -245,9 +245,9 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                       setOpen(false)
                                       setIsLoading(false)
                                       fetchBalanceOf({
-                                        onSuccess: result =>
+                                        onSuccess: (result: number) =>
                                           setMekaAtom(
-                                            Math.floor(Moralis.Units.FromWei(+result, 18))
+                                            Math.floor(+Moralis.Units.FromWei(result, 18))
                                           ),
                                         onError: e => console.log(e)
                                       })

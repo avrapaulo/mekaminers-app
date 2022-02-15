@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Web3 from 'web3'
 import { useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
@@ -24,13 +25,14 @@ interface PiecesProps {
 }
 
 const PiecesPage = () => {
-  const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
+  const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
   const { fetch, data } = useMoralisCloudFunction('getMintedPieces', {}, { autoFetch: false })
 
   useEffect(() => {
-    const pieces = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_PIECE_ADDRESS)
+    const newWeb3 = new Web3(Moralis.provider as any)
+    const pieces = new newWeb3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_PIECE_ADDRESS)
     const result = async () => {
       const tokenIds = await pieces.methods.tokenOfOwner(wallet).call()
       fetch({ params: { tokenIds: tokenIds.map((token: string) => +token) } })

@@ -164,7 +164,7 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
 
                     let resultFetch = received
                     if (!isOpen || (received?.length === 0 && boxNumbers.length > 0)) {
-                      if (Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                      if (+Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
 
                       const robotParams = packageRobotProps(
                         { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
@@ -208,8 +208,8 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                           setIsOpen(true)
                           setBoxNumbers(boxNumbers.splice(1))
                           fetchBalanceOf({
-                            onSuccess: result =>
-                              setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                            onSuccess: (result: number) =>
+                              setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
                             onError: e => console.log(e)
                           })
                         },
@@ -217,8 +217,8 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                           setInactive(false)
                           setLoading(false)
                           fetchBalanceOf({
-                            onSuccess: result =>
-                              setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                            onSuccess: (result: number) =>
+                              setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
                             onError: e => console.log(e)
                           })
                         }

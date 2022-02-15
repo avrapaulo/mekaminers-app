@@ -122,7 +122,7 @@ const Tools = () => {
                                             await createPiece({
                                               params: {
                                                 params: {
-                                                  _fromFarm: 'false',
+                                                  _fromFarm: false,
                                                   _amount: Moralis.Units.ETH(5),
                                                   _nonce: result.nonce,
                                                   _signature: result.signature
@@ -147,12 +147,11 @@ const Tools = () => {
                                                 fetch()
                                                 setIsLoading(false)
                                                 fetchBalanceOf({
-                                                  onSuccess: result =>
-                                                    setMekaAtom(
-                                                      Math.floor(
-                                                        +Moralis.Units.FromWei(+result, 18)
-                                                      )
-                                                    ),
+                                                  onSuccess: async (result: number) =>
+                                                    console.log(Moralis.Units.FromWei(result, 18)),
+                                                  // setMekaAtom(
+                                                  //   Math.floor(+Moralis.Units.FromWei(result, 18))
+                                                  // ),
                                                   onError: e => console.log(e)
                                                 })
                                               },

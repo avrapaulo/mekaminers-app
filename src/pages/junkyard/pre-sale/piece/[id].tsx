@@ -1,5 +1,6 @@
 import { useEffect, useState, Fragment } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Web3 from 'web3'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { useRecoilValue } from 'recoil'
 import { AbiItem } from 'web3-utils'
@@ -66,13 +67,14 @@ const pieces = [
 
 const Pieces = ({ id, units, items, price, classes }: PiecesProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
+  const { Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [piecePackageBought, setPiecePackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { packagePieceFetch } = usePackagePiece({ functionName: 'getPackagesCount', gen: 1 })
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const piecesPackage = new web3.eth.Contract(abi as AbiItem[], addressType('piece', 1))
+  const newWeb3 = new Web3(Moralis.provider as any)
+  const piecesPackage = new newWeb3.eth.Contract(abi as AbiItem[], addressType('piece', 1))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 

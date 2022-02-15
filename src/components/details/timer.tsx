@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 interface TimerStatusProps {
   time: string
-  fetch: () => Promise<void>
+  fetch: () => any
 }
 
 export const TimerStatus = ({ time, fetch }: TimerStatusProps) => {

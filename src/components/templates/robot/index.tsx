@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Web3 from 'web3'
 import Link from 'next/link'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -54,16 +55,18 @@ export const RobotDetail = () => {
   const { id: robotId, market } = router.query
   const [randomGreeting, setRandomGreeting] = useState<string>()
 
+  const newWeb3 = new Web3(Moralis.provider as any)
+
   const { data, fetch } = useMoralisCloudFunction(
     'getRobotDetail',
     { tokenId: +robotId },
     { autoFetch: false }
   )
-  const robotMarketplace = new web3.eth.Contract(
+  const robotMarketplace = new newWeb3.eth.Contract(
     robotAbi as AbiItem[],
     process.env.NEXT_PUBLIC_ROBOT_ADDRESS
   )
-  const robotCancelSale = new web3.eth.Contract(
+  const robotCancelSale = new newWeb3.eth.Contract(
     robotMarketplaceAbi as AbiItem[],
     process.env.NEXT_PUBLIC_ROBOT_MARKETPLACE
   )
@@ -450,7 +453,7 @@ export const RobotDetail = () => {
                     if (mode === 2) {
                       fetchMekaAllowance({
                         onSuccess: async (result: string | number) => {
-                          if (Moralis.Units.FromWei(result, 18) < price) {
+                          if (+Moralis.Units.FromWei(result, 18) < price) {
                             await fetchMekaApprove()
                           }
                           bidRobot({
@@ -460,8 +463,8 @@ export const RobotDetail = () => {
                             } as any,
                             onSuccess: () => {
                               fetchBalanceOf({
-                                onSuccess: result =>
-                                  setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                                onSuccess: (result: number) =>
+                                  setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
                                 onError: e => console.log(e)
                               })
                               toast.custom(

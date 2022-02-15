@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Web3 from 'web3'
 import { useRecoilValue } from 'recoil'
 import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
 import { AbiItem } from 'web3-utils'
@@ -27,13 +28,14 @@ export interface RobotsProps {
 }
 
 const RobotsPage = () => {
-  const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
+  const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
   const { fetch, data } = useMoralisCloudFunction('getMintedRobots', {}, { autoFetch: false })
 
   useEffect(() => {
-    const robots = new web3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
+    const newWeb3 = new Web3(Moralis.provider as any)
+    const robots = new newWeb3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
     const result = async () => {
       const tokenIds = await robots.methods.tokenOfOwner(wallet).call()
       fetch({

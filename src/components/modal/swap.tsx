@@ -261,7 +261,7 @@ export const SwapModal = () => {
                           fetchMekaAllowance({
                             onError: () => setIsLoading(false),
                             onSuccess: async (result: string | number) => {
-                              if (Moralis.Units.FromWei(result, 18) < first) {
+                              if (+Moralis.Units.FromWei(result, 18) < first) {
                                 await fetchMekaApprove()
                               }
                               fetchSignatureFromMeka({
@@ -279,9 +279,9 @@ export const SwapModal = () => {
                                     onError: () => setIsLoading(false),
                                     onSuccess: () => {
                                       fetchBalanceOf({
-                                        onSuccess: result =>
+                                        onSuccess: (result: number) =>
                                           setMekaAtom(
-                                            Math.floor(Moralis.Units.FromWei(+result, 18))
+                                            Math.floor(+Moralis.Units.FromWei(result, 18))
                                           ),
                                         onError: e => console.log(e)
                                       })

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Web3 from 'web3'
 import { useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import { useRecoilValue } from 'recoil'
 import { AbiItem } from 'web3-utils'
@@ -72,13 +73,14 @@ const robots = [
 
 const Robots = ({ id, units, items, price, classes }: RobotsProps) => {
   const wallet = useRecoilValue(walletAtom)
-  const { Moralis, isWeb3Enabled, isAuthenticated, web3 } = useMoralis()
+  const { Moralis, isWeb3Enabled, isAuthenticated } = useMoralis()
   const [robotPackageBought, setRobotPackageBought] = useState({ pack1: 0, pack2: 0, pack3: 0 })
   const { packageRobotFetch } = usePackageRobot({ functionName: 'getPackagesCount', gen: 1 })
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
 
-  const robotPackage = new web3.eth.Contract(abi as AbiItem[], addressType('robot', 1))
+  const newWeb3 = new Web3(Moralis.provider as any)
+  const robotPackage = new newWeb3.eth.Contract(abi as AbiItem[], addressType('robot', 1))
 
   const { fetch, isLoading } = useWeb3ExecuteFunction()
 

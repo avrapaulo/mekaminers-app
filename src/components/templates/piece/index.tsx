@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Web3 from 'web3'
 import toast from 'react-hot-toast'
 import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -40,11 +41,13 @@ const amountToApprove = 1000000
 export const PieceDetail = () => {
   const router = useRouter()
   const { id, market } = router.query
-  const { web3, Moralis } = useMoralis()
+  const { Moralis } = useMoralis()
   const { fetchBalanceOf } = UseBalanceOf()
   const wallet = useRecoilValue(walletAtom)
   const priceModal = useSetRecoilState(priceModalAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
+
+  const newWeb3 = new Web3(Moralis.provider as any)
 
   const { data, fetch } = useMoralisCloudFunction(
     'getPieceDetail',
@@ -52,12 +55,12 @@ export const PieceDetail = () => {
     { autoFetch: false }
   )
 
-  const pieceMarketplace = new web3.eth.Contract(
+  const pieceMarketplace = new newWeb3.eth.Contract(
     pieceAbi as AbiItem[],
     process.env.NEXT_PUBLIC_PIECE_ADDRESS
   )
 
-  const pieceCancelSale = new web3.eth.Contract(
+  const pieceCancelSale = new newWeb3.eth.Contract(
     pieceMarketplaceAbi as AbiItem[],
     process.env.NEXT_PUBLIC_PIECE_MARKETPLACE
   )
@@ -260,7 +263,7 @@ export const PieceDetail = () => {
                         if (mode === 2) {
                           fetchMekaAllowance({
                             onSuccess: async (result: string | number) => {
-                              if (Moralis.Units.FromWei(result, 18) < price) {
+                              if (+Moralis.Units.FromWei(result, 18) < price) {
                                 await fetchMekaApprove()
                               }
                               bidPiece({
@@ -270,8 +273,8 @@ export const PieceDetail = () => {
                                 } as any,
                                 onSuccess: () => {
                                   fetchBalanceOf({
-                                    onSuccess: result =>
-                                      setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+                                    onSuccess: (result: number) =>
+                                      setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
                                     onError: e => console.log(e)
                                   })
                                   toast.custom(

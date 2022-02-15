@@ -95,9 +95,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const { fetchBalanceOf } = UseBalanceOf()
 
   useEffect(() => {
-    setWalletAddress(
-      web3.givenProvider?.selectedAddress || user?.get('ethAddress') || defaultWallet
-    )
+    setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
     fetch({
       onSuccess: ({ ores, totalLands, currentFee, lastWithdraw }) => {
@@ -109,7 +107,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
     isWeb3Enabled &&
       fetchBalanceOf({
-        onSuccess: result => setMekaAtom(Math.floor(Moralis.Units.FromWei(+result, 18))),
+        onSuccess: (result: number) => setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
         onError: e => console.log(e)
       })
   }, [
@@ -128,7 +126,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     enableWeb3()
-  }, [enableWeb3])
+  }, [enableWeb3, isWeb3Enabled])
 
   return (
     <>
