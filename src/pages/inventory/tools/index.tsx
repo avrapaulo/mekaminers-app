@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { useMoralisCloudFunction, useMoralis } from 'react-moralis'
+import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
+import toast from 'react-hot-toast'
 import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
@@ -8,17 +9,51 @@ import { MiniHeader } from 'components/inventory/header-mini'
 import { inventory } from 'constants/menu'
 import { shard } from 'constants/shards'
 import { toolDescription } from 'constants/tools'
+import { useMeka } from 'hooks'
+import { abi } from 'contracts/MekaDeployer.json'
+import { Notification } from 'components/notification'
+import { classNames } from 'helpers/class-names'
 
 interface ToolsProps {
   value: number
   key: string
 }
 
+const amountToApprove = 1000000
+
 const Tools = () => {
-  const { web3, isWeb3Enabled, isAuthenticated } = useMoralis()
+  const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
   const { fetch, data } = useMoralisCloudFunction('getUtilities')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { fetchMeka: fetchMekaAllowance } = useMeka({
+    functionName: 'allowance',
+    params: {
+      spender: process.env.NEXT_PUBLIC_PIECE_ADDRESS,
+      owner: wallet
+    }
+  })
+  const { fetchMeka: fetchMekaApprove } = useMeka({
+    functionName: 'approve',
+    params: {
+      spender: process.env.NEXT_PUBLIC_PIECE_ADDRESS,
+      amount: Moralis.Units.ETH(amountToApprove)
+    }
+  })
+
+  const { fetch: fetchMintPieceFromFarm } = useMoralisCloudFunction(
+    'mintPieceFromFarm',
+    { amount: Moralis.Units.ETH('5') },
+    { autoFetch: false }
+  )
+
+  const { fetch: createPiece } = useWeb3ExecuteFunction({
+    contractAddress: process.env.NEXT_PUBLIC_MEKADEPLOYER_ADDRESS,
+    functionName: 'createPiece',
+    abi
+  })
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -58,8 +93,99 @@ const Tools = () => {
                 >
                   <div className="flex-1 p-4 flex flex-col mt-5">
                     <div className="h-full flex justify-between flex-col">
-                      <div className="space-y-1 flex flex-col">
-                        <div className="text-center">{toolDescription[key]}</div>
+                      <div className="space-y-1 flex flex-col items-center">
+                        {key === 'PieceShards' && value >= 60 ? (
+                          <div className={classNames(!isLoading ? '' : 'cursor-not-allowed')}>
+                            <div
+                              className={classNames(
+                                'flex-shrink-0 px-4 py-4 flex justify-end',
+                                !isLoading ? '' : 'pointer-events-none'
+                              )}
+                            >
+                              <button
+                                type="button"
+                                className={
+                                  'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-black bg-white hover:bg-gray-200 w-28'
+                                }
+                                onClick={() => {
+                                  setIsLoading(true)
+                                  fetchMekaAllowance({
+                                    onSuccess: async (result: string | number) => {
+                                      if (Moralis.Units.FromWei(result, 18) < 5) {
+                                        await fetchMekaApprove()
+                                      }
+                                      fetchMintPieceFromFarm({
+                                        onSuccess: async (result: any) => {
+                                          if (result.status) {
+                                            await createPiece({
+                                              params: {
+                                                params: {
+                                                  _fromFarm: true,
+                                                  _amount: Moralis.Units.ETH(5),
+                                                  _nonce: result.nonce,
+                                                  _signature: result.signature
+                                                }
+                                              },
+                                              onSuccess: async () => {
+                                                toast.custom(
+                                                  t => (
+                                                    <Notification
+                                                      isShow={t.visible}
+                                                      icon="success"
+                                                      title="Minted"
+                                                      description={
+                                                        <div className="flex flex-row items-center">
+                                                          Your Piece will be send in few minutes
+                                                        </div>
+                                                      }
+                                                    />
+                                                  ),
+                                                  { duration: 3000 }
+                                                )
+                                                fetch()
+                                                setIsLoading(false)
+                                              },
+                                              onError: e => {
+                                                setIsLoading(false)
+                                                console.log(e)
+                                              }
+                                            })
+                                          } else {
+                                            setIsLoading(false)
+                                            toast.custom(
+                                              t => (
+                                                <Notification
+                                                  isShow={t.visible}
+                                                  icon="error"
+                                                  title="Minted"
+                                                  description={
+                                                    <div className="flex flex-row items-center">
+                                                      {result.message}
+                                                    </div>
+                                                  }
+                                                />
+                                              ),
+                                              { duration: 3000 }
+                                            )
+                                          }
+                                        },
+                                        onError: e => {
+                                          setIsLoading(false)
+                                          console.log(e)
+                                        }
+                                      })
+                                    },
+                                    onError: () => setIsLoading(false)
+                                  })
+                                }}
+                              >
+                                Mint
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-center">{toolDescription[key]}</div>
+                        )}
                       </div>
                       <div className="text-sm font-medium text-right">( x{value} )</div>
                     </div>

@@ -46,7 +46,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
         'flex justify-center items-center  border border-transparent text-lg font-semibold rounded-full shadow-sm text-white'
       )}
       onClick={() => {
-        if (timeLeft > 0) {
+        if (timeLeft > 0 && canReroll) {
           if (oresAtom <= 25) {
             return toast.custom(
               t => (
