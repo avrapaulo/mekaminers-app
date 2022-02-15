@@ -137,12 +137,19 @@ export const SliderRowNonNFT = ({
                   <div
                     className={classNames(
                       toolkit?.length > 0 ? 'focus:outline-none' : 'opacity-25 cursor-not-allowed',
-                      'border-gray-200 text-white bg-gray-200',
+                      toolkit[0]?.value ? 'border-gray-200 text-white bg-gray-200' : '',
                       'border rounded-md px-2 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 border-black'
                     )}
                   >
                     <div className="flex flex-col justify-center items-center">
-                      <div className="text-xs text-black -mb-1">{toolkit[0]?.value}</div>
+                      <div
+                        className={classNames(
+                          'text-xs text-black -mb-1',
+                          toolkit[0]?.value ? '' : 'text-red-500'
+                        )}
+                      >
+                        {toolkit[0]?.value ?? 0}
+                      </div>
                       <img alt="" className="h-8 w-6 -mb-1" src="/toolkit.png" />
                     </div>
                   </div>

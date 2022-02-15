@@ -128,8 +128,7 @@ export const FarmCard = ({
                               {result?.drop?.shards > 0 && (
                                 <div className="flex flex-row items-center">
                                   <PuzzleIcon className="w-6 h-6" />
-                                  {result.drop.shards}{' '}
-                                  {shard[result.drop.pieceType] || result.drop.pieceType}
+                                  {result.drop.shards} shards
                                 </div>
                               )}
                             </div>

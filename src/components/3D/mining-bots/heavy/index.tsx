@@ -7,6 +7,6 @@ interface HeavyProps {
 
 export const Heavy = ({ animation }: HeavyProps) => (
   <CanvasContainer camera={{ fov: 70 }}>
-    <HeavyObject animation={animation} position={[0, -1.35, 0]} />
+    <HeavyObject animation={animation} position={[0, -2.1, 0]} />
   </CanvasContainer>
 )

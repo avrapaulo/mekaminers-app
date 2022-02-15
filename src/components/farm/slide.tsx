@@ -66,7 +66,10 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
                     </div>
                     <div className="border-b border-gray-200">
                       <div className="px-6">
-                        <nav className="-mb-px flex space-x-6" x-descriptions="Tab component">
+                        <nav
+                          className="-mb-px flex space-x-6 cursor-pointer"
+                          x-descriptions="Tab component"
+                        >
                           {tabs.map(({ name }) => (
                             <div
                               key={name}
