@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
-import { walletAtom, defaultWallet } from 'recoil/atoms'
+import { walletAtom, defaultWallet, mekaAtom } from 'recoil/atoms'
 import { Card } from 'components/card'
 import { Layout } from 'components/inventory'
 import { MiniHeader } from 'components/inventory/header-mini'
 import { inventory } from 'constants/menu'
 import { shard } from 'constants/shards'
 import { toolDescription } from 'constants/tools'
-import { useMeka } from 'hooks'
+import { useMeka, UseBalanceOf } from 'hooks'
 import { abi } from 'contracts/MekaDeployer.json'
 import { Notification } from 'components/notification'
 import { classNames } from 'helpers/class-names'
@@ -25,9 +25,11 @@ const Tools = () => {
   const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
-  const { fetch, data } = useMoralisCloudFunction('getUtilities')
   const [isLoading, setIsLoading] = useState(false)
+  const { fetchBalanceOf } = UseBalanceOf()
+  const setMekaAtom = useSetRecoilState(mekaAtom)
 
+  const { fetch, data } = useMoralisCloudFunction('getUtilities')
   const { fetchMeka: fetchMekaAllowance } = useMeka({
     functionName: 'allowance',
     params: {
@@ -111,7 +113,7 @@ const Tools = () => {
                                   setIsLoading(true)
                                   fetchMekaAllowance({
                                     onSuccess: async (result: string | number) => {
-                                      if (Moralis.Units.FromWei(result, 18) < 5) {
+                                      if (+Moralis.Units.FromWei(result, 18) < 5) {
                                         await fetchMekaApprove()
                                       }
                                       fetchMintPieceFromFarm({
@@ -120,7 +122,7 @@ const Tools = () => {
                                             await createPiece({
                                               params: {
                                                 params: {
-                                                  _fromFarm: true,
+                                                  _fromFarm: 'false',
                                                   _amount: Moralis.Units.ETH(5),
                                                   _nonce: result.nonce,
                                                   _signature: result.signature
@@ -144,6 +146,15 @@ const Tools = () => {
                                                 )
                                                 fetch()
                                                 setIsLoading(false)
+                                                fetchBalanceOf({
+                                                  onSuccess: result =>
+                                                    setMekaAtom(
+                                                      Math.floor(
+                                                        +Moralis.Units.FromWei(+result, 18)
+                                                      )
+                                                    ),
+                                                  onError: e => console.log(e)
+                                                })
                                               },
                                               onError: e => {
                                                 setIsLoading(false)

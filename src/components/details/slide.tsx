@@ -1,17 +1,16 @@
 import { Fragment, useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralis, useMoralisCloudFunction, useWeb3ExecuteFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
-import { AbiItem } from 'web3-utils'
 import { Dialog, Transition, RadioGroup } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import { slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
+import { mekaAtom, slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
 import { abi } from 'contracts/MekaDeployer.json'
 import { typeDescription } from 'constants/status'
 import { Notification } from 'components/notification'
 import { classNames } from 'helpers/class-names'
 import { rarityInfo } from 'constants/rarity'
-import { useMeka } from 'hooks'
+import { useMeka, UseBalanceOf } from 'hooks'
 
 interface PiecesForRobotProps {
   id: number
@@ -31,22 +30,21 @@ interface SlideProps {
 }
 
 export const Slide = ({ fetch, mode }: SlideProps) => {
-  const { web3, Moralis } = useMoralis()
+  const { Moralis } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
   const [selected, setSelected] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useRecoilState(slideAtom)
   const { robotId, pieceType } = useRecoilValue(slideDataAtom)
+  const setMekaAtom = useSetRecoilState(mekaAtom)
+
   const { data, fetch: fetchPiecesForRobot } = useMoralisCloudFunction(
     'getPiecesForRobot',
     { robotId, pieceType },
     { autoFetch: false }
   )
 
-  const mekaDeployer = new web3.eth.Contract(
-    abi as AbiItem[],
-    process.env.NEXT_PUBLIC_MEKADEPLOYER_ADDRESS
-  )
+  const { fetchBalanceOf } = UseBalanceOf()
 
   const { fetchMeka: fetchMekaAllowance } = useMeka({
     functionName: 'allowance',
@@ -246,6 +244,13 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                       fetch()
                                       setOpen(false)
                                       setIsLoading(false)
+                                      fetchBalanceOf({
+                                        onSuccess: result =>
+                                          setMekaAtom(
+                                            Math.floor(Moralis.Units.FromWei(+result, 18))
+                                          ),
+                                        onError: e => console.log(e)
+                                      })
                                       toast.custom(
                                         t => (
                                           <Notification
