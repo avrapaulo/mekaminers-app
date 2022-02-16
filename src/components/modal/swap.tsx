@@ -306,6 +306,7 @@ export const SwapModal = () => {
                                         { duration: 3000 }
                                       )
                                       setOpen(false)
+                                      setIsLoading(false)
                                     }
                                   })
                                 }
@@ -373,6 +374,7 @@ export const SwapModal = () => {
                                       { duration: 3000 }
                                     )
                                     setOpen(false)
+                                    setIsLoading(false)
                                   }
                                 })
                               } else {
