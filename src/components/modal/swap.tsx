@@ -251,8 +251,8 @@ export const SwapModal = () => {
                           }
 
                           try {
-                            const mekaAllowanceWait: any = await fetchMekaAllowance()
-                            if (+Moralis.Units.FromWei(mekaAllowanceWait, 18) < first) {
+                            const mekaAllowanceResult: any = await fetchMekaAllowance()
+                            if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < first) {
                               const mekaApproveWait: any = await fetchMekaApprove()
                               await mekaApproveWait.wait()
                             }
@@ -271,8 +271,8 @@ export const SwapModal = () => {
                                       }
                                     }
                                   })
-                                  const convertResult: any = await convertWait.wait()
-                                  if (convertResult.status === 1) {
+                                  const convertResult: any = await convertWait?.wait()
+                                  if (convertResult?.status === 1) {
                                     const balanceOfResult: any = await fetchBalanceOf()
                                     setMekaAtom(
                                       Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
@@ -299,10 +299,8 @@ export const SwapModal = () => {
                                     )
                                     setOpen(false)
                                   }
-                                  setIsLoading(false)
-                                } catch {
-                                  return setIsLoading(false)
-                                }
+                                } catch {}
+                                setIsLoading(false)
                               }
                             })
                           } catch {
@@ -348,9 +346,9 @@ export const SwapModal = () => {
                                   }
                                 })
 
-                                const convertResult: any = await convertWait.wait()
+                                const convertResult: any = await convertWait?.wait()
 
-                                if (convertResult.status === 1) {
+                                if (convertResult?.status === 1) {
                                   toast.custom(
                                     t => (
                                       <Notification
@@ -372,10 +370,8 @@ export const SwapModal = () => {
                                     { duration: 3000 }
                                   )
                                   setOpen(false)
-                                  setIsLoading(false)
                                 }
                               } else {
-                                setIsLoading(false)
                                 toast.custom(
                                   t => (
                                     <Notification
@@ -390,6 +386,7 @@ export const SwapModal = () => {
                                   { duration: 3000 }
                                 )
                               }
+                              setIsLoading(false)
                             }
                           })
                         }

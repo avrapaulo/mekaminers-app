@@ -109,83 +109,71 @@ const Tools = () => {
                                 className={
                                   'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-black bg-white hover:bg-gray-200 w-28'
                                 }
-                                onClick={() => {
+                                onClick={async () => {
                                   setIsLoading(true)
-                                  fetchMekaAllowance({
-                                    onSuccess: async (result: string | number) => {
-                                      if (+Moralis.Units.FromWei(result, 18) < 5) {
-                                        await fetchMekaApprove()
-                                      }
-                                      fetchMintPieceFromFarm({
-                                        onSuccess: async (result: any) => {
-                                          if (result.status) {
-                                            await createPiece({
-                                              params: {
-                                                params: {
-                                                  _fromFarm: false,
-                                                  _amount: Moralis.Units.ETH(5),
-                                                  _nonce: result.nonce,
-                                                  _signature: result.signature
-                                                }
-                                              },
-                                              onSuccess: async () => {
-                                                toast.custom(
-                                                  t => (
-                                                    <Notification
-                                                      isShow={t.visible}
-                                                      icon="success"
-                                                      title="Minted"
-                                                      description={
-                                                        <div className="flex flex-row items-center">
-                                                          Your Piece will be send in few minutes
-                                                        </div>
-                                                      }
-                                                    />
-                                                  ),
-                                                  { duration: 3000 }
-                                                )
-                                                fetch()
-                                                setIsLoading(false)
-                                                fetchBalanceOf({
-                                                  onSuccess: async (result: number) =>
-                                                    console.log(Moralis.Units.FromWei(result, 18)),
-                                                  // setMekaAtom(
-                                                  //   Math.floor(+Moralis.Units.FromWei(result, 18))
-                                                  // ),
-                                                  onError: e => console.log(e)
-                                                })
-                                              },
-                                              onError: e => {
-                                                setIsLoading(false)
-                                                console.log(e)
-                                              }
-                                            })
-                                          } else {
-                                            setIsLoading(false)
-                                            toast.custom(
-                                              t => (
-                                                <Notification
-                                                  isShow={t.visible}
-                                                  icon="error"
-                                                  title="Minted"
-                                                  description={
-                                                    <div className="flex flex-row items-center">
-                                                      {result.message}
-                                                    </div>
-                                                  }
-                                                />
-                                              ),
-                                              { duration: 3000 }
-                                            )
+                                  const mekaAllowanceResult: any = await fetchMekaAllowance()
+                                  if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < 5) {
+                                    await fetchMekaApprove()
+                                  }
+                                  await fetchMintPieceFromFarm({
+                                    onSuccess: async (result: any) => {
+                                      if (result.status) {
+                                        const createPieceWait: any = await createPiece({
+                                          params: {
+                                            params: {
+                                              _fromFarm: false,
+                                              _amount: Moralis.Units.ETH(5),
+                                              _nonce: result.nonce,
+                                              _signature: result.signature
+                                            }
                                           }
-                                        },
-                                        onError: e => {
-                                          setIsLoading(false)
-                                          console.log(e)
+                                        })
+                                        const createPieceResult: any = await createPieceWait?.wait()
+                                        if (createPieceResult?.status === 1) {
+                                          toast.custom(
+                                            t => (
+                                              <Notification
+                                                isShow={t.visible}
+                                                icon="success"
+                                                title="Minted"
+                                                description={
+                                                  <div className="flex flex-row items-center">
+                                                    Your Piece will be send in few minutes
+                                                  </div>
+                                                }
+                                              />
+                                            ),
+                                            { duration: 3000 }
+                                          )
+                                          fetch()
+                                          const balanceOfResult: any = await fetchBalanceOf()
+                                          setMekaAtom(
+                                            Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
+                                          )
                                         }
-                                      })
+                                      } else {
+                                        toast.custom(
+                                          t => (
+                                            <Notification
+                                              isShow={t.visible}
+                                              icon="error"
+                                              title="Minted"
+                                              description={
+                                                <div className="flex flex-row items-center">
+                                                  {result.message}
+                                                </div>
+                                              }
+                                            />
+                                          ),
+                                          { duration: 3000 }
+                                        )
+                                      }
+                                      setIsLoading(false)
                                     },
-                                    onError: () => setIsLoading(false)
+                                    onError: e => {
+                                      setIsLoading(false)
+                                      console.log(e)
+                                    }
                                   })
                                 }}
                               >
