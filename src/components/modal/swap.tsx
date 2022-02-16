@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useWeb3ExecuteFunction, useMoralis } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon, ArrowNarrowRightIcon, ArrowNarrowLeftIcon } from '@heroicons/react/outline'
+import { XIcon, ArrowNarrowRightIcon } from '@heroicons/react/outline'
 import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/solid'
 import { walletCoins } from 'recoil/selector'
 import { currentFeeAtom, walletAtom, mekaAtom, swapAtom, isOresAtom } from 'recoil/atoms'
@@ -69,15 +69,7 @@ export const SwapModal = () => {
   const conversionFeeWithoutPercentage = isOres ? feeAtom : 0
   const conversionRate = isOres ? 300 : 60
 
-  const calcTrade = ({
-    isOres,
-    type,
-    value
-  }: {
-    isOres: boolean
-    type: 'ore' | 'meka'
-    value: number
-  }) => {
+  const calcTrade = ({ type, value }: { isOres: boolean; type: 'ore' | 'meka'; value: number }) => {
     if (type === 'ore') {
       return +((+value * (1 - conversionFeeWithPercentage)) / conversionRate).toFixed(5)
     }
@@ -105,7 +97,6 @@ export const SwapModal = () => {
             <Dialog.Overlay className="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span className="hidden md:inline-block md:align-middle md:h-screen" aria-hidden="true">
             &#8203;
           </span>
@@ -232,7 +223,7 @@ export const SwapModal = () => {
                         'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-white bg-black hover:bg-gray-800 w-24',
                         isLoading ? 'animate-pulse bg-gray-100 pointer-events-none' : ''
                       )}
-                      onClick={() => {
+                      onClick={async () => {
                         setIsLoading(true)
                         if (!isOres) {
                           if (first < 10) {
@@ -258,61 +249,65 @@ export const SwapModal = () => {
                               { duration: 3000 }
                             )
                           }
-                          fetchMekaAllowance({
-                            onError: () => setIsLoading(false),
-                            onSuccess: async (result: string | number) => {
-                              if (+Moralis.Units.FromWei(result, 18) < first) {
-                                await fetchMekaApprove()
-                              }
-                              fetchSignatureFromMeka({
-                                params: { amount: Moralis.Units.ETH(first) },
-                                onError: () => setIsLoading(false),
-                                onSuccess: async (result: any) => {
-                                  await fetchConvert({
+
+                          try {
+                            const mekaAllowanceWait: any = await fetchMekaAllowance()
+                            if (+Moralis.Units.FromWei(mekaAllowanceWait, 18) < first) {
+                              const mekaApproveWait: any = await fetchMekaApprove()
+                              await mekaApproveWait.wait()
+                            }
+
+                            await fetchSignatureFromMeka({
+                              params: { amount: Moralis.Units.ETH(first) },
+                              onError: () => setIsLoading(false),
+                              onSuccess: async (result: any) => {
+                                try {
+                                  const convertWait: any = await fetchConvert({
                                     params: {
                                       params: {
                                         _amount: Moralis.Units.ETH(first),
                                         _nonce: result.nonce,
                                         _signature: result.signature
                                       }
-                                    },
-                                    onError: () => setIsLoading(false),
-                                    onSuccess: () => {
-                                      fetchBalanceOf({
-                                        onSuccess: (result: number) =>
-                                          setMekaAtom(
-                                            Math.floor(+Moralis.Units.FromWei(result, 18))
-                                          ),
-                                        onError: e => console.log(e)
-                                      })
-                                      toast.custom(
-                                        t => (
-                                          <Notification
-                                            isShow={t.visible}
-                                            icon="success"
-                                            title="Swap"
-                                            description={
-                                              <div className="flex flex-row items-center">
-                                                <img
-                                                  alt=""
-                                                  className="h-6 w-6 object-contain"
-                                                  src="/ore.png"
-                                                />
-                                                It may take some time!!
-                                              </div>
-                                            }
-                                          />
-                                        ),
-                                        { duration: 3000 }
-                                      )
-                                      setOpen(false)
-                                      setIsLoading(false)
                                     }
                                   })
+                                  const convertResult: any = await convertWait.wait()
+                                  if (convertResult.status === 1) {
+                                    const balanceOfResult: any = await fetchBalanceOf()
+                                    setMekaAtom(
+                                      Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
+                                    )
+                                    toast.custom(
+                                      t => (
+                                        <Notification
+                                          isShow={t.visible}
+                                          icon="success"
+                                          title="Swap"
+                                          description={
+                                            <div className="flex flex-row items-center">
+                                              <img
+                                                alt=""
+                                                className="h-6 w-6 object-contain"
+                                                src="/ore.png"
+                                              />
+                                              It may take some time!!
+                                            </div>
+                                          }
+                                        />
+                                      ),
+                                      { duration: 3000 }
+                                    )
+                                    setOpen(false)
+                                  }
+                                  setIsLoading(false)
+                                } catch {
+                                  return setIsLoading(false)
                                 }
-                              })
-                            }
-                          })
+                              }
+                            })
+                          } catch {
+                            return setIsLoading(false)
+                          }
                         } else {
                           if (first <= 0) {
                             setIsLoading(false)
@@ -340,9 +335,9 @@ export const SwapModal = () => {
                           fetchSignatureToMeka({
                             params: { amount: first },
                             onError: () => setIsLoading(false),
-                            onSuccess: (result: any) => {
+                            onSuccess: async (result: any) => {
                               if (result) {
-                                fetchConvert({
+                                const convertWait: any = await fetchConvert({
                                   params: {
                                     params: {
                                       _amount: result.amount,
@@ -350,33 +345,35 @@ export const SwapModal = () => {
                                       _signature: result.signature,
                                       _receiver: wallet
                                     }
-                                  },
-                                  onError: () => setIsLoading(false),
-                                  onSuccess: () => {
-                                    toast.custom(
-                                      t => (
-                                        <Notification
-                                          isShow={t.visible}
-                                          icon="success"
-                                          title="Swap"
-                                          description={
-                                            <div className="flex flex-row items-center">
-                                              <img
-                                                alt=""
-                                                className="h-6 w-6 object-contain"
-                                                src="/meka.png"
-                                              />
-                                              It may take some time!!
-                                            </div>
-                                          }
-                                        />
-                                      ),
-                                      { duration: 3000 }
-                                    )
-                                    setOpen(false)
-                                    setIsLoading(false)
                                   }
                                 })
+
+                                const convertResult: any = await convertWait.wait()
+
+                                if (convertResult.status === 1) {
+                                  toast.custom(
+                                    t => (
+                                      <Notification
+                                        isShow={t.visible}
+                                        icon="success"
+                                        title="Swap"
+                                        description={
+                                          <div className="flex flex-row items-center">
+                                            <img
+                                              alt=""
+                                              className="h-6 w-6 object-contain"
+                                              src="/meka.png"
+                                            />
+                                            It may take some time!!
+                                          </div>
+                                        }
+                                      />
+                                    ),
+                                    { duration: 3000 }
+                                  )
+                                  setOpen(false)
+                                  setIsLoading(false)
+                                }
                               } else {
                                 setIsLoading(false)
                                 toast.custom(
