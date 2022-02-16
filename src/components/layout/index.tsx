@@ -1,7 +1,7 @@
 import { useEffect, Fragment, useState } from 'react'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
-import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
+import { useMoralis, useMoralisCloudFunction, useChain } from 'react-moralis'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import { PlusCircleIcon } from '@heroicons/react/solid'
@@ -92,8 +92,8 @@ export const Layout = ({ children }: LayoutProps) => {
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
 
+  const { chainId, account } = useChain()
   const { fetchBalanceOf } = UseBalanceOf()
-
   useEffect(() => {
     setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
@@ -405,7 +405,22 @@ export const Layout = ({ children }: LayoutProps) => {
               </div>
             </div>
           </div>
-          {children}
+
+          {chainId === '0x61'
+            ? user?.get('ethAddress') === account
+              ? children
+              : account && (
+                  <div className="text-white text-4xl font-bold flex justify-center items-center h-screen">
+                    Invalid Wallet
+                  </div>
+                  // eslint-disable-next-line indent
+                )
+            : chainId && (
+                <div className="text-white text-4xl font-bold flex justify-center items-center h-screen">
+                  Wrong Network
+                </div>
+                // eslint-disable-next-line indent
+              )}
         </div>
       </div>
     </>
