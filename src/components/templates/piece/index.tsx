@@ -261,41 +261,42 @@ export const PieceDetail = () => {
                         }
                       } else {
                         if (mode === 2) {
-                          fetchMekaAllowance({
-                            onSuccess: async (result: string | number) => {
-                              if (+Moralis.Units.FromWei(result, 18) < price) {
-                                await fetchMekaApprove()
-                              }
-                              bidPiece({
-                                params: {
-                                  params: { _amount: Moralis.Units.ETH(price), _tokenId: +id },
-                                  msgValue: Moralis.Units.ETH(0.005)
-                                } as any,
-                                onSuccess: () => {
-                                  fetchBalanceOf({
-                                    onSuccess: (result: number) =>
-                                      setMekaAtom(Math.floor(+Moralis.Units.FromWei(result, 18))),
-                                    onError: e => console.log(e)
-                                  })
-                                  toast.custom(
-                                    t => (
-                                      <Notification
-                                        isShow={t.visible}
-                                        icon="success"
-                                        title="Bought"
-                                        description={
-                                          <div className="flex flex-row items-center">
-                                            Piece will be ready in few minutes
-                                          </div>
-                                        }
-                                      />
-                                    ),
-                                    { duration: 3000 }
-                                  )
-                                }
-                              })
+                          try {
+                            const mekaAllowanceResult: any = await fetchMekaAllowance()
+
+                            if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < price) {
+                              const mekaApproveWait: any = await fetchMekaApprove()
+                              await mekaApproveWait?.wait()
                             }
-                          })
+
+                            const bidPieceWait: any = await bidPiece({
+                              params: {
+                                params: { _amount: Moralis.Units.ETH(price), _tokenId: +id },
+                                msgValue: Moralis.Units.ETH(0.005)
+                              }
+                            })
+                            const bidPieceResult: any = await bidPieceWait?.wait()
+
+                            if (bidPieceResult?.status === 1) {
+                              const balanceOfResult: any = await fetchBalanceOf()
+                              setMekaAtom(Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18)))
+                              toast.custom(
+                                t => (
+                                  <Notification
+                                    isShow={t.visible}
+                                    icon="success"
+                                    title="Bought"
+                                    description={
+                                      <div className="flex flex-row items-center">
+                                        Piece will be ready in few minutes
+                                      </div>
+                                    }
+                                  />
+                                ),
+                                { duration: 3000 }
+                              )
+                            }
+                          } catch {}
                         }
                       }
                     }
