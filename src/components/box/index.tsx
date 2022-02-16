@@ -156,82 +156,83 @@ export const Box = ({ id, count, type, gen }: BoxProps) => {
                 setInactive(true)
                 setLoading(true)
                 setDisplayConfetti(false)
-                fetchMekaAllowance({
-                  onSuccess: async (result: string | number) => {
-                    if (received.length === 0 && boxNumbers.length === 0) {
-                      return router.push(`/inventory/${type}s`)
-                    }
+                try {
+                  const mekaAllowanceResult: any = await fetchMekaAllowance()
+                  if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < 5) {
+                    const mekaApproveWait: any = await fetchMekaApprove()
+                    await mekaApproveWait?.wait()
+                  }
 
-                    let resultFetch = received
-                    if (!isOpen || (received?.length === 0 && boxNumbers.length > 0)) {
-                      if (+Moralis.Units.FromWei(result, 18) < 5) await fetchMekaApprove()
+                  if (received.length === 0 && boxNumbers.length === 0) {
+                    return router.push(`/inventory/${type}s`)
+                  }
 
-                      const robotParams = packageRobotProps(
-                        { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                        'openPackage',
-                        gen
-                      )
-                      const pieceParams = packagePieceProps(
-                        { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
-                        'openPackage',
-                        gen
-                      )
+                  let resultFetch = received
+                  if (!isOpen || (received?.length === 0 && boxNumbers.length > 0)) {
+                    const robotParams = packageRobotProps(
+                      { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
+                      'openPackage',
+                      gen
+                    )
+                    const pieceParams = packagePieceProps(
+                      { _amount: Moralis.Units.ETH(5), _tokenId: boxNumbers[0] },
+                      'openPackage',
+                      gen
+                    )
 
-                      const packageFetchWait: any = await packageFetch({
-                        params: type === 'robot' ? robotParams : pieceParams
-                      })
-                      const packageFetchResult: any = await packageFetchWait?.wait()
+                    const packageFetchWait: any = await packageFetch({
+                      params: type === 'robot' ? robotParams : pieceParams
+                    })
+                    const packageFetchResult: any = await packageFetchWait?.wait()
 
-                      if (packageFetchResult?.status === 1) {
-                        resultFetch = null
-                        while (!resultFetch || resultFetch?.length === 0) {
-                          await later(10000)
+                    if (packageFetchResult?.status === 1) {
+                      resultFetch = null
+                      while (!resultFetch || resultFetch?.length === 0) {
+                        await later(10000)
 
-                          const unpackedRobots = async () =>
-                            await fetchUnpackedRobots({
-                              onSuccess: async robotsResult => {
-                                resultFetch = robotsResult as any[]
-                              }
-                            })
+                        const unpackedRobots = async () =>
+                          await fetchUnpackedRobots({
+                            onSuccess: async robotsResult => {
+                              resultFetch = robotsResult as any[]
+                            }
+                          })
 
-                          const unpackedPieces = async () =>
-                            await fetchUnpackedPieces({
-                              onSuccess: async robotsResult => {
-                                resultFetch = robotsResult as any[]
-                              }
-                            })
+                        const unpackedPieces = async () =>
+                          await fetchUnpackedPieces({
+                            onSuccess: async robotsResult => {
+                              resultFetch = robotsResult as any[]
+                            }
+                          })
 
-                          type === 'robot' ? unpackedRobots() : unpackedPieces()
-                        }
-                        if (type !== 'piece') setDisplayConfetti(true)
-                        setLoading(false)
-                        setOutput(resultFetch[0])
-                        setReceived(resultFetch.slice(1))
-                        setTimeout(() => setInactive(false), animationDelay)
-                        setIsOpen(true)
-                        setBoxNumbers(boxNumbers.splice(1))
-                        const balanceOfResult: any = await fetchBalanceOf()
-                        setMekaAtom(Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18)))
-                      } else {
-                        setInactive(false)
-                        setLoading(false)
-                        const balanceOfResult: any = await fetchBalanceOf()
-                        setMekaAtom(Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18)))
+                        type === 'robot' ? unpackedRobots() : unpackedPieces()
                       }
-                    } else {
-                      await later(2000)
+                      if (type !== 'piece') setDisplayConfetti(true)
                       setLoading(false)
                       setOutput(resultFetch[0])
                       setReceived(resultFetch.slice(1))
                       setTimeout(() => setInactive(false), animationDelay)
-                      if (type !== 'piece') setDisplayConfetti(true)
+                      setIsOpen(true)
+                      setBoxNumbers(boxNumbers.splice(1))
+                      const balanceOfResult: any = await fetchBalanceOf()
+                      setMekaAtom(Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18)))
+                    } else {
+                      setInactive(false)
+                      setLoading(false)
+                      const balanceOfResult: any = await fetchBalanceOf()
+                      setMekaAtom(Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18)))
                     }
-                  },
-                  onError: () => {
+                  } else {
+                    await later(2000)
                     setLoading(false)
-                    setInactive(false)
+                    setOutput(resultFetch[0])
+                    setReceived(resultFetch.slice(1))
+                    setTimeout(() => setInactive(false), animationDelay)
+                    if (type !== 'piece') setDisplayConfetti(true)
                   }
-                })
+                } catch {
+                  setLoading(false)
+                  setInactive(false)
+                }
               }}
             >
               <Confetti active={displayConfetti} config={config} />

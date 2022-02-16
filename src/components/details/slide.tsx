@@ -220,67 +220,66 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                           }
 
                           setIsLoading(true)
-                          fetchMekaAllowance({
-                            onSuccess: async (result: string | number) => {
-                              if (+Moralis.Units.FromWei(result, 18) < 5) {
-                                await fetchMekaApprove()
-                              }
-                              fetchSign({
-                                onSuccess: async (result: any) => {
-                                  await fetchMeka({
+                          try {
+                            const mekaAllowanceResult: any = await fetchMekaAllowance()
+
+                            if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < 5) {
+                              const mekaApproveWait: any = await fetchMekaApprove()
+                              await mekaApproveWait?.wait()
+                            }
+
+                            fetchSign({
+                              onSuccess: async (result: any) => {
+                                const mekaWait: any = await fetchMeka({
+                                  params: {
                                     params: {
-                                      params: {
-                                        _owner: wallet,
-                                        _robotId: result.robotId,
-                                        _pieceId: result.pieceId,
-                                        _pieceType: result.pieceType,
-                                        _amount: Moralis.Units.ETH(5),
-                                        _nonce: result.nonce,
-                                        _signature: result.signature
-                                      }
-                                    },
-                                    onSuccess: async () => {
-                                      await fetchIsAttaching()
-                                      fetch()
-                                      setOpen(false)
-                                      setIsLoading(false)
-                                      fetchBalanceOf({
-                                        onSuccess: (result: number) =>
-                                          setMekaAtom(
-                                            Math.floor(+Moralis.Units.FromWei(result, 18))
-                                          ),
-                                        onError: e => console.log(e)
-                                      })
-                                      toast.custom(
-                                        t => (
-                                          <Notification
-                                            isShow={t.visible}
-                                            icon="success"
-                                            title="Attach"
-                                            description={
-                                              <div className="flex flex-row items-center">
-                                                In Progress
-                                              </div>
-                                            }
-                                          />
-                                        ),
-                                        { duration: 3000 }
-                                      )
-                                    },
-                                    onError: e => {
-                                      setIsLoading(false)
-                                      console.log(e)
+                                      _owner: wallet,
+                                      _robotId: result.robotId,
+                                      _pieceId: result.pieceId,
+                                      _pieceType: result.pieceType,
+                                      _amount: Moralis.Units.ETH(5),
+                                      _nonce: result.nonce,
+                                      _signature: result.signature
                                     }
-                                  })
-                                },
-                                onError: e => {
+                                  }
+                                })
+                                const mekaResult: any = await mekaWait?.wait()
+                                if (mekaResult?.status === 1) {
+                                  await fetchIsAttaching()
+                                  fetch()
+                                  setOpen(false)
                                   setIsLoading(false)
-                                  console.log(e)
+                                  const balanceOfResult: any = await fetchBalanceOf()
+                                  setMekaAtom(
+                                    Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
+                                  )
+                                  toast.custom(
+                                    t => (
+                                      <Notification
+                                        isShow={t.visible}
+                                        icon="success"
+                                        title="Attach"
+                                        description={
+                                          <div className="flex flex-row items-center">
+                                            In Progress
+                                          </div>
+                                        }
+                                      />
+                                    ),
+                                    { duration: 3000 }
+                                  )
                                 }
-                              })
-                            },
-                            onError: () => setIsLoading(false)
-                          })
+
+                                setIsLoading(false)
+                              },
+                              onError: e => {
+                                setIsLoading(false)
+                                console.log(e)
+                              }
+                            })
+                          } catch {
+                            setIsLoading(false)
+                          }
                         }}
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg w-full font-bold rounded-md text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
                       >

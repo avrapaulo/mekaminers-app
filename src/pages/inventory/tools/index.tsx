@@ -113,7 +113,8 @@ const Tools = () => {
                                   setIsLoading(true)
                                   const mekaAllowanceResult: any = await fetchMekaAllowance()
                                   if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < 5) {
-                                    await fetchMekaApprove()
+                                    const mekaApproveWait: any = await fetchMekaApprove()
+                                    await mekaApproveWait?.wait()
                                   }
                                   await fetchMintPieceFromFarm({
                                     onSuccess: async (result: any) => {

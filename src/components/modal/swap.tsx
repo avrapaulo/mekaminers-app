@@ -254,7 +254,7 @@ export const SwapModal = () => {
                             const mekaAllowanceResult: any = await fetchMekaAllowance()
                             if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < first) {
                               const mekaApproveWait: any = await fetchMekaApprove()
-                              await mekaApproveWait.wait()
+                              await mekaApproveWait?.wait()
                             }
 
                             await fetchSignatureFromMeka({
