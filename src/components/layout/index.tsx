@@ -125,7 +125,8 @@ export const Layout = ({ children }: LayoutProps) => {
     setOresAtom,
     setUserAtom,
     setCurrentFee,
-    setHasNftAtom
+    setHasNftAtom,
+    isAuthenticated
   ])
 
   useEffect(() => {

@@ -56,7 +56,7 @@ const Boxes = () => {
       <MiniHeader menu={junkyard} />
       <Layout>
         <>
-          <Card description={'Mining Box'} imageCard={<img alt="" src="/gif/boxLvl1-robot.gif" />}>
+          <Card description={'NewBie Box'} imageCard={<img alt="" src="/gif/boxLvl1-robot.gif" />}>
             <div className="flex-1 p-4 flex flex-col">
               <div className="h-full flex justify-between flex-col">
                 <div className="flex justify-center items-center mb-6">
