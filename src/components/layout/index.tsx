@@ -96,6 +96,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const { chainId, account } = useChain()
   const { fetchBalanceOf } = UseBalanceOf()
   useEffect(() => {
+    if (!isAuthenticated) setMekaAtom(0)
     setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
     fetch({
@@ -414,7 +415,7 @@ export const Layout = ({ children }: LayoutProps) => {
               ? children
               : account && (
                   <div className="text-white text-4xl font-bold flex justify-center items-center h-screen">
-                    Invalid Wallet
+                    {!isAuthenticated ? 'Connect Your Wallet' : 'Invalid Wallet'}
                   </div>
                   // eslint-disable-next-line indent
                 )
