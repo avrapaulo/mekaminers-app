@@ -36,5 +36,9 @@ export const junkyard = [
   {
     name: 'Utilities',
     url: '/junkyard/utilities'
+  },
+  {
+    name: 'Boxes',
+    url: '/junkyard/boxes'
   }
 ]

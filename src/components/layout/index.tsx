@@ -31,7 +31,7 @@ import { Wallet } from 'icons/wallet'
 import { DisconnectModel, SwapModal } from 'components/modal'
 import { classNames } from 'helpers/class-names'
 import { UseBalanceOf } from 'hooks'
-import { currentFeeAtom } from 'recoil/atoms/user'
+import { currentFeeAtom, hasNftAtom } from 'recoil/atoms/user'
 
 const navigation = [
   {
@@ -88,6 +88,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const setSwapAtom = useSetRecoilState(swapAtom)
   const setIsOresAtom = useSetRecoilState(isOresAtom)
   const setUserAtom = useSetRecoilState(userLandAtom)
+  const setHasNftAtom = useSetRecoilState(hasNftAtom)
   const setCurrentFee = useSetRecoilState(currentFeeAtom)
   const { meka, ore } = useRecoilValue(walletCoins)
   const router = useRouter()
@@ -98,10 +99,11 @@ export const Layout = ({ children }: LayoutProps) => {
     setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
     fetch({
-      onSuccess: ({ ores, totalLands, currentFee, lastWithdraw }) => {
+      onSuccess: ({ ores, totalLands, currentFee, lastWithdraw, hasNft }) => {
         setOresAtom(ores)
         setUserAtom(totalLands)
         setCurrentFee({ fee: currentFee, lastWithdraw })
+        setHasNftAtom(hasNft)
       }
     })
 
@@ -121,7 +123,8 @@ export const Layout = ({ children }: LayoutProps) => {
     fetch,
     setOresAtom,
     setUserAtom,
-    setCurrentFee
+    setCurrentFee,
+    setHasNftAtom
   ])
 
   useEffect(() => {

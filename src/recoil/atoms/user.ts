@@ -5,3 +5,8 @@ export const currentFeeAtom = atom({
   key: 'currentFeeAtom',
   default: { fee: 0.03, lastWithdraw: null }
 })
+
+export const hasNftAtom = atom({
+  key: 'hasNftAtom',
+  default: 0
+})
