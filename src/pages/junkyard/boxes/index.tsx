@@ -14,6 +14,7 @@ import { Notification } from 'components/notification'
 
 const amountToApprove = 1000000
 const oresPrice = 10000
+const robotMax = 10
 
 const Boxes = () => {
   const { Moralis } = useMoralis()
@@ -172,13 +173,13 @@ const Boxes = () => {
             <div className="flex-1 p-4 flex flex-col">
               <div className="h-full flex justify-between flex-col">
                 <div className="flex justify-center items-center mb-6">
-                  <div className={classNames(hasNft >= 2 ? 'cursor-not-allowed' : '')}>
+                  <div className={classNames(hasNft >= robotMax ? 'cursor-not-allowed' : '')}>
                     <button
                       type="button"
                       className={classNames(
                         'w-32 inline-flex justify-center px-4 py-2 border border-transparent text-lg font-semibold rounded-md shadow-sm text-black bg-white hover:bg-gray-200',
                         isLoading ? 'animate-pulse bg-gray-100 pointer-events-none' : '',
-                        hasNft < 2 ? '' : 'pointer-events-none bg-gray-500'
+                        hasNft < robotMax ? '' : 'pointer-events-none bg-gray-500'
                       )}
                       onClick={async () => {
                         if (meka < 65) {
