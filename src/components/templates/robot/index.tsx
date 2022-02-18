@@ -47,7 +47,7 @@ const amountToApprove = 1000000
 
 export const RobotDetail = () => {
   const router = useRouter()
-  const { web3, Moralis } = useMoralis()
+  const { Moralis } = useMoralis()
   const setMekaAtom = useSetRecoilState(mekaAtom)
   const { fetchBalanceOf } = UseBalanceOf()
   const wallet = useRecoilValue(walletAtom)
@@ -56,6 +56,12 @@ export const RobotDetail = () => {
   const [randomGreeting, setRandomGreeting] = useState<string>()
 
   const newWeb3 = new Web3(Moralis.provider as any)
+
+  const { fetch: fetchValidateRobotForSale } = useMoralisCloudFunction(
+    'validateRobotForSale',
+    { robotId: +robotId },
+    { autoFetch: false }
+  )
 
   const { data, fetch } = useMoralisCloudFunction(
     'getRobotDetail',
@@ -118,26 +124,48 @@ export const RobotDetail = () => {
     <>
       <ModalPrice
         callback={async number => {
-          await robotMarketplace.methods.createSale(+robotId, Moralis.Units.ETH(number)).send({
-            from: wallet,
-            value: Moralis.Units.ETH(0.005)
+          fetchValidateRobotForSale({
+            onSuccess: async (result: any) => {
+              if (result.status) {
+                await robotMarketplace.methods
+                  .createSale(+robotId, Moralis.Units.ETH(number))
+                  .send({
+                    from: wallet,
+                    value: Moralis.Units.ETH(0.005)
+                  })
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="success"
+                      title="Sell"
+                      description={
+                        <div className="flex flex-row items-center">
+                          Robot listed for {number}
+                          <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
+                        </div>
+                      }
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              } else {
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="error"
+                      title="Bought"
+                      description={
+                        <div className="flex flex-row items-center">{result.message}</div>
+                      }
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              }
+            }
           })
-          toast.custom(
-            t => (
-              <Notification
-                isShow={t.visible}
-                icon="success"
-                title="Sell"
-                description={
-                  <div className="flex flex-row items-center">
-                    Robot listed for {number}
-                    <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
-                  </div>
-                }
-              />
-            ),
-            { duration: 3000 }
-          )
         }}
       />
       <Slide fetch={fetch} mode={mode} />

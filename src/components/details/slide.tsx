@@ -230,38 +230,59 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
 
                             fetchSign({
                               onSuccess: async (result: any) => {
-                                const mekaWait: any = await fetchMeka({
-                                  params: {
+                                if (result.status) {
+                                  const mekaWait: any = await fetchMeka({
                                     params: {
-                                      _owner: wallet,
-                                      _robotId: result.robotId,
-                                      _pieceId: result.pieceId,
-                                      _pieceType: result.pieceType,
-                                      _amount: Moralis.Units.ETH(5),
-                                      _nonce: result.nonce,
-                                      _signature: result.signature
+                                      params: {
+                                        _owner: wallet,
+                                        _robotId: result.robotId,
+                                        _pieceId: result.pieceId,
+                                        _pieceType: result.pieceType,
+                                        _amount: Moralis.Units.ETH(5),
+                                        _nonce: result.nonce,
+                                        _signature: result.signature
+                                      }
                                     }
+                                  })
+                                  const mekaResult: any = await mekaWait?.wait()
+                                  if (mekaResult?.status === 1) {
+                                    await fetchIsAttaching()
+                                    fetch()
+                                    setOpen(false)
+                                    setIsLoading(false)
+                                    const balanceOfResult: any = await fetchBalanceOf()
+                                    setMekaAtom(
+                                      Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
+                                    )
+                                    toast.custom(
+                                      t => (
+                                        <Notification
+                                          isShow={t.visible}
+                                          icon="success"
+                                          title="Attach"
+                                          description={
+                                            <div className="flex flex-row items-center">
+                                              In Progress
+                                            </div>
+                                          }
+                                        />
+                                      ),
+                                      { duration: 3000 }
+                                    )
                                   }
-                                })
-                                const mekaResult: any = await mekaWait?.wait()
-                                if (mekaResult?.status === 1) {
-                                  await fetchIsAttaching()
-                                  fetch()
-                                  setOpen(false)
+
                                   setIsLoading(false)
-                                  const balanceOfResult: any = await fetchBalanceOf()
-                                  setMekaAtom(
-                                    Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
-                                  )
+                                } else {
+                                  setIsLoading(false)
                                   toast.custom(
                                     t => (
                                       <Notification
                                         isShow={t.visible}
-                                        icon="success"
+                                        icon="error"
                                         title="Attach"
                                         description={
                                           <div className="flex flex-row items-center">
-                                            In Progress
+                                            {result.message}
                                           </div>
                                         }
                                       />
@@ -269,8 +290,6 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                     { duration: 3000 }
                                   )
                                 }
-
-                                setIsLoading(false)
                               },
                               onError: e => {
                                 setIsLoading(false)

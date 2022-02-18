@@ -87,12 +87,18 @@ export const PieceDetail = () => {
     }
   })
 
+  const { fetch: fetchValidatePieceForSale } = useMoralisCloudFunction(
+    'validatePieceForSale',
+    { pieceId: +id },
+    { autoFetch: false }
+  )
+
   useEffect(() => {
     fetch()
   }, [fetch])
 
   const {
-    piece: { title = ' ', owner, rarity, type, bonus, price, mode, piecesStatus },
+    piece: { title = ' ', owner, rarity, type, price, mode, piecesStatus },
     isOwner
   } = (data || { piece: {} }) as PiecesProps
 
@@ -100,26 +106,46 @@ export const PieceDetail = () => {
     <>
       <ModalPrice
         callback={async number => {
-          await pieceMarketplace.methods.createSale(+id, Moralis.Units.ETH(number)).send({
-            from: wallet,
-            value: Moralis.Units.ETH(0.005)
+          fetchValidatePieceForSale({
+            onSuccess: async (result: any) => {
+              if (result.status) {
+                await pieceMarketplace.methods.createSale(+id, Moralis.Units.ETH(number)).send({
+                  from: wallet,
+                  value: Moralis.Units.ETH(0.005)
+                })
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="success"
+                      title="Sell"
+                      description={
+                        <div className="flex flex-row items-center">
+                          Piece listed for {number}
+                          <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
+                        </div>
+                      }
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              } else {
+                toast.custom(
+                  t => (
+                    <Notification
+                      isShow={t.visible}
+                      icon="error"
+                      title="Bought"
+                      description={
+                        <div className="flex flex-row items-center">{result.message}</div>
+                      }
+                    />
+                  ),
+                  { duration: 3000 }
+                )
+              }
+            }
           })
-          toast.custom(
-            t => (
-              <Notification
-                isShow={t.visible}
-                icon="success"
-                title="Sell"
-                description={
-                  <div className="flex flex-row items-center">
-                    Piece listed for {number}
-                    <img alt="" className="h-6 w-6 object-contain" src="/meka.png" />
-                  </div>
-                }
-              />
-            ),
-            { duration: 3000 }
-          )
         }}
       />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-white w-full h-full">

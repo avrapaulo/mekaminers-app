@@ -19,8 +19,8 @@ export const SwapModal = () => {
   const wallet = useRecoilValue(walletAtom)
   const [open, setOpen] = useRecoilState(swapAtom)
   const [isOres, setIsOres] = useRecoilState(isOresAtom)
-  const [first, setFirst] = useState<number>()
-  const [second, setSecond] = useState<number>()
+  const [first, setFirst] = useState<number | string>()
+  const [second, setSecond] = useState<number | string>()
   const { meka, ore } = useRecoilValue(walletCoins)
   const { fee: feeAtom, lastWithdraw } = useRecoilValue(currentFeeAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
@@ -111,6 +111,11 @@ export const SwapModal = () => {
           >
             <div className="flex text-base text-left transform transition w-full md:inline-block md:max-w-xl md:px-4 md:my-8 md:align-middle lg:max-w-2xl">
               <div className="w-full relative flex flex-col items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 lg:pb-2">
+                <div className="absolute top-1 left-1 text-xs text-red-600">
+                  {isOres
+                    ? '*If you cancel or reject the transaction you will not be able to use Ores for 10 min'
+                    : '*If you cancel or reject the transaction will have to wait 10 min to try again'}
+                </div>
                 <button
                   type="button"
                   className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8 focus:outline-none focus:ring-black focus:border-black"
@@ -151,9 +156,13 @@ export const SwapModal = () => {
                       <input
                         type="text"
                         className="block w-full font-semibold pl-10 text-md text-right border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
-                        placeholder="0.0"
                         value={first}
                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                          if (value === '') {
+                            setFirst('')
+                            setSecond(0)
+                            return
+                          }
                           if (/^(\d*\.)?\d+$/.test(value)) {
                             setFirst(+value)
                             setSecond(calcTrade({ type: isOres ? 'ore' : 'meka', value: +value }))
@@ -190,9 +199,13 @@ export const SwapModal = () => {
                       <input
                         type="text"
                         className="block w-full pl-10 font-semibold text-md text-right border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
-                        placeholder="0.0"
                         value={second}
                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+                          if (value === '') {
+                            setFirst(0)
+                            setSecond('')
+                            return
+                          }
                           if (/^(\d*\.)?\d+$/.test(value)) {
                             setFirst(
                               calcTrade({
@@ -216,6 +229,29 @@ export const SwapModal = () => {
                       onClick={async () => {
                         setIsLoading(true)
                         if (!isOres) {
+                          if (first > meka) {
+                            setIsLoading(false)
+                            return toast.custom(
+                              t => (
+                                <Notification
+                                  isShow={t.visible}
+                                  icon="error"
+                                  title="Swap"
+                                  description={
+                                    <div className="flex flex-row items-center">
+                                      You need more
+                                      <img
+                                        alt=""
+                                        className="h-6 w-6 object-contain"
+                                        src="/meka.png"
+                                      />
+                                    </div>
+                                  }
+                                />
+                              ),
+                              { duration: 3000 }
+                            )
+                          }
                           if (first < 10) {
                             setIsLoading(false)
                             return toast.custom(
@@ -251,6 +287,24 @@ export const SwapModal = () => {
                               params: { amount: Moralis.Units.ETH(first) },
                               onError: () => setIsLoading(false),
                               onSuccess: async (result: any) => {
+                                if (!result.status) {
+                                  setIsLoading(false)
+                                  return toast.custom(
+                                    t => (
+                                      <Notification
+                                        isShow={t.visible}
+                                        icon="error"
+                                        title="Swap"
+                                        description={
+                                          <div className="flex flex-row items-center">
+                                            {result.message}
+                                          </div>
+                                        }
+                                      />
+                                    ),
+                                    { duration: 3000 }
+                                  )
+                                }
                                 try {
                                   const convertWait: any = await fetchConvert({
                                     params: {
@@ -297,6 +351,29 @@ export const SwapModal = () => {
                             return setIsLoading(false)
                           }
                         } else {
+                          if (first > ore) {
+                            setIsLoading(false)
+                            return toast.custom(
+                              t => (
+                                <Notification
+                                  isShow={t.visible}
+                                  icon="error"
+                                  title="Swap"
+                                  description={
+                                    <div className="flex flex-row items-center">
+                                      You need more
+                                      <img
+                                        alt=""
+                                        className="h-6 w-6 object-contain"
+                                        src="/ore.png"
+                                      />
+                                    </div>
+                                  }
+                                />
+                              ),
+                              { duration: 3000 }
+                            )
+                          }
                           if (first <= 0) {
                             setIsLoading(false)
                             return toast.custom(
@@ -324,7 +401,7 @@ export const SwapModal = () => {
                             params: { amount: first },
                             onError: () => setIsLoading(false),
                             onSuccess: async (result: any) => {
-                              if (result) {
+                              if (result.status) {
                                 const convertWait: any = await fetchConvert({
                                   params: {
                                     params: {
@@ -369,7 +446,9 @@ export const SwapModal = () => {
                                       icon="error"
                                       title="Swap"
                                       description={
-                                        <div className="flex flex-row items-center">Try later!</div>
+                                        <div className="flex flex-row items-center">
+                                          {result.message}
+                                        </div>
                                       }
                                     />
                                   ),
