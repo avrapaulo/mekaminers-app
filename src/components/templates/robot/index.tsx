@@ -142,7 +142,7 @@ export const RobotDetail = () => {
       />
       <Slide fetch={fetch} mode={mode} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full h-full">
-        <div className="flex relative">
+        <div className="flex relative space-x-2">
           <Link href={market ? '/marketplace/robots' : '/inventory/robots'}>
             <a className="flex flex-row text-white font-bold text-2xl justify-center items-center">
               <div className="w-8 h-8">
@@ -151,7 +151,7 @@ export const RobotDetail = () => {
               Go back
             </a>
           </Link>
-          <Mode modeId={mode} />
+          {isOwner && <Mode modeId={mode} isAbsolute={false} />}
         </div>
         <div className="flex flex-col lg:grid grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">
