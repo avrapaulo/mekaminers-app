@@ -69,7 +69,7 @@ export const SwapModal = () => {
   const conversionFeeWithoutPercentage = isOres ? feeAtom : 0
   const conversionRate = isOres ? 300 : 60
 
-  const calcTrade = ({ type, value }: { isOres: boolean; type: 'ore' | 'meka'; value: number }) => {
+  const calcTrade = ({ type, value }: { type: 'ore' | 'meka'; value: number }) => {
     if (type === 'ore') {
       return +((+value * (1 - conversionFeeWithPercentage)) / conversionRate).toFixed(5)
     }
@@ -131,7 +131,6 @@ export const SwapModal = () => {
                           setFirst(isOres ? ore : meka)
                           setSecond(
                             calcTrade({
-                              isOres,
                               type: isOres ? 'ore' : 'meka',
                               value: isOres ? ore : meka
                             })
@@ -157,9 +156,7 @@ export const SwapModal = () => {
                         onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
                           if (/^(\d*\.)?\d+$/.test(value)) {
                             setFirst(+value)
-                            setSecond(
-                              calcTrade({ isOres, type: isOres ? 'ore' : 'meka', value: +value })
-                            )
+                            setSecond(calcTrade({ type: isOres ? 'ore' : 'meka', value: +value }))
                           }
                         }}
                       />
@@ -169,14 +166,8 @@ export const SwapModal = () => {
                     <div
                       className="group mx-auto cursor-pointer"
                       onClick={() => {
-                        setSecond(first)
-                        setFirst(
-                          calcTrade({
-                            isOres: !isOres,
-                            type: isOres ? 'ore' : 'meka',
-                            value: first
-                          })
-                        )
+                        setSecond(0)
+                        setFirst(0)
                         setIsOres(!isOres)
                       }}
                     >
@@ -205,7 +196,6 @@ export const SwapModal = () => {
                           if (/^(\d*\.)?\d+$/.test(value)) {
                             setFirst(
                               calcTrade({
-                                isOres,
                                 type: !isOres ? 'ore' : 'meka',
                                 value: +value
                               })
