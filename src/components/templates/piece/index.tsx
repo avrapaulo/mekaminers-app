@@ -116,6 +116,7 @@ export const PieceDetail = () => {
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="success"
                       title="Sell"
@@ -133,6 +134,7 @@ export const PieceDetail = () => {
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="error"
                       title="Bought"
@@ -270,12 +272,13 @@ export const PieceDetail = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Sell"
                                 description={
                                   <div className="flex flex-row items-center">
-                                    You remove your piece from market
+                                    You removed your piece from market
                                   </div>
                                 }
                               />
@@ -309,6 +312,7 @@ export const PieceDetail = () => {
                               toast.custom(
                                 t => (
                                   <Notification
+                                    onClickClose={() => toast.dismiss(t.id)}
                                     isShow={t.visible}
                                     icon="success"
                                     title="Bought"

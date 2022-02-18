@@ -69,6 +69,7 @@ const Boxes = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Box"
@@ -113,6 +114,7 @@ const Boxes = () => {
                                   toast.custom(
                                     t => (
                                       <Notification
+                                        onClickClose={() => toast.dismiss(t.id)}
                                         isShow={t.visible}
                                         icon="success"
                                         title="Minted"
@@ -131,6 +133,7 @@ const Boxes = () => {
                                 toast.custom(
                                   t => (
                                     <Notification
+                                      onClickClose={() => toast.dismiss(t.id)}
                                       isShow={t.visible}
                                       icon="error"
                                       title="Minted"
@@ -186,6 +189,7 @@ const Boxes = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Box"
@@ -231,6 +235,7 @@ const Boxes = () => {
                                   toast.custom(
                                     t => (
                                       <Notification
+                                        onClickClose={() => toast.dismiss(t.id)}
                                         isShow={t.visible}
                                         icon="success"
                                         title="Minted"
@@ -253,6 +258,7 @@ const Boxes = () => {
                                 toast.custom(
                                   t => (
                                     <Notification
+                                      onClickClose={() => toast.dismiss(t.id)}
                                       isShow={t.visible}
                                       icon="error"
                                       title="Minted"

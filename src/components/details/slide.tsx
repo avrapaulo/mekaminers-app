@@ -75,7 +75,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
 
   const { fetch: fetchIsAttaching } = useMoralisCloudFunction(
     'setIsAttaching',
-    { robotId },
+    { robotId, pieceId: selected },
     { autoFetch: false }
   )
 
@@ -205,6 +205,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                             return toast.custom(
                               t => (
                                 <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
                                   isShow={t.visible}
                                   icon="error"
                                   title="Attach"
@@ -257,6 +258,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                     toast.custom(
                                       t => (
                                         <Notification
+                                          onClickClose={() => toast.dismiss(t.id)}
                                           isShow={t.visible}
                                           icon="success"
                                           title="Attach"
@@ -277,6 +279,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                   toast.custom(
                                     t => (
                                       <Notification
+                                        onClickClose={() => toast.dismiss(t.id)}
                                         isShow={t.visible}
                                         icon="error"
                                         title="Attach"

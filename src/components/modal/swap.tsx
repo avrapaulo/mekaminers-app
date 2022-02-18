@@ -234,6 +234,7 @@ export const SwapModal = () => {
                             return toast.custom(
                               t => (
                                 <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
                                   isShow={t.visible}
                                   icon="error"
                                   title="Swap"
@@ -257,6 +258,7 @@ export const SwapModal = () => {
                             return toast.custom(
                               t => (
                                 <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
                                   isShow={t.visible}
                                   icon="error"
                                   title="Swap"
@@ -292,6 +294,7 @@ export const SwapModal = () => {
                                   return toast.custom(
                                     t => (
                                       <Notification
+                                        onClickClose={() => toast.dismiss(t.id)}
                                         isShow={t.visible}
                                         icon="error"
                                         title="Swap"
@@ -324,6 +327,7 @@ export const SwapModal = () => {
                                     toast.custom(
                                       t => (
                                         <Notification
+                                          onClickClose={() => toast.dismiss(t.id)}
                                           isShow={t.visible}
                                           icon="success"
                                           title="Swap"
@@ -356,6 +360,7 @@ export const SwapModal = () => {
                             return toast.custom(
                               t => (
                                 <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
                                   isShow={t.visible}
                                   icon="error"
                                   title="Swap"
@@ -379,6 +384,7 @@ export const SwapModal = () => {
                             return toast.custom(
                               t => (
                                 <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
                                   isShow={t.visible}
                                   icon="error"
                                   title="Swap"
@@ -419,6 +425,7 @@ export const SwapModal = () => {
                                   toast.custom(
                                     t => (
                                       <Notification
+                                        onClickClose={() => toast.dismiss(t.id)}
                                         isShow={t.visible}
                                         icon="success"
                                         title="Swap"
@@ -442,6 +449,7 @@ export const SwapModal = () => {
                                 toast.custom(
                                   t => (
                                     <Notification
+                                      onClickClose={() => toast.dismiss(t.id)}
                                       isShow={t.visible}
                                       icon="error"
                                       title="Swap"

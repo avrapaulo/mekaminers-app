@@ -76,6 +76,7 @@ export const SpendModel = ({ open, setOpen }: SpendModelProps) => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Land"
@@ -96,6 +97,7 @@ export const SpendModel = ({ open, setOpen }: SpendModelProps) => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Land"
@@ -116,6 +118,7 @@ export const SpendModel = ({ open, setOpen }: SpendModelProps) => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Land"

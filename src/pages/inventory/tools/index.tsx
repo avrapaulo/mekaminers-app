@@ -134,6 +134,7 @@ const Tools = () => {
                                           toast.custom(
                                             t => (
                                               <Notification
+                                                onClickClose={() => toast.dismiss(t.id)}
                                                 isShow={t.visible}
                                                 icon="success"
                                                 title="Minted"
@@ -156,6 +157,7 @@ const Tools = () => {
                                         toast.custom(
                                           t => (
                                             <Notification
+                                              onClickClose={() => toast.dismiss(t.id)}
                                               isShow={t.visible}
                                               icon="error"
                                               title="Minted"

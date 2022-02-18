@@ -113,6 +113,7 @@ export const FarmCard = ({
                     toast.custom(
                       t => (
                         <Notification
+                          onClickClose={() => toast.dismiss(t.id)}
                           isShow={t.visible}
                           icon="success"
                           title={'Collect'}
@@ -142,6 +143,7 @@ export const FarmCard = ({
                     toast.custom(
                       t => (
                         <Notification
+                          onClickClose={() => toast.dismiss(t.id)}
                           isShow={t.visible}
                           icon="error"
                           title="Collect"
@@ -178,6 +180,7 @@ export const FarmCard = ({
                       toast.custom(
                         t => (
                           <Notification
+                            onClickClose={() => toast.dismiss(t.id)}
                             isShow={t.visible}
                             icon="success"
                             title="Oil"
@@ -192,6 +195,7 @@ export const FarmCard = ({
                       toast.custom(
                         t => (
                           <Notification
+                            onClickClose={() => toast.dismiss(t.id)}
                             isShow={t.visible}
                             icon="error"
                             title="Oil"

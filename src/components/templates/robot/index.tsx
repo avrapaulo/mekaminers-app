@@ -136,6 +136,7 @@ export const RobotDetail = () => {
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="success"
                       title="Sell"
@@ -153,6 +154,7 @@ export const RobotDetail = () => {
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="error"
                       title="Bought"
@@ -462,12 +464,13 @@ export const RobotDetail = () => {
                       toast.custom(
                         t => (
                           <Notification
+                            onClickClose={() => toast.dismiss(t.id)}
                             isShow={t.visible}
                             icon="success"
                             title="Sell"
                             description={
                               <div className="flex flex-row items-center">
-                                You remove your robot from market
+                                You removed your robot from market
                               </div>
                             }
                           />
@@ -501,6 +504,7 @@ export const RobotDetail = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Bought"
@@ -522,6 +526,7 @@ export const RobotDetail = () => {
                   toast.custom(
                     t => (
                       <Notification
+                        onClickClose={() => toast.dismiss(t.id)}
                         isShow={t.visible}
                         icon="error"
                         title={'Sell'}

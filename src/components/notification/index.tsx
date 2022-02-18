@@ -1,4 +1,4 @@
-import { XCircleIcon } from '@heroicons/react/outline'
+import { XCircleIcon, XIcon } from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
 
 interface NotificationProps {
@@ -6,15 +6,22 @@ interface NotificationProps {
   title: string
   description?: JSX.Element
   icon: 'success' | 'error'
+  onClickClose?: () => void
 }
 
-export const Notification = ({ isShow = true, description, title, icon }: NotificationProps) => (
+export const Notification = ({
+  isShow = true,
+  description,
+  title,
+  icon,
+  onClickClose
+}: NotificationProps) => (
   <div
     className={`${
       isShow ? 'animate-enter' : 'animate-leave'
     } max-w-xs w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
   >
-    <div className="flex-1 w-0 p-4">
+    <div className="flex-1 w-0 p-4 relative">
       <div className="flex justify-center items-center">
         <div className="flex-shrink-0 pt-0.5">
           {icon === 'success' && (
@@ -30,13 +37,16 @@ export const Notification = ({ isShow = true, description, title, icon }: Notifi
         </div>
       </div>
     </div>
-    <div className="flex">
-      {/* <button
-        onClick={() => setShow(true)}
-        className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex text-sm font-medium"
-      >
-        <XIcon className="h-5 w-5" aria-hidden="true" />
-      </button> */}
-    </div>
+    {onClickClose && (
+      <div className="absolute right-2 top-2">
+        <button
+          className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+          onClick={onClickClose}
+        >
+          <span className="sr-only">Close</span>
+          <XIcon className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
+    )}
   </div>
 )

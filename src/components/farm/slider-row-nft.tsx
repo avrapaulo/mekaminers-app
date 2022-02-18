@@ -311,6 +311,7 @@ export const SliderRowNFT = ({
                         toast.custom(
                           t => (
                             <Notification
+                              onClickClose={() => toast.dismiss(t.id)}
                               isShow={t.visible}
                               icon="error"
                               title="Farm"

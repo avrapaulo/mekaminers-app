@@ -51,6 +51,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
             return toast.custom(
               t => (
                 <Notification
+                  onClickClose={() => toast.dismiss(t.id)}
                   isShow={t.visible}
                   icon="error"
                   title={'Reroll'}
@@ -73,6 +74,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="success"
                       title={'Reroll'}
@@ -90,6 +92,7 @@ export const CounterReroll = ({ time, fetchFarm, id, canReroll }: CounterProps) 
                 toast.custom(
                   t => (
                     <Notification
+                      onClickClose={() => toast.dismiss(t.id)}
                       isShow={t.visible}
                       icon="error"
                       title="Reroll"

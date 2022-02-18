@@ -33,6 +33,7 @@ const Utilities = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Bug"
@@ -53,6 +54,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Bug"
@@ -70,6 +72,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Bug"
@@ -105,6 +108,7 @@ const Utilities = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Frog"
@@ -125,6 +129,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Frog"
@@ -142,6 +147,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Frog"
@@ -177,6 +183,7 @@ const Utilities = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Dog"
@@ -197,6 +204,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Dog"
@@ -214,6 +222,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Dog"
@@ -253,6 +262,7 @@ const Utilities = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Toolkit"
@@ -273,6 +283,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Toolkit"
@@ -290,6 +301,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Toolkit"
@@ -328,6 +340,7 @@ const Utilities = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Oil"
@@ -348,6 +361,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Oil"
@@ -365,6 +379,7 @@ const Utilities = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Oil"

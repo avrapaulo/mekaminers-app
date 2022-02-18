@@ -35,6 +35,7 @@ const MiningBots = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Heavy"
@@ -55,6 +56,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Heavy"
@@ -72,6 +74,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Heavy"
@@ -109,6 +112,7 @@ const MiningBots = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Rusty"
@@ -129,6 +133,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Rusty"
@@ -146,6 +151,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Rusty"
@@ -183,6 +189,7 @@ const MiningBots = () => {
                           return toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Functional"
@@ -203,6 +210,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="success"
                                 title="Functional"
@@ -220,6 +228,7 @@ const MiningBots = () => {
                           toast.custom(
                             t => (
                               <Notification
+                                onClickClose={() => toast.dismiss(t.id)}
                                 isShow={t.visible}
                                 icon="error"
                                 title="Functional"
