@@ -85,7 +85,7 @@ export const Layout = ({ children }: LayoutProps) => {
   const setDisconnect = useSetRecoilState(disconnectAtom)
   const setMekaAtom = useSetRecoilState(mekaAtom)
   const setOresAtom = useSetRecoilState(oreAtom)
-  const setSwapAtom = useSetRecoilState(swapAtom)
+  const [swapModal, setSwapAtom] = useRecoilState(swapAtom)
   const setIsOresAtom = useSetRecoilState(isOresAtom)
   const setUserAtom = useSetRecoilState(userLandAtom)
   const setHasNftAtom = useSetRecoilState(hasNftAtom)
@@ -158,8 +158,10 @@ export const Layout = ({ children }: LayoutProps) => {
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="fixed inset-0 flex z-40 lg:hidden w-48"
-            onClose={setSidebarOpen}
+            className="fixed inset-0 flex z-20 lg:hidden w-48"
+            onClose={value => {
+              if (!swapModal) setSidebarOpen(value)
+            }}
           >
             <Transition.Child
               as={Fragment}
