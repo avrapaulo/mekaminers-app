@@ -36,7 +36,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useRecoilState(slideAtom)
   const { robotId, pieceType } = useRecoilValue(slideDataAtom)
-  const setMekaAtom = useSetRecoilState(mekaAtom)
+  const [meka, setMekaAtom] = useRecoilState(mekaAtom)
 
   const { data, fetch: fetchPiecesForRobot } = useMoralisCloudFunction(
     'getPiecesForRobot',
@@ -212,6 +212,30 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
                                   description={
                                     <div className="flex flex-row items-center">
                                       Your robot is farming
+                                    </div>
+                                  }
+                                />
+                              ),
+                              { duration: 3000 }
+                            )
+                          }
+
+                          if (meka < 5) {
+                            return toast.custom(
+                              t => (
+                                <Notification
+                                  onClickClose={() => toast.dismiss(t.id)}
+                                  isShow={t.visible}
+                                  icon="error"
+                                  title="Attach"
+                                  description={
+                                    <div className="flex flex-row items-center">
+                                      You need to have 5
+                                      <img
+                                        alt="Logo"
+                                        className="h-6 w-6 object-contain"
+                                        src="/meka.png"
+                                      />
                                     </div>
                                   }
                                 />

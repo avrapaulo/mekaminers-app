@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { useMoralisCloudFunction, useMoralis, useWeb3ExecuteFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { walletAtom, defaultWallet, mekaAtom } from 'recoil/atoms'
@@ -27,7 +27,7 @@ const Tools = () => {
   const wallet = useRecoilValue(walletAtom)
   const [isLoading, setIsLoading] = useState(false)
   const { fetchBalanceOf } = UseBalanceOf()
-  const setMekaAtom = useSetRecoilState(mekaAtom)
+  const [meka, setMekaAtom] = useRecoilState(mekaAtom)
 
   const { fetch, data } = useMoralisCloudFunction('getUtilities')
   const { fetchMeka: fetchMekaAllowance } = useMeka({
@@ -110,6 +110,29 @@ const Tools = () => {
                                   'flex justify-center items-center py-2 border border-transparent text-lg font-semibold rounded-xl shadow-sm text-black bg-white hover:bg-gray-200 w-28'
                                 }
                                 onClick={async () => {
+                                  if (meka < 5) {
+                                    return toast.custom(
+                                      t => (
+                                        <Notification
+                                          onClickClose={() => toast.dismiss(t.id)}
+                                          isShow={t.visible}
+                                          icon="error"
+                                          title="Shard"
+                                          description={
+                                            <div className="flex flex-row items-center">
+                                              You need to have 5
+                                              <img
+                                                alt="Logo"
+                                                className="h-6 w-6 object-contain"
+                                                src="/meka.png"
+                                              />
+                                            </div>
+                                          }
+                                        />
+                                      ),
+                                      { duration: 3000 }
+                                    )
+                                  }
                                   setIsLoading(true)
                                   const mekaAllowanceResult: any = await fetchMekaAllowance()
                                   if (+Moralis.Units.FromWei(mekaAllowanceResult, 18) < 5) {
@@ -137,7 +160,7 @@ const Tools = () => {
                                                 onClickClose={() => toast.dismiss(t.id)}
                                                 isShow={t.visible}
                                                 icon="success"
-                                                title="Minted"
+                                                title="Shard"
                                                 description={
                                                   <div className="flex flex-row items-center">
                                                     Your Piece will be send in few minutes
@@ -160,7 +183,7 @@ const Tools = () => {
                                               onClickClose={() => toast.dismiss(t.id)}
                                               isShow={t.visible}
                                               icon="error"
-                                              title="Minted"
+                                              title="Shard"
                                               description={
                                                 <div className="flex flex-row items-center">
                                                   {result.message}

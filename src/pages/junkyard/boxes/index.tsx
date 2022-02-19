@@ -88,6 +88,7 @@ const Boxes = () => {
                             { duration: 3000 }
                           )
                         }
+
                         setIsLoading(true)
                         try {
                           const mekaAllowanceResult: any = await fetchMekaAllowance()
@@ -195,7 +196,7 @@ const Boxes = () => {
                                 title="Box"
                                 description={
                                   <div className="flex flex-row items-center">
-                                    You need more
+                                    You need to have 65
                                     <img
                                       alt="Logo"
                                       className="h-6 w-6 object-contain"
