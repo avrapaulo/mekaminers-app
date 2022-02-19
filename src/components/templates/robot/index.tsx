@@ -150,7 +150,9 @@ export const RobotDetail = () => {
                   ),
                   { duration: 3000 }
                 )
-                fetch()
+                setTimeout(() => {
+                  fetch()
+                }, 1000)
               } else {
                 toast.custom(
                   t => (
@@ -478,7 +480,9 @@ export const RobotDetail = () => {
                         ),
                         { duration: 3000 }
                       )
-                      fetch()
+                      setTimeout(() => {
+                        fetch()
+                      }, 1000)
                     } else {
                       priceModal(true)
                     }
@@ -519,7 +523,9 @@ export const RobotDetail = () => {
                             ),
                             { duration: 3000 }
                           )
-                          fetch()
+                          setTimeout(() => {
+                            fetch()
+                          }, 1000)
                         }
                       } catch {}
                     }
