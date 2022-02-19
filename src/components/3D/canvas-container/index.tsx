@@ -54,7 +54,7 @@ export const CanvasContainer = ({ children, camera, autoRotate = true }: CanvasC
         />
         <Suspense fallback={null}>
           <ambientLight intensity={0.1} />
-          <Environment preset="city" />
+          <Environment path="/" files="potsdamer_platz_1k.hdr" />
           <spotLight intensity={1} position={[5, 20, 20]} />
           {children}
         </Suspense>
