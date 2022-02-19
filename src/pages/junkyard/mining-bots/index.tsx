@@ -21,7 +21,7 @@ const MiningBots = () => {
           <Card description="Heavy" imageCard={<Heavy />}>
             <>
               <div className="text-center px-4">
-                A huge and slow machine with power to collect 3 ores per hour.
+                A huge and slow machine bot with the power to collect 3 ores per hour.
               </div>
               <div className="flex items-center justify-center my-5">
                 <button
@@ -175,7 +175,7 @@ const MiningBots = () => {
           <Card description="Functional" imageCard={<Functional />}>
             <>
               <div className="text-center px-4">
-                Small and energetic mining bot that collects 9 ores per hour.
+                Small and energetic mining bot with the power to collect 9 ores per hour.
               </div>
               <div className="flex items-center justify-center my-5">
                 <button
