@@ -130,6 +130,7 @@ export const PieceDetail = () => {
                   ),
                   { duration: 3000 }
                 )
+                fetch()
               } else {
                 toast.custom(
                   t => (
@@ -285,6 +286,7 @@ export const PieceDetail = () => {
                             ),
                             { duration: 3000 }
                           )
+                          fetch()
                         } else {
                           priceModal(true)
                         }
@@ -325,6 +327,7 @@ export const PieceDetail = () => {
                                 ),
                                 { duration: 3000 }
                               )
+                              fetch()
                             }
                           } catch {}
                         }

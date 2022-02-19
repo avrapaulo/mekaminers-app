@@ -150,6 +150,7 @@ export const RobotDetail = () => {
                   ),
                   { duration: 3000 }
                 )
+                fetch()
               } else {
                 toast.custom(
                   t => (
@@ -477,6 +478,7 @@ export const RobotDetail = () => {
                         ),
                         { duration: 3000 }
                       )
+                      fetch()
                     } else {
                       priceModal(true)
                     }
@@ -517,6 +519,7 @@ export const RobotDetail = () => {
                             ),
                             { duration: 3000 }
                           )
+                          fetch()
                         }
                       } catch {}
                     }
