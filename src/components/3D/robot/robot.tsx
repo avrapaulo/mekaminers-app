@@ -1,9 +1,9 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
-type ActionName = 'Greeting1' | 'Greeting2' | 'Greeting3' | 'Idle' | 'Tank_Collect' | 'Tank_Stuck'
+type ActionName = 'Greeting1' | 'Greeting2' | 'Greeting3' | 'Idle' | 'Collect' | 'Tank_Stuck'
 interface GLTFAction extends THREE.AnimationClip {
   name: ActionName
 }
@@ -23,12 +23,14 @@ export interface RobotObjectProps {
   autoRotate?: boolean
   animation?: string
   animationCollect?: string
+  farmRobots?: any[]
   piecesStatus?: { id: number; key: string; rarity: string }[]
+  robotId?: number
   rarity: string
   robotType: string
 }
 
-const robotDefault = {
+export const robotDefault = {
   stealth: {
     Stealthiness: 1,
     OilDecrease: 2,
@@ -53,7 +55,15 @@ const robotDefault = {
 }
 
 export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElements['group']) => {
-  const { robotType, rarity, piecesStatus = [], animation, animationCollect } = props
+  const {
+    robotType,
+    rarity,
+    piecesStatus = [],
+    animation,
+    animationCollect,
+    robotId,
+    farmRobots
+  } = props
 
   const stealthinessStatus = piecesStatus?.find(({ key }) => key === 'Stealthiness')
   const oilDecreaseStatus = piecesStatus?.find(({ key }) => key === 'OilDecrease')
@@ -90,19 +100,31 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
 
   useEffect(() => {
     if (animation) {
+      actions.Idle?.stop()
       actions[animation].play()
 
       setTimeout(() => {
         actions[animation]?.stop()
+        actions.Idle?.play()
       }, 1500)
+    } else {
+      if (!animationCollect) {
+        actions.Idle?.play()
+      }
     }
-  }, [actions, animation])
+  }, [actions, animation, animationCollect])
 
   useEffect(() => {
-    if (animationCollect) {
-      actions[animationCollect].play()
+    if (
+      farmRobots?.some(i => {
+        return i[`${capacity}${capacityStatus?.rarity || rarity}`] === robotId
+      })
+    ) {
+      if (animationCollect) {
+        actions[animationCollect].play()
+      }
     }
-  }, [actions, animationCollect])
+  }, [actions, animationCollect, capacity, capacityStatus, farmRobots, rarity, robotId])
 
   return (
     <group ref={group} {...props} dispose={null}>
@@ -135,5 +157,3 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
     </group>
   )
 }
-
-// useGLTF.preload('/3d/stealth/A-1.glb')

@@ -1,3 +1,3 @@
-import { atomFamily } from 'recoil'
+import { atom } from 'recoil'
 
-export const farmAtom = atomFamily({ key: 'farmAtom', default: false })
+export const farmRobotsAtom = atom({ key: 'farmRobotsAtom', default: [] })

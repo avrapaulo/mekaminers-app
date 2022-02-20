@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useMoralisCloudFunction } from 'react-moralis'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { FarmCard } from 'components/farm'
 import { SlideFarm } from 'components/farm/slide'
 import { LandEmpty } from 'components/3D/land-empty'
-import { userLandAtom } from 'recoil/atoms'
+import { userLandAtom, farmRobotsAtom } from 'recoil/atoms'
 import { RobotsProps } from 'pages/inventory/robots'
 import { Collect, Reroll, Timer } from 'icons'
 import { SpendModel } from 'components/modal'
+import { robotDefault } from 'components/3D/robot/robot'
 
 interface FarmProps {
   hasDrop: boolean
@@ -29,14 +30,75 @@ interface FarmProps {
 }
 
 const FarmPage = () => {
-  const { fetch, data } = useMoralisCloudFunction('getFarmingRobots')
+  const { fetch, data } = useMoralisCloudFunction('getFarmingRobots', {})
   const [openSlideFarm, setOpenSlideFarm] = useState(false)
   const [openSpendLand, setOpenSpendLand] = useState(false)
+  const [farmRobots, setFarmRobots] = useRecoilState(farmRobotsAtom)
   const totalLandAtom = useRecoilValue(userLandAtom)
+  const date = new Date()
+  const nowUtc = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds()
+  )
 
   useEffect(() => {
     fetch()
   }, [fetch, totalLandAtom])
+
+  useEffect(() => {
+    if (!data) return
+    for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
+      const capacityStatus = data[robotCount].robot.piecesStatus?.find(
+        ({ key }) => key === 'Capacity'
+      )
+      const capacity =
+        capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
+      const time =
+        +new Date(data[robotCount].startedAt) + data[robotCount].mineralTotalTime * 1000 - nowUtc <=
+        0
+      if (
+        farmRobots.some(
+          item =>
+            item[`${capacity}${data[robotCount].robot.rarity}`] === data[robotCount].robot.token &&
+            (time || data[robotCount].isPaused)
+        )
+      ) {
+        setFarmRobots(farmRobots.filter(i => !i[`${capacity}${data[robotCount].robot.rarity}`]))
+      }
+    }
+
+    for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
+      const capacityStatus = data[robotCount].robot.piecesStatus?.find(
+        ({ key }) => key === 'Capacity'
+      )
+      const capacity =
+        capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
+      const time =
+        +new Date(data[robotCount].startedAt) + data[robotCount].mineralTotalTime * 1000 - nowUtc <=
+        0
+      setFarmRobots(items => {
+        if (
+          !items?.some(
+            i => i[`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]
+          ) &&
+          !(time || data[robotCount].isPaused)
+        ) {
+          return [
+            ...items,
+            {
+              [`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]:
+                data[robotCount].robot.token
+            }
+          ]
+        }
+        return items
+      })
+    }
+  }, [data, farmRobots, setFarmRobots, nowUtc])
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-full lg:px-8 h-full">

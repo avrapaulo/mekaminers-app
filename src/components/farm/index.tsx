@@ -9,7 +9,6 @@ import { classNames } from 'helpers/class-names'
 import { Bag } from 'components/3D/bag'
 import { Notification } from 'components/notification'
 import { LandEmpty } from 'components/3D/land-empty'
-import { shard } from 'constants/shards'
 import { CounterReroll } from './counter-reroll'
 import { CounterTotal } from './counter-total'
 import { Collect } from 'icons'
@@ -51,6 +50,7 @@ export const FarmCard = ({
   const [farmEnd, setFarmEnd] = useState(false)
   const [isCollectLoading, setIsCollectLoading] = useState(false)
   const setOresAtom = useSetRecoilState(oreAtom)
+
   const { fetch } = useMoralisCloudFunction(
     'collectFarm',
     { robotId: isNFT ? id : null, nonNftRobot: isNFT ? null : id },

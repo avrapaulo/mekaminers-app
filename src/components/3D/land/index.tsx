@@ -1,3 +1,5 @@
+import { useRecoilValue } from 'recoil'
+import { farmRobotsAtom } from 'recoil/atoms'
 import { RobotObject, RobotObjectProps } from 'components/3D/robot/robot'
 import { FrogObject } from 'components/3D/pets/frog/frog'
 import { DogObject } from 'components/3D/pets/dog/dog'
@@ -19,10 +21,14 @@ export const LandRobot = ({
   mineralRarity,
   petName
 }: LandRobotProps) => {
+  const farmRobots = useRecoilValue(farmRobotsAtom)
+
   return (
     <CanvasContainer autoRotate={true} camera={{ position: [-15, 10, 0], zoom: 2.2 }}>
       <>
         <RobotObject
+          robotId={+id}
+          farmRobots={farmRobots}
           key={id}
           animationCollect="Collect"
           rarity={rarity}
