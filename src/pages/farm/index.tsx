@@ -52,6 +52,7 @@ const FarmPage = () => {
   useEffect(() => {
     if (!data) return
     for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
+      if (!data[robotCount]?.robot) continue
       const capacityStatus = data[robotCount].robot.piecesStatus?.find(
         ({ key }) => key === 'Capacity'
       )
@@ -72,6 +73,7 @@ const FarmPage = () => {
     }
 
     for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
+      if (!data[robotCount]?.robot) continue
       const capacityStatus = data[robotCount].robot.piecesStatus?.find(
         ({ key }) => key === 'Capacity'
       )

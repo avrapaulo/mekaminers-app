@@ -48,7 +48,7 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
       console.log(error)
     }
     fetchUtilities()
-  }, [fetchUtilities, isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis])
+  }, [fetchUtilities, isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis, open])
 
   return (
     <Transition.Root show={open} as={Fragment}>
