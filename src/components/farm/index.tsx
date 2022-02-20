@@ -140,6 +140,7 @@ export const FarmCard = ({
                     )
                   } else {
                     setFarmEnd(false)
+                    setIsCollectLoading(false)
                     toast.custom(
                       t => (
                         <Notification
