@@ -1,7 +1,12 @@
 import { Dispatch, Fragment, SetStateAction, useState, useEffect } from 'react'
+import Web3 from 'web3'
+import { AbiItem } from 'web3-utils'
+import { useRecoilValue } from 'recoil'
+import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
 import { XIcon } from '@heroicons/react/outline'
-import { useMoralisCloudFunction } from 'react-moralis'
 import { Dialog, Transition } from '@headlessui/react'
+import { abi } from 'contracts/RobotCore.json'
+import { walletAtom, defaultWallet } from 'recoil/atoms'
 import { classNames } from 'helpers/class-names'
 import { RobotsProps } from 'pages/inventory/robots'
 import { SliderRowNFT } from './slider-row-nft'
@@ -16,17 +21,34 @@ interface SlideFarmProps {
 }
 
 export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
+  const { isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [activeTab, setActiveTab] = useState(tabs[0].name)
   const [keyDisclosure, setKeyDisclosure] = useState<number>()
+  const wallet = useRecoilValue(walletAtom)
 
-  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm')
+  const { data, fetch } = useMoralisCloudFunction('getRobotToFarm', {}, { autoFetch: false })
   const { data: dataUtilities, fetch: fetchUtilities } = useMoralisCloudFunction('getUtilities')
   const { robots, nonNFTRobots } = (data as { robots: any; nonNFTRobots: any }) || {}
 
   useEffect(() => {
-    fetch()
+    const newWeb3 = new Web3(Moralis.provider as any)
+    const robots = new newWeb3.eth.Contract(abi as AbiItem[], process.env.NEXT_PUBLIC_ROBOT_ADDRESS)
+    const result = async () => {
+      const tokenIds = await robots.methods.tokenOfOwner(wallet).call()
+      fetch({
+        params: { robotIds: tokenIds.map((token: string) => +token) }
+      })
+    }
+
+    try {
+      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) {
+        result()
+      }
+    } catch (error) {
+      console.log(error)
+    }
     fetchUtilities()
-  }, [fetch, fetchUtilities, open])
+  }, [fetchUtilities, isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis])
 
   return (
     <Transition.Root show={open} as={Fragment}>

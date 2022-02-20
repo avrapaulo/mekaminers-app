@@ -28,7 +28,7 @@ export interface RobotsProps {
 }
 
 const RobotsPage = () => {
-  const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
+  const { isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const [isLoadingPage, setIsLoadingPage] = useState(true)
   const wallet = useRecoilValue(walletAtom)
   const { fetch, data } = useMoralisCloudFunction('getMintedRobots', {}, { autoFetch: false })
@@ -53,7 +53,7 @@ const RobotsPage = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [web3, isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis])
+  }, [isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis])
 
   return (
     <>
