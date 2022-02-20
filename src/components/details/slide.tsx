@@ -1,11 +1,14 @@
 import { Fragment, useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import Web3 from 'web3'
+import { AbiItem } from 'web3-utils'
 import { useMoralis, useMoralisCloudFunction, useWeb3ExecuteFunction } from 'react-moralis'
 import toast from 'react-hot-toast'
 import { Dialog, Transition, RadioGroup } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import { mekaAtom, slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
+import { defaultWallet, mekaAtom, slideAtom, slideDataAtom, walletAtom } from 'recoil/atoms'
 import { abi } from 'contracts/MekaDeployer.json'
+import { abi as pieceAbi } from 'contracts/PieceCore.json'
 import { typeDescription } from 'constants/status'
 import { Notification } from 'components/notification'
 import { classNames } from 'helpers/class-names'
@@ -30,7 +33,7 @@ interface SlideProps {
 }
 
 export const Slide = ({ fetch, mode }: SlideProps) => {
-  const { Moralis } = useMoralis()
+  const { web3, isWeb3Enabled, isAuthenticated, Moralis } = useMoralis()
   const wallet = useRecoilValue(walletAtom)
   const [selected, setSelected] = useState()
   const [isLoading, setIsLoading] = useState(false)
@@ -40,7 +43,7 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
 
   const { data, fetch: fetchPiecesForRobot } = useMoralisCloudFunction(
     'getPiecesForRobot',
-    { robotId, pieceType },
+    {},
     { autoFetch: false }
   )
 
@@ -80,8 +83,35 @@ export const Slide = ({ fetch, mode }: SlideProps) => {
   )
 
   useEffect(() => {
-    fetchPiecesForRobot()
-  }, [fetchPiecesForRobot])
+    const newWeb3 = new Web3(Moralis.provider as any)
+    const pieces = new newWeb3.eth.Contract(
+      pieceAbi as AbiItem[],
+      process.env.NEXT_PUBLIC_PIECE_ADDRESS
+    )
+    const result = async () => {
+      const tokenIds = await pieces.methods.tokenOfOwner(wallet).call()
+      fetchPiecesForRobot({
+        params: { robotId, pieceType, pieceIds: tokenIds.map((token: string) => +token) }
+      })
+    }
+    try {
+      if (wallet !== defaultWallet && isWeb3Enabled && isAuthenticated) {
+        result()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [
+    fetchPiecesForRobot,
+    web3,
+    isWeb3Enabled,
+    wallet,
+    isAuthenticated,
+    fetch,
+    Moralis,
+    pieceType,
+    robotId
+  ])
 
   return (
     <Transition.Root show={open} as={Fragment}>

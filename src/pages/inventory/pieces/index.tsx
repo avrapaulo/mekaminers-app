@@ -47,7 +47,7 @@ const PiecesPage = () => {
     } catch (error) {
       console.log(error)
     }
-  }, [web3, isWeb3Enabled, wallet, isAuthenticated, fetch])
+  }, [web3, isWeb3Enabled, wallet, isAuthenticated, fetch, Moralis])
 
   return (
     <>
