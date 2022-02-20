@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Dispatch, Fragment, SetStateAction, useState, useEffect } from 'react'
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
@@ -111,8 +112,15 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
                     </div>
                     <div className="w-full px-4 pt-6">
                       {tabs[0].name === activeTab &&
-                        (robots as RobotsProps[])?.map(
-                          ({ bonus, rarity, title, piecesStatus, robotStatus, token }) => (
+                        (robots as RobotsProps[])
+                          ?.sort((first, second) =>
+                            first.robotStatus[0].value < second.robotStatus[0].value
+                              ? 1
+                              : second.robotStatus[0].value < first.robotStatus[0].value
+                              ? -1
+                              : 0
+                          )
+                          ?.map(({ bonus, rarity, title, piecesStatus, robotStatus, token }) => (
                             <SliderRowNFT
                               key={token}
                               bonus={bonus}
@@ -129,8 +137,7 @@ export const SlideFarm = ({ fetchFarm, open, setOpen }: SlideFarmProps) => {
                               setKeyDisclosure={setKeyDisclosure}
                               utilities={(dataUtilities as { key: string; value: number }[]) || []}
                             />
-                          )
-                        )}
+                          ))}
                       {tabs[1].name === activeTab &&
                         (nonNFTRobots as SliderRowNonNFTProps[])?.map(
                           ({ capacity, name, nonNFT }) => (

@@ -59,8 +59,12 @@ export const SpendModel = ({ open, setOpen }: SpendModelProps) => {
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div>
                 <div className="mt-3 text-center sm:mt-5">
-                  <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                    Do you really want to buy this land for {landPrice[totalLand]?.value || 0}?
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg leading-6 font-medium text-gray-900 flex flex-row"
+                  >
+                    Do you really want to buy this land for {landPrice[totalLand]?.value || 0}
+                    <img alt="" className="h-6 w-6 object-contain" src="/ore.png" />?
                   </Dialog.Title>
                 </div>
               </div>
