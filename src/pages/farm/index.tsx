@@ -52,53 +52,85 @@ const FarmPage = () => {
   useEffect(() => {
     if (!data) return
     for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
-      if (!data[robotCount]?.robot) continue
-      const capacityStatus = data[robotCount].robot.piecesStatus?.find(
-        ({ key }) => key === 'Capacity'
-      )
-      const capacity =
-        capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
       const time =
         +new Date(data[robotCount].startedAt) + data[robotCount].mineralTotalTime * 1000 - nowUtc <=
         0
-      if (
-        farmRobots.some(
-          item =>
-            item[`${capacity}${data[robotCount].robot.rarity}`] === data[robotCount].robot.token &&
-            (time || data[robotCount].isPaused)
+
+      if (!data[robotCount]?.robot) {
+        if (
+          farmRobots.some(
+            item =>
+              item[data[robotCount]?.nonNFTRobot?.name] === data[robotCount].nonNFTRobot.nonNFT &&
+              (time || data[robotCount].isPaused)
+          )
+        ) {
+          setFarmRobots(farmRobots.filter(i => !i[data[robotCount]?.nonNFTRobot?.name]))
+        }
+      } else {
+        const capacityStatus = data[robotCount].robot.piecesStatus?.find(
+          ({ key }) => key === 'Capacity'
         )
-      ) {
-        setFarmRobots(farmRobots.filter(i => !i[`${capacity}${data[robotCount].robot.rarity}`]))
+        const capacity =
+          capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
+
+        if (
+          farmRobots.some(
+            item =>
+              item[`${capacity}${data[robotCount].robot.rarity}`] ===
+                data[robotCount].robot.token &&
+              (time || data[robotCount].isPaused)
+          )
+        ) {
+          setFarmRobots(farmRobots.filter(i => !i[`${capacity}${data[robotCount].robot.rarity}`]))
+        }
       }
     }
 
     for (let robotCount = 0; robotCount < (data as any).length; robotCount = 1 + robotCount) {
-      if (!data[robotCount]?.robot) continue
-      const capacityStatus = data[robotCount].robot.piecesStatus?.find(
-        ({ key }) => key === 'Capacity'
-      )
-      const capacity =
-        capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
       const time =
         +new Date(data[robotCount].startedAt) + data[robotCount].mineralTotalTime * 1000 - nowUtc <=
         0
-      setFarmRobots(items => {
-        if (
-          !items?.some(
-            i => i[`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]
-          ) &&
-          !(time || data[robotCount].isPaused)
-        ) {
-          return [
-            ...items,
-            {
-              [`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]:
-                data[robotCount].robot.token
-            }
-          ]
-        }
-        return items
-      })
+
+      if (!data[robotCount]?.robot) {
+        setFarmRobots(items => {
+          if (
+            !items?.some(i => i[data[robotCount]?.nonNFTRobot?.name]) &&
+            !(time || data[robotCount].isPaused)
+          ) {
+            return [
+              ...items,
+              {
+                [data[robotCount]?.nonNFTRobot?.name]: data[robotCount].nonNFTRobot.nonNFT
+              }
+            ]
+          }
+          return items
+        })
+      } else {
+        const capacityStatus = data[robotCount].robot.piecesStatus?.find(
+          ({ key }) => key === 'Capacity'
+        )
+        const capacity =
+          capacityStatus?.id || robotDefault[data[robotCount].robot.type.toLowerCase()].Capacity
+
+        setFarmRobots(items => {
+          if (
+            !items?.some(
+              i => i[`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]
+            ) &&
+            !(time || data[robotCount].isPaused)
+          ) {
+            return [
+              ...items,
+              {
+                [`${capacity}${capacityStatus?.rarity || data[robotCount].robot.rarity}`]:
+                  data[robotCount].robot.token
+              }
+            ]
+          }
+          return items
+        })
+      }
     }
   }, [data, farmRobots, setFarmRobots, nowUtc])
 

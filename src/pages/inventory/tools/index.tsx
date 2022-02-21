@@ -163,7 +163,7 @@ const Tools = () => {
                                                 title="Shard"
                                                 description={
                                                   <div className="flex flex-row items-center">
-                                                    Your Piece will be send in few minutes
+                                                    Your Piece will be sent in few seconds
                                                   </div>
                                                 }
                                               />

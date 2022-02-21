@@ -125,7 +125,7 @@ const Boxes = () => {
                                           title="Minted"
                                           description={
                                             <div className="flex flex-row items-center">
-                                              Your Robot will be send in few minutes
+                                              Your Robot will be sent in few seconds
                                             </div>
                                           }
                                         />
@@ -238,7 +238,6 @@ const Boxes = () => {
                                     }
                                   })
                                   const createRobotResult: any = await createRobotWait?.wait()
-                                  console.log(createRobotResult)
                                   if (createRobotResult?.status === 1) {
                                     toast.custom(
                                       t => (
@@ -249,7 +248,7 @@ const Boxes = () => {
                                           title="Minted"
                                           description={
                                             <div className="flex flex-row items-center">
-                                              Your Robot will be send in few minutes
+                                              Your Robot will be sent in few seconds
                                             </div>
                                           }
                                         />

@@ -15,19 +15,25 @@ type GLTFResult = GLTF & {
 }
 
 interface FunctionalObjectProps {
+  farmRobots?: any[]
   animation: boolean
+  nonNFTId: number | string
 }
+const type = 'Functional'
 
 export const FunctionalObject = (props: FunctionalObjectProps & JSX.IntrinsicElements['group']) => {
+  const { nonNFTId, animation, farmRobots } = props
   const group = useRef<THREE.Group>()
   const { nodes, materials, animations } = useGLTF('/3d/mining-bots/functional.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
 
   useEffect(() => {
-    if (props.animation) {
-      actions?.Mining.play()
+    if (farmRobots?.some(i => i[type] === nonNFTId)) {
+      if (animation) {
+        actions?.Mining.play()
+      }
     }
-  }, [actions, props])
+  }, [actions, animation, farmRobots, nonNFTId])
 
   return (
     <group ref={group} {...props} dispose={null}>

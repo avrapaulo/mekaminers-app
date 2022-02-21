@@ -1,3 +1,5 @@
+import { useRecoilValue } from 'recoil'
+import { farmRobotsAtom } from 'recoil/atoms'
 import { FrogObject } from 'components/3D/pets/frog/frog'
 import { DogObject } from 'components/3D/pets/dog/dog'
 import { BugObject } from 'components/3D/pets/bug/bug'
@@ -15,10 +17,14 @@ interface LandNonNFTRobotProps {
 }
 
 export const LandNonNFTRobot = ({ id, name, mineralRarity, petName }: LandNonNFTRobotProps) => {
+  const farmRobots = useRecoilValue(farmRobotsAtom)
+
   return (
     <CanvasContainer autoRotate={true} camera={{ position: [-15, 10, 0], zoom: 2.2 }}>
       <>
-        {name === 'Functional' && <FunctionalObject animation={true} />}
+        {name === 'Functional' && (
+          <FunctionalObject animation={true} farmRobots={farmRobots} nonNFTId={id} />
+        )}
         {name === 'Heavy' && <HeavyObject animation={true} />}
         {name === 'Rusty' && <RustyObject animation={true} />}
         <LandObject rarity={mineralRarity} />
