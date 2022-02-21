@@ -15,6 +15,7 @@ import { MiniHeader } from 'components/inventory/header-mini'
 import { inventory } from 'constants/menu'
 
 interface PiecesProps {
+  isNew: boolean
   bonus: number
   mode: number
   token: number
@@ -68,10 +69,10 @@ const PiecesPage = () => {
         <Layout>
           <>
             {(data as PiecesProps[])?.map(
-              ({ token, title, rarity = 'default', piecesStatus, mode, type }) => (
+              ({ token, title, rarity = 'default', piecesStatus, mode, type, isNew }) => (
                 <Link key={token} href={`/inventory/pieces/details?id=${token}`}>
                   <a className="relative flex justify-center">
-                    <Mode modeId={mode} />
+                    <Mode modeId={isNew ? 10 : mode} />
                     <Card
                       rarity={rarity}
                       description={title}

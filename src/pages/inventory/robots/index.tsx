@@ -16,6 +16,7 @@ import { Gen0, Gen1 } from 'icons'
 import { inventory } from 'constants/menu'
 
 export interface RobotsProps {
+  isNew: boolean
   bonus: number
   mode: number
   token: number
@@ -75,6 +76,7 @@ const RobotsPage = () => {
           <>
             {(data as RobotsProps[])?.map(
               ({
+                isNew,
                 token,
                 title,
                 rarity = 'default',
@@ -87,7 +89,7 @@ const RobotsPage = () => {
               }) => (
                 <Link key={token} href={`/inventory/robots/details?id=${token}`}>
                   <a className="relative flex justify-center">
-                    <Mode modeId={mode} />
+                    <Mode modeId={isNew ? 10 : mode} />
                     {gen !== undefined && (
                       <div className="font-bold absolute z-10 -left-5">
                         {gen === 0 && <Gen0 className="h-12 w-12" aria-hidden="true" />}

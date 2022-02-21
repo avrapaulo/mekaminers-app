@@ -28,6 +28,7 @@ import { Mode } from 'components/card/mode'
 
 interface RobotProps {
   robot: {
+    isNew: boolean
     bonus: number
     gen: number
     price: number
@@ -105,6 +106,7 @@ export const RobotDetail = () => {
 
   const {
     robot: {
+      isNew,
       title = ' ',
       owner,
       rarity,
@@ -184,7 +186,7 @@ export const RobotDetail = () => {
               Go back
             </a>
           </Link>
-          {isOwner && <Mode modeId={mode} isAbsolute={false} />}
+          {isOwner && <Mode modeId={isNew ? 10 : mode} isAbsolute={false} />}
         </div>
         <div className="flex flex-col lg:grid grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">

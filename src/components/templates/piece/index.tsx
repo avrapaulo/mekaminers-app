@@ -24,6 +24,7 @@ import { Mode } from 'components/card/mode'
 
 interface PiecesProps {
   piece: {
+    isNew: boolean
     bonus: number
     price: number
     mode: number
@@ -98,7 +99,7 @@ export const PieceDetail = () => {
   }, [fetch])
 
   const {
-    piece: { title = ' ', owner, rarity, type, price, mode, piecesStatus },
+    piece: { isNew, title = ' ', owner, rarity, type, price, mode, piecesStatus },
     isOwner
   } = (data || { piece: {} }) as PiecesProps
 
@@ -163,7 +164,7 @@ export const PieceDetail = () => {
               Go back
             </a>
           </Link>
-          {isOwner && <Mode modeId={mode} isAbsolute={false} />}
+          {isOwner && <Mode modeId={isNew ? 10 : mode} isAbsolute={false} />}
         </div>
         <div className="flex flex-col lg:grid overflow-hidden grid-cols-2 grid-rows-1 gap-2 w-full">
           <div className="box">

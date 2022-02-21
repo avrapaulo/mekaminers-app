@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
 interface FunctionalObjectProps {
   farmRobots?: any[]
   animation: boolean
-  nonNFTId: number | string
+  nonNFTId?: number | string
 }
 const type = 'Functional'
 
