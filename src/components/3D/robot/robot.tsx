@@ -101,7 +101,7 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
   useEffect(() => {
     if (animation) {
       actions.Idle?.stop()
-      actions[animation].play()
+      actions[animation]?.play()
 
       setTimeout(() => {
         actions[animation]?.stop()
@@ -121,7 +121,7 @@ export const RobotObject = ({ ...props }: RobotObjectProps & JSX.IntrinsicElemen
       })
     ) {
       if (animationCollect) {
-        actions[animationCollect].play()
+        actions[animationCollect]?.play()
       }
     }
   }, [actions, animationCollect, capacity, capacityStatus, farmRobots, rarity, robotId])
