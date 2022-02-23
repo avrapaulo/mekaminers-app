@@ -187,7 +187,7 @@ export const Layout = ({ children }: LayoutProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-400 bg-opacity-75">
+              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-500 bg-opacity-85">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -210,7 +210,11 @@ export const Layout = ({ children }: LayoutProps) => {
                 </Transition.Child>
                 <div className="flex items-center flex-shrink-0 px-4">
                   <div className="h-28 w-full relative">
-                    <img alt="Logo" src="/logo.png" />
+                    <Link href="/">
+                      <a>
+                        <img alt="Logo" src="/logo.png" />
+                      </a>
+                    </Link>
                   </div>
                 </div>
                 <nav className="mt-5 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
@@ -311,7 +315,11 @@ export const Layout = ({ children }: LayoutProps) => {
 
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:px-2 xl:px-8 items-center text-white">
               <div className="hidden h-28 w-28 lg:flex items-center relative ">
-                <img alt="Logo" src="/logo-top.png" />
+                <Link href="/">
+                  <a>
+                    <img alt="Logo" src="/logo-top.png" />
+                  </a>
+                </Link>
               </div>
               <div className="flex-1 flex lg:hidden"></div>
               <nav className="hidden lg:flex flex-row space-x-1" aria-label="Sidebar">
