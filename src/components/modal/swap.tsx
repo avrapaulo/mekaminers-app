@@ -11,6 +11,7 @@ import { classNames } from 'helpers/class-names'
 import { Notification } from 'components/notification'
 import { abi } from 'contracts/MekaDeployer.json'
 import { useMeka, UseBalanceOf } from 'hooks'
+import { event } from 'lib/ga'
 
 const amountToApprove = 10000
 
@@ -320,6 +321,12 @@ export const SwapModal = () => {
                                   })
                                   const convertResult: any = await convertWait?.wait()
                                   if (convertResult?.status === 1) {
+                                    event({
+                                      action: 'swap-ore',
+                                      category: 'swap-ore',
+                                      value: 'swap-ore',
+                                      label: 'swap-ore'
+                                    })
                                     const balanceOfResult: any = await fetchBalanceOf()
                                     setMekaAtom(
                                       Math.floor(+Moralis.Units.FromWei(balanceOfResult, 18))
@@ -422,6 +429,12 @@ export const SwapModal = () => {
                                 const convertResult: any = await convertWait?.wait()
 
                                 if (convertResult?.status === 1) {
+                                  event({
+                                    action: 'swap-meka',
+                                    category: 'swap-meka',
+                                    value: 'swap-meka',
+                                    label: 'swap-meka'
+                                  })
                                   toast.custom(
                                     t => (
                                       <Notification
