@@ -413,7 +413,7 @@ export const Layout = ({ children }: LayoutProps) => {
             </div>
           </div>
 
-          {chainId === '0x61'
+          {chainId === process.env.NEXT_PUBLIC_CHAIN_ID
             ? user?.get('ethAddress') === account
               ? children
               : account && (
