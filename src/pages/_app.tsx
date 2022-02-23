@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
+  const { active } = router.query
 
   useEffect(() => {
     const handleRouteChange = url => {
@@ -48,10 +49,13 @@ const App = ({ Component, pageProps }: AppProps) => {
         <RecoilRoot>
           <Toaster position="top-right" reverseOrder={false} />
           <Layout>
-            <Component {...pageProps} />
-            {/* <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
-              <img alt="" width="500" height="100" src="/ops.png" />
-            </div> */}
+            {active ? (
+              <Component {...pageProps} />
+            ) : (
+              <div className="uppercase flex justify-center items-center h-screen -mt-16 lg:-mt-28 text-white font-bold -z-10">
+                <img alt="" width="500" height="100" src="/ops.png" />
+              </div>
+            )}
           </Layout>
         </RecoilRoot>
       </MoralisProvider>
