@@ -95,18 +95,27 @@ export const Layout = ({ children }: LayoutProps) => {
 
   const { chainId, account } = useChain()
   const { fetchBalanceOf } = UseBalanceOf()
-  useEffect(() => {
-    if (!isAuthenticated) setMekaAtom(0)
-    setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
+  useEffect(() => {
     fetch({
-      onSuccess: ({ ores, totalLands, currentFee, lastWithdraw, hasNft }) => {
+      onSuccess: ({
+        ores = 0,
+        totalLands = 0,
+        currentFee = 80,
+        lastWithdraw = '',
+        hasNft = 10
+      }) => {
         setOresAtom(ores)
         setUserAtom(totalLands)
         setCurrentFee({ fee: currentFee, lastWithdraw })
         setHasNftAtom(hasNft)
       }
     })
+  }, [fetch, setCurrentFee, setHasNftAtom, setOresAtom, setUserAtom, isAuthenticated])
+
+  useEffect(() => {
+    if (!isAuthenticated) setMekaAtom(0)
+    setWalletAddress(user?.get('ethAddress') || defaultWallet)
 
     isWeb3Enabled &&
       fetchBalanceOf({
@@ -121,11 +130,6 @@ export const Layout = ({ children }: LayoutProps) => {
     fetchBalanceOf,
     Moralis,
     isWeb3Enabled,
-    fetch,
-    setOresAtom,
-    setUserAtom,
-    setCurrentFee,
-    setHasNftAtom,
     isAuthenticated
   ])
 
