@@ -72,29 +72,29 @@ const Boxes = () => {
                       <button
                         type="button"
                         onClick={async () => {
-                          if (ore < oresPrice) {
-                            return toast.custom(
-                              t => (
-                                <Notification
-                                  onClickClose={() => toast.dismiss(t.id)}
-                                  isShow={t.visible}
-                                  icon="error"
-                                  title="Box"
-                                  description={
-                                    <div className="flex flex-row items-center">
-                                      You need more
-                                      <img
-                                        alt="Logo"
-                                        className="h-6 w-6 object-contain"
-                                        src="/ore.png"
-                                      />
-                                    </div>
-                                  }
-                                />
-                              ),
-                              { duration: 3000 }
-                            )
-                          }
+                          // if (ore < oresPrice) {
+                          //   return toast.custom(
+                          //     t => (
+                          //       <Notification
+                          //         onClickClose={() => toast.dismiss(t.id)}
+                          //         isShow={t.visible}
+                          //         icon="error"
+                          //         title="Box"
+                          //         description={
+                          //           <div className="flex flex-row items-center">
+                          //             You need more
+                          //             <img
+                          //               alt="Logo"
+                          //               className="h-6 w-6 object-contain"
+                          //               src="/ore.png"
+                          //             />
+                          //           </div>
+                          //         }
+                          //       />
+                          //     ),
+                          //     { duration: 3000 }
+                          //   )
+                          // }
 
                           setIsLoading(true)
                           try {
@@ -199,29 +199,30 @@ const Boxes = () => {
                           hasNft < robotMax ? '' : 'pointer-events-none bg-gray-500'
                         )}
                         onClick={async () => {
-                          if (meka < 65) {
-                            return toast.custom(
-                              t => (
-                                <Notification
-                                  onClickClose={() => toast.dismiss(t.id)}
-                                  isShow={t.visible}
-                                  icon="error"
-                                  title="Box"
-                                  description={
-                                    <div className="flex flex-row items-center">
-                                      You need to have 65
-                                      <img
-                                        alt="Logo"
-                                        className="h-6 w-6 object-contain"
-                                        src="/meka.png"
-                                      />
-                                    </div>
-                                  }
-                                />
-                              ),
-                              { duration: 3000 }
-                            )
-                          }
+                          // if (meka < 65) {
+                          //   return toast.custom(
+                          //     t => (
+                          //       <Notification
+                          //         onClickClose={() => toast.dismiss(t.id)}
+                          //         isShow={t.visible}
+                          //         icon="error"
+                          //         title="Box"
+                          //         description={
+                          //           <div className="flex flex-row items-center">
+                          //             You need to have 65
+                          //             <img
+                          //               alt="Logo"
+                          //               className="h-6 w-6 object-contain"
+                          //               src="/meka.png"
+                          //             />
+                          //           </div>
+                          //         }
+                          //       />
+                          //     ),
+                          //     { duration: 3000 }
+                          //   )
+                          // }
+
                           setIsLoading(true)
                           try {
                             const mekaAllowanceResult: any = await fetchMekaAllowance()
