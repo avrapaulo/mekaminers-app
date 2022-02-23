@@ -8,11 +8,12 @@ const Homepage = () => {
   const { data: dataTotalMintedRobots } = useMoralisCloudFunction('getTotalMintedRobots')
   const { data: dataTotalMintedPieces } = useMoralisCloudFunction('getTotalMintedPieces')
   const { data: dataTotalBurn } = useMoralisCloudFunction('getTotalBurn')
+
   return (
     <div className="h-full">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 lg:h-full">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mt-3 lg:mt-0">
-          {/* <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mt-3 lg:mt-0">
+          <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -22,13 +23,15 @@ const Homepage = () => {
                   <dl>
                     <dt className="text-sm text-gray-500 truncate font-bold">Players</dt>
                     <dd>
-                      <div className="text-lg font-medium text-gray-900"></div>
+                      <div className="text-lg font-medium text-gray-900">
+                        {(dataTotalUsers as any)?.total}
+                      </div>
                     </dd>
                   </dl>
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-5">
               <div className="flex items-center">
@@ -80,7 +83,7 @@ const Homepage = () => {
                     </dt>
                     <dd>
                       <div className="text-lg font-medium text-gray-900">
-                        {Math.round(dataTotalBurn?.[0]?.total)}
+                        {Math.round(dataTotalBurn?.[0]?.total || 0)}
                       </div>
                     </dd>
                   </dl>
@@ -91,7 +94,7 @@ const Homepage = () => {
         </div>
 
         <a
-          className="uppercase flex justify-center items-center text-white text-4xl font-bold  cursor-pointer relative lg:h-full lg:-mt-24"
+          className="uppercase flex justify-center items-center text-white text-4xl font-bold  cursor-pointer relative lg:h-full mt-5 lg:-mt-24"
           href="https://discord.gg/2wsCx2Vn2R"
           target="_blank"
           rel="noreferrer"
@@ -104,7 +107,7 @@ const Homepage = () => {
             })
           }
         >
-          <div> Have doubts? Join Discord</div>
+          <div>Have doubts? Join us on Discord</div>
           <div>
             <DiscordIconOriginal className="h-16 w-16 relative" />
           </div>

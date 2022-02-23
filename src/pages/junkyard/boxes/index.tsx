@@ -57,7 +57,10 @@ const Boxes = () => {
       <MiniHeader menu={junkyard} />
       <Layout>
         <>
-          <Card description={''} imageCard={<img alt="" src="/box-ore.png" />}>
+          <Card
+            description={''}
+            imageCard={<img alt="" className="w-full h-full object-contain" src="/box-ore.png" />}
+          >
             <>
               <div className="text-center px-4">
                 An exclusive chance for beginners to buy a mighty Mekabot for a cheap price.
@@ -176,7 +179,10 @@ const Boxes = () => {
               <div className="text-center text-sm px-4 pb-3 font-bold">(One-time purchase)</div>
             </>
           </Card>
-          <Card description={''} imageCard={<img alt="" src="/box-meka.png" />}>
+          <Card
+            description={''}
+            imageCard={<img alt="" className="w-full h-full object-contain" src="/box-meka.png" />}
+          >
             <>
               <div className="text-center px-4">
                 Here lies a mighty Mekabot! Do you have what it takes to activate it?
